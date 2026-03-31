@@ -1,0 +1,74 @@
+---
+const steps = [
+  {
+    number: "1",
+    icon: "user-plus",
+    title: "Crea tu cuenta",
+    description: "Regístrate en segundos con tu correo electrónico",
+  },
+  {
+    number: "2",
+    icon: "music-2",
+    title: "Elige tu ambiente",
+    description: "Selecciona el tipo de música ideal para tu negocio",
+  },
+  {
+    number: "3",
+    icon: "play-circle",
+    title: "Reproduce playlists",
+    description: "Haz clic en play y disfruta música de calidad",
+  },
+  {
+    number: "4",
+    icon: "file-check",
+    title: "Descarga tu certificado",
+    description: "Obtén tu comprobante de licencia comercial",
+  },
+];
+---
+
+<section class="section bg-section-gradient">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <h2 class="section-title">Empieza en 2 minutos</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Sin complicaciones, sin configuración técnica
+      </p>
+    </div>
+    
+    <!-- Steps -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+      {steps.map((step, i) => (
+        <div 
+          class="reveal relative group"
+          style={`animation-delay: ${i * 100}ms`}
+        >
+          <div class="card text-center h-full group-hover:border-primary-teal/30 transition-colors">
+            <!-- Icon with number -->
+            <div class="relative w-16 h-16 mx-auto mb-4">
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-blue/20 to-primary-teal/20 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                <i data-lucide={step.icon} class="w-8 h-8 text-primary-teal"></i>
+              </div>
+              <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-gradient-to-r from-primary-blue to-primary-teal flex items-center justify-center text-xs font-bold text-white">
+                {step.number}
+              </span>
+            </div>
+            
+            <!-- Content -->
+            <h3 class="text-lg font-semibold text-white mb-2">{step.title}</h3>
+            <p class="text-text-secondary text-sm">{step.description}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <!-- Footer note -->
+    <div class="reveal animation-delay-400 flex justify-center">
+      <div class="glass rounded-full px-6 py-3 flex items-center gap-3">
+        <i data-lucide="monitor-smartphone" class="w-4 h-4 text-primary-teal"></i>
+        <span class="text-text-secondary text-sm">Funciona en cualquier dispositivo con navegador</span>
+      </div>
+    </div>
+  </div>
+</section>

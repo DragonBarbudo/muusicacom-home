@@ -1,0 +1,112 @@
+---
+title: "Cómo Café Roma aumentó 23% su tiempo de permanencia con música curada"
+excerpt: "Un caso de éxito real de cómo la música correcta transformó la experiencia de cliente."
+category: "Casos de Éxito"
+categoryColor: "#F59E0B"
+readTime: "4 min"
+date: 2024-01-10
+dateFormatted: "10 Ene 2024"
+author:
+  name: "Ana García"
+  role: "Success Manager"
+gradient: "from-primary-purple to-pink-500"
+featured: true
+---
+
+import AlertBox from '../../components/blog/AlertBox.astro';
+import StatCard from '../../components/blog/StatCard.astro';
+import StatsGrid from '../../components/blog/StatsGrid.astro';
+import ComparisonTable from '../../components/blog/ComparisonTable.astro';
+import FeatureList from '../../components/blog/FeatureList.astro';
+import Quote from '../../components/blog/Quote.astro';
+import CTABox from '../../components/blog/CTABox.astro';
+import StepList from '../../components/blog/StepList.astro';
+import InfoCard from '../../components/blog/InfoCard.astro';
+
+## El desafío de Café Roma
+
+Café Roma, una cafetería de especialidad en el centro de Madrid, enfrentaba un problema común: sus clientes consumían rápido y se marchaban. El ticket medio era bajo y la rotación demasiado alta.
+
+<Quote variant="large" author="Laura Martín" role="Propietaria de Café Roma">
+  Sabíamos que algo faltaba. La gente venía, pedía su café y se iba. Queríamos crear un espacio donde quisieran quedarse.
+</Quote>
+
+<InfoCard title="El Problema" icon="alert-circle" variant="dark">
+  Antes de implementar MUUSICA, Café Roma usaba Spotify personal con playlists aleatorias. No había estrategia musical y los clientes permanecían en promedio solo **18 minutos** en el local.
+</InfoCard>
+
+## La solución
+
+Tras implementar MUUSICA, Café Roma configuró tres ambientes musicales diferentes, cada uno diseñado para el momento específico del día:
+
+<FeatureList 
+  variant="cards"
+  items={[
+    { icon: "sunrise", title: "Mañanas (7-11h)", description: "Jazz suave y bossa nova para acompañar el café matutino" },
+    { icon: "sun", title: "Mediodía (11-16h)", description: "Indie acústico y folk para el ambiente de almuerzo" },
+    { icon: "sunset", title: "Tardes (16-20h)", description: "Lounge y chill electrónico para la hora de la merienda" }
+  ]}
+/>
+
+<AlertBox type="info" title="Configuración en minutos">
+  Todo el sistema de programación musical se configuró en menos de 15 minutos usando la interfaz de MUUSICA. No fue necesario ningún conocimiento técnico.
+</AlertBox>
+
+## Los resultados
+
+Después de solo 3 meses con MUUSICA, los números hablan por sí solos:
+
+<StatsGrid cols={3}>
+  <StatCard value="+23%" label="Tiempo de permanencia" icon="clock" color="teal" />
+  <StatCard value="+29%" label="Ticket medio" icon="receipt" color="blue" />
+  <StatCard value="+87%" label="Segundas consumiciones" icon="coffee" color="purple" />
+</StatsGrid>
+
+<ComparisonTable
+  title="Métricas antes y después"
+  headers={["Métrica", "Antes", "Después"]}
+  highlightColumn={2}
+  rows={[
+    { label: "Tiempo medio de estancia", values: [{ text: "18 min", type: "neutral" }, { text: "22 min", type: "good" }] },
+    { label: "Ticket medio", values: [{ text: "€4.80", type: "neutral" }, { text: "€6.20", type: "good" }] },
+    { label: "Segundas consumiciones", values: [{ text: "15%", type: "neutral" }, { text: "28%", type: "good" }] },
+    { label: "Valoración en Google", values: [{ text: "4.2 ★", type: "neutral" }, { text: "4.6 ★", type: "good" }] }
+  ]}
+/>
+
+## Testimonios de clientes
+
+Los propios clientes de Café Roma notaron la diferencia:
+
+<Quote variant="card" author="María González" role="Cliente habitual">
+  Ahora vengo a trabajar aquí con mi portátil. La música crea el ambiente perfecto para concentrarme sin distracciones.
+</Quote>
+
+<Quote variant="card" author="Carlos Pérez" role="Vecino del barrio">
+  Me encanta la playlist de las tardes. A veces me quedo solo por la música, y termino pidiendo otra cosa.
+</Quote>
+
+## Claves del éxito
+
+<StepList
+  title="Los 3 pilares de la transformación de Café Roma"
+  steps={[
+    { title: "Coherencia con la marca", description: "La música refuerza la identidad de cafetería de especialidad. Cada canción fue seleccionada para complementar el concepto artesanal del café." },
+    { title: "Programación inteligente", description: "Cada momento del día tiene su ambiente específico. Los clientes sienten que el espacio evoluciona naturalmente a lo largo de la jornada." },
+    { title: "Sin interrupciones", description: "Transiciones suaves entre canciones y sin anuncios. La experiencia musical es continua y profesional." }
+  ]}
+/>
+
+<AlertBox type="success" title="ROI comprobado">
+  El incremento de €1.40 en el ticket medio representa aproximadamente **€420 adicionales al mes** considerando su volumen de clientes. La inversión en MUUSICA se recupera en los primeros días.
+</AlertBox>
+
+## ¿Quieres resultados similares?
+
+<CTABox 
+  variant="gradient"
+  title="Transforma tu negocio con música"
+  description="Únete a cientos de cafeterías que ya optimizan su experiencia de cliente con MUUSICA."
+  buttonText="Comenzar prueba gratuita"
+  buttonLink="https://play.muusica.com"
+/>

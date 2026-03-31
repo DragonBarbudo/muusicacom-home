@@ -1,0 +1,341 @@
+---
+// Audio visualizer animation component
+// Randomly assigns one of several animation types
+
+interface Props {
+  type?: number; // 0-5, if not provided will be random based on index
+  size?: 'small' | 'large';
+  class?: string;
+}
+
+const { type, size = 'large', class: className = '' } = Astro.props;
+
+// Animation type will be determined by CSS class
+const animationType = type !== undefined ? type % 6 : Math.floor(Math.random() * 6);
+const sizeClass = size === 'small' ? 'audio-viz-small' : 'audio-viz-large';
+---
+
+<div class={`audio-visualizer audio-viz-${animationType} ${sizeClass} ${className}`}>
+  {animationType === 0 && (
+    <!-- Equalizer Bars -->
+    <div class="viz-bars">
+      {[...Array(12)].map((_, i) => (
+        <div class="bar" style={`--delay: ${i * 0.1}s`}></div>
+      ))}
+    </div>
+  )}
+  
+  {animationType === 1 && (
+    <!-- Circular Waveform -->
+    <div class="viz-circular">
+      <div class="circle-wave"></div>
+      <div class="circle-wave"></div>
+      <div class="circle-wave"></div>
+    </div>
+  )}
+  
+  {animationType === 2 && (
+    <!-- Sound Waves -->
+    <div class="viz-waves">
+      <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+        <path class="wave wave-1" d="M0,30 Q25,10 50,30 T100,30 T150,30 T200,30" />
+        <path class="wave wave-2" d="M0,30 Q25,50 50,30 T100,30 T150,30 T200,30" />
+        <path class="wave wave-3" d="M0,30 Q25,20 50,30 T100,30 T150,30 T200,30" />
+      </svg>
+    </div>
+  )}
+  
+  {animationType === 3 && (
+    <!-- Pulsing Dots -->
+    <div class="viz-dots">
+      {[...Array(16)].map((_, i) => (
+        <div class="dot" style={`--delay: ${(i % 4) * 0.15}s; --row: ${Math.floor(i / 4)}; --col: ${i % 4}`}></div>
+      ))}
+    </div>
+  )}
+  
+  {animationType === 4 && (
+    <!-- Spectrum Analyzer -->
+    <div class="viz-spectrum">
+      {[...Array(20)].map((_, i) => (
+        <div class="spectrum-bar" style={`--delay: ${i * 0.05}s; --height: ${30 + Math.sin(i * 0.5) * 40}%`}></div>
+      ))}
+    </div>
+  )}
+  
+  {animationType === 5 && (
+    <!-- Floating Notes -->
+    <div class="viz-notes">
+      <div class="note note-1">♪</div>
+      <div class="note note-2">♫</div>
+      <div class="note note-3">♪</div>
+      <div class="note note-4">♫</div>
+      <div class="note note-5">♪</div>
+    </div>
+  )}
+</div>
+
+<style>
+  .audio-visualizer {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  /* Size variants */
+  .audio-viz-large {
+    --viz-scale: 1;
+  }
+  
+  .audio-viz-small {
+    --viz-scale: 0.6;
+  }
+
+  /* ============================================
+     Animation 0: Equalizer Bars
+     ============================================ */
+  .viz-bars {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    height: 60%;
+    transform: scale(var(--viz-scale));
+  }
+
+  .viz-bars .bar {
+    width: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 3px;
+    animation: barBounce 0.8s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes barBounce {
+    0%, 100% { height: 20%; }
+    50% { height: 80%; }
+  }
+
+  /* ============================================
+     Animation 1: Circular Waveform
+     ============================================ */
+  .viz-circular {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    transform: scale(var(--viz-scale));
+  }
+
+  .circle-wave {
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    animation: circleExpand 2s ease-out infinite;
+  }
+
+  .circle-wave:nth-child(2) {
+    animation-delay: 0.6s;
+  }
+
+  .circle-wave:nth-child(3) {
+    animation-delay: 1.2s;
+  }
+
+  @keyframes circleExpand {
+    0% {
+      transform: scale(0.3);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
+  /* ============================================
+     Animation 2: Sound Waves
+     ============================================ */
+  .viz-waves {
+    width: 80%;
+    height: 60%;
+    transform: scale(var(--viz-scale));
+  }
+
+  .viz-waves svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .wave {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.5);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .wave-1 {
+    animation: waveMorph1 1.5s ease-in-out infinite;
+  }
+
+  .wave-2 {
+    animation: waveMorph2 1.8s ease-in-out infinite;
+    stroke: rgba(255, 255, 255, 0.3);
+  }
+
+  .wave-3 {
+    animation: waveMorph3 2s ease-in-out infinite;
+    stroke: rgba(255, 255, 255, 0.2);
+  }
+
+  @keyframes waveMorph1 {
+    0%, 100% { d: path("M0,30 Q25,10 50,30 T100,30 T150,30 T200,30"); }
+    50% { d: path("M0,30 Q25,50 50,30 T100,30 T150,30 T200,30"); }
+  }
+
+  @keyframes waveMorph2 {
+    0%, 100% { d: path("M0,30 Q25,45 50,30 T100,30 T150,30 T200,30"); }
+    50% { d: path("M0,30 Q25,15 50,30 T100,30 T150,30 T200,30"); }
+  }
+
+  @keyframes waveMorph3 {
+    0%, 100% { d: path("M0,30 Q25,25 50,30 T100,30 T150,30 T200,30"); }
+    50% { d: path("M0,30 Q25,35 50,30 T100,30 T150,30 T200,30"); }
+  }
+
+  /* ============================================
+     Animation 3: Pulsing Dots
+     ============================================ */
+  .viz-dots {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    transform: scale(var(--viz-scale));
+  }
+
+  .viz-dots .dot {
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: dotPulse 1.2s ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes dotPulse {
+    0%, 100% { 
+      transform: scale(0.5);
+      opacity: 0.3;
+    }
+    50% { 
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  /* ============================================
+     Animation 4: Spectrum Analyzer
+     ============================================ */
+  .viz-spectrum {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: 70%;
+    transform: scale(var(--viz-scale));
+  }
+
+  .spectrum-bar {
+    width: 4px;
+    background: linear-gradient(to top, rgba(255,255,255,0.3), rgba(255,255,255,0.8));
+    border-radius: 2px;
+    animation: spectrumBounce 0.6s ease-in-out infinite alternate;
+    animation-delay: var(--delay);
+    height: var(--height);
+  }
+
+  @keyframes spectrumBounce {
+    0% { 
+      transform: scaleY(0.3);
+      opacity: 0.5;
+    }
+    100% { 
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+
+  /* ============================================
+     Animation 5: Floating Notes
+     ============================================ */
+  .viz-notes {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+    transform: scale(var(--viz-scale));
+  }
+
+  .note {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.7);
+    animation: noteFloat 3s ease-in-out infinite;
+  }
+
+  .note-1 {
+    left: 20%;
+    animation-delay: 0s;
+  }
+
+  .note-2 {
+    left: 40%;
+    animation-delay: 0.5s;
+    font-size: 20px;
+  }
+
+  .note-3 {
+    left: 60%;
+    animation-delay: 1s;
+  }
+
+  .note-4 {
+    left: 75%;
+    animation-delay: 1.5s;
+    font-size: 18px;
+  }
+
+  .note-5 {
+    left: 35%;
+    animation-delay: 2s;
+    font-size: 22px;
+  }
+
+  @keyframes noteFloat {
+    0% {
+      bottom: -10%;
+      opacity: 0;
+      transform: translateX(0) rotate(0deg);
+    }
+    20% {
+      opacity: 1;
+    }
+    80% {
+      opacity: 1;
+    }
+    100% {
+      bottom: 110%;
+      opacity: 0;
+      transform: translateX(20px) rotate(15deg);
+    }
+  }
+
+  /* Hover effects - pause animations on hover */
+  .group:hover .audio-visualizer {
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+</style>

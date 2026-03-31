@@ -1,0 +1,62 @@
+---
+const cards = [
+  {
+    icon: "shield-off",
+    title: "Sin regalías SACM",
+    description: "No necesitas pagar cuotas a la Sociedad de Autores y Compositores de México",
+    extra: "Ahorro promedio: $450–$800 MXN/mes",
+    color: "#3B82F6",
+  },
+  {
+    icon: "ban",
+    title: "Sin regalías SOMEXFON",
+    description: "Tampoco necesitas pagar a la Sociedad Mexicana de Ejecutantes de Fonogramas",
+    extra: "Ahorro promedio: $350–$600 MXN/mes",
+    color: "#14B8A6",
+  },
+  {
+    icon: "file-check",
+    title: "Certificado digital incluido",
+    description: "Descarga tu comprobante de licencia comercial en cualquier momento desde tu cuenta",
+    extra: "Certificado incluido con tu suscripción",
+    color: "#8B5CF6",
+  },
+];
+---
+
+<section id="legal" class="section bg-section-gradient">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <h2 class="section-title">100% legal y libre de preocupaciones</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Toda la música licenciada para uso comercial, sin pagos adicionales
+      </p>
+    </div>
+    
+    <!-- Cards -->
+    <div class="grid md:grid-cols-3 gap-6">
+      {cards.map((card, i) => (
+        <div 
+          class="reveal card group hover:border-opacity-50"
+          style={`animation-delay: ${i * 150}ms`}
+        >
+          <!-- Icon -->
+          <div 
+            class="w-14 h-14 rounded-2xl flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110"
+            style={`background: ${card.color}20`}
+          >
+            <i data-lucide={card.icon} class="w-7 h-7" style={`color: ${card.color}`}></i>
+          </div>
+          
+          <!-- Content -->
+          <h3 class="text-xl font-semibold text-white mb-3">{card.title}</h3>
+          <p class="text-text-secondary leading-relaxed mb-4">{card.description}</p>
+          
+          <!-- Extra info -->
+          <p class="text-sm text-primary-teal">{card.extra}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

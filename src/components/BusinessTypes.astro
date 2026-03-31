@@ -1,0 +1,102 @@
+---
+const businesses = [
+  {
+    slug: "restaurantes",
+    icon: "utensils",
+    title: "Restaurantes",
+    description: "Crea el ambiente perfecto para cada momento del día",
+    tags: ["Lounge", "Jazz"],
+    color: "#8B5CF6",
+  },
+  {
+    slug: "cafeterias",
+    icon: "coffee",
+    title: "Cafeterías",
+    description: "Ambiente acogedor que invita a quedarse",
+    tags: ["Chill", "Acústico"],
+    color: "#14B8A6",
+  },
+  {
+    slug: "gimnasios",
+    icon: "dumbbell",
+    title: "Gimnasios",
+    description: "Energía y motivación para entrenar",
+    tags: ["Energía", "Workout"],
+    color: "#3B82F6",
+  },
+  {
+    slug: "tiendas",
+    icon: "shopping-bag",
+    title: "Tiendas",
+    description: "Música que acompaña la experiencia de compra",
+    tags: ["Pop", "Trendy"],
+    color: "#F59E0B",
+  },
+  {
+    slug: "spas",
+    icon: "sparkles",
+    title: "Spas",
+    description: "Relajación y bienestar para tus clientes",
+    tags: ["Relax", "Zen"],
+    color: "#EC4899",
+  },
+];
+---
+
+<section id="negocios" class="section bg-bg-page">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <h2 class="section-title">Playlists creadas para cada tipo de negocio</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Música curada profesionalmente para crear el ambiente perfecto
+      </p>
+    </div>
+    
+    <!-- Business Cards Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 mb-12">
+      {businesses.map((biz, i) => (
+        <a 
+          href={`/negocios/${biz.slug}`}
+          class="reveal group"
+          style={`animation-delay: ${i * 100}ms`}
+        >
+          <div 
+            class="card h-full cursor-pointer transition-all duration-300 hover:scale-[1.02]"
+            style={`--card-color: ${biz.color}`}
+          >
+            <!-- Icon -->
+            <div 
+              class="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform duration-300 group-hover:scale-110"
+              style={`background: ${biz.color}20`}
+            >
+              <i data-lucide={biz.icon} class="w-6 h-6" style={`color: ${biz.color}`}></i>
+            </div>
+            
+            <!-- Content -->
+            <h3 class="text-lg font-semibold text-white mb-2 group-hover:text-primary-teal transition-colors">
+              {biz.title}
+            </h3>
+            <p class="text-text-secondary text-sm mb-4 line-clamp-2">
+              {biz.description}
+            </p>
+            
+            <!-- Tags -->
+            <div class="flex flex-wrap gap-2">
+              {biz.tags.map((tag) => (
+                <span 
+                  class="text-xs font-semibold px-2.5 py-1 rounded-full"
+                  style={`background: ${biz.color}20; color: ${biz.color}`}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+    
+
+  </div>
+</section>

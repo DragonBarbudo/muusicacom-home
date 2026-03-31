@@ -1,0 +1,301 @@
+---
+const stats = [
+  { value: "10,000+", label: "Canciones" },
+  { value: "500+", label: "Playlists" },
+  { value: "50+", label: "Géneros" },
+];
+
+const benefits = [
+  "Actualizaciones semanales con nuevo contenido",
+  "Crea tus propias playlists personalizadas",
+  "Curado especialmente para lugares públicos",
+];
+---
+
+<section class="section bg-catalog-gradient">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <h2 class="section-title">Más de 10,000 canciones y cientos de playlists</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Todo el catálogo que necesitas, actualizado constantemente
+      </p>
+    </div>
+    
+    <div class="flex flex-col lg:flex-row items-center gap-16">
+      <!-- Left Content -->
+      <div class="flex-1 reveal-left">
+        <!-- Stats -->
+        <div class="flex flex-wrap justify-center lg:justify-start gap-8 mb-10">
+          {stats.map((stat) => (
+            <div class="text-center lg:text-left">
+              <div class="text-4xl md:text-5xl font-bold gradient-text">{stat.value}</div>
+              <div class="text-text-tertiary text-sm mt-1">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+        
+        <!-- Benefits -->
+        <ul class="space-y-4">
+          {benefits.map((benefit, i) => (
+            <li 
+              class="reveal flex items-center gap-3"
+              style={`animation-delay: ${i * 100}ms`}
+            >
+              <div class="w-5 h-5 rounded-full bg-primary-teal/20 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="check" class="w-3 h-3 text-primary-teal"></i>
+              </div>
+              <span class="text-text-secondary">{benefit}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      
+      <!-- Right - Particle Audio Visualization -->
+      <div class="flex-1 reveal-right">
+        <div class="relative">
+          <!-- Glow -->
+          <div class="absolute -inset-4 bg-gradient-to-r from-primary-blue/30 via-primary-teal/20 to-primary-purple/30 rounded-3xl blur-3xl"></div>
+          
+          <!-- Visualization container -->
+          <div class="relative card p-8 overflow-hidden" style="min-height: 320px;">
+            <canvas id="audioParticles" class="w-full h-full" style="min-height: 280px;"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('audioParticles');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let animationId;
+    let particles = [];
+    let mouse = { x: null, y: null, radius: 100 };
+    let isTouching = false;
+    
+    // Colors from the design system
+    const colors = ['#3B82F6', '#14B8A6', '#8B5CF6', '#22C55E'];
+    
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = 280;
+    }
+    
+    class Particle {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.baseX = x;
+        this.baseY = y;
+        this.size = Math.random() * 3 + 2;
+        this.color = colors[Math.floor(Math.random() * colors.length)];
+        this.velocity = {
+          x: (Math.random() - 0.5) * 0.5,
+          y: (Math.random() - 0.5) * 0.5
+        };
+        this.angle = Math.random() * Math.PI * 2;
+        this.amplitude = Math.random() * 15 + 5;
+        this.frequency = Math.random() * 0.005 + 0.002;
+        this.phase = Math.random() * Math.PI * 2;
+        this.density = (Math.random() * 30) + 1;
+      }
+      
+      update(time) {
+        // Audio wave motion - slower
+        this.angle += this.frequency;
+        const waveY = Math.sin(time * 0.0008 + this.phase) * this.amplitude;
+        
+        // Mouse/Touch interaction
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        
+        if (distance < mouse.radius && (mouse.x !== null || isTouching)) {
+          // Repulsion force
+          const forceDirectionX = dx / distance;
+          const forceDirectionY = dy / distance;
+          const force = (mouse.radius - distance) / mouse.radius;
+          const directionX = forceDirectionX * force * this.density * 2;
+          const directionY = forceDirectionY * force * this.density * 2;
+          
+          this.x -= directionX;
+          this.y -= directionY;
+        } else {
+          // Return to base position with wave motion - slower (30 instead of 20)
+          if (this.x !== this.baseX) {
+            let dx = this.x - this.baseX;
+            this.x -= dx / 30;
+          }
+          if (this.y !== this.baseY + waveY) {
+            let dy = this.y - (this.baseY + waveY);
+            this.y -= dy / 30;
+          }
+          
+          // Apply wave motion when returning - slower
+          this.y = this.baseY + waveY + Math.sin(time * 0.0005 + this.phase) * 3;
+        }
+        
+        // Keep particles within bounds
+        this.x = Math.max(10, Math.min(canvas.width - 10, this.x));
+        this.y = Math.max(10, Math.min(canvas.height - 10, this.y));
+      }
+      
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+        
+        // Glow effect
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        
+        ctx.closePath();
+      }
+    }
+    
+    function init() {
+      resize();
+      particles = [];
+      
+      // Create wave pattern of particles in audio wave formation
+      const numPoints = 60;
+      const spacingX = canvas.width / (numPoints + 2);
+      const centerY = canvas.height / 2;
+      const maxAmplitude = 80;
+      
+      // Create main audio wave line
+      for (let i = 0; i < numPoints; i++) {
+        const x = spacingX * (i + 1);
+        // Create a complex wave pattern similar to audio visualization
+        const wavePosition = (i / numPoints) * Math.PI * 4;
+        const baseY = centerY + Math.sin(wavePosition) * maxAmplitude * 0.5 +
+                      Math.sin(wavePosition * 2.5) * maxAmplitude * 0.3 +
+                      Math.sin(wavePosition * 0.5) * maxAmplitude * 0.2;
+        particles.push(new Particle(x, baseY));
+      }
+      
+      // Add secondary waves above and below for depth
+      for (let i = 0; i < numPoints; i += 2) {
+        const x = spacingX * (i + 1);
+        const wavePosition = (i / numPoints) * Math.PI * 4;
+        
+        // Upper wave
+        const upperY = centerY - 60 + Math.sin(wavePosition * 1.5) * 30;
+        particles.push(new Particle(x, upperY));
+        
+        // Lower wave
+        const lowerY = centerY + 60 + Math.sin(wavePosition * 1.5 + Math.PI) * 30;
+        particles.push(new Particle(x, lowerY));
+      }
+      
+      // Add some ambient particles around the wave
+      for (let i = 0; i < 20; i++) {
+        const x = Math.random() * canvas.width;
+        const y = centerY + (Math.random() - 0.5) * 200;
+        particles.push(new Particle(x, y));
+      }
+    }
+    
+    function animate(time) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      // Draw connecting lines between nearby particles
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          if (distance < 60) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(59, 130, 246, ${1 - distance / 60})`;
+            ctx.lineWidth = 0.5;
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+      
+      // Update and draw particles
+      particles.forEach(particle => {
+        particle.update(time);
+        particle.draw();
+      });
+      
+      animationId = requestAnimationFrame(animate);
+    }
+    
+    // Mouse events
+    canvas.addEventListener('mousemove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+    });
+    
+    canvas.addEventListener('mouseleave', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+    
+    // Touch events
+    canvas.addEventListener('touchstart', (e) => {
+      isTouching = true;
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      mouse.x = touch.clientX - rect.left;
+      mouse.y = touch.clientY - rect.top;
+    }, { passive: true });
+    
+    canvas.addEventListener('touchmove', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const touch = e.touches[0];
+      mouse.x = touch.clientX - rect.left;
+      mouse.y = touch.clientY - rect.top;
+    }, { passive: true });
+    
+    canvas.addEventListener('touchend', () => {
+      isTouching = false;
+      mouse.x = null;
+      mouse.y = null;
+    });
+    
+    window.addEventListener('resize', () => {
+      resize();
+      init();
+    });
+    
+    // Intersection Observer for performance
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!animationId) {
+            init();
+            animate(0);
+          }
+        } else {
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(canvas);
+    
+    // Initial setup
+    resize();
+    init();
+    animate(0);
+  })();
+</script>

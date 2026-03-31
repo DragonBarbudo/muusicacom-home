@@ -1,0 +1,127 @@
+---
+const personalFeatures = [
+  "No incluye licencia comercial",
+  "Sin certificado para tu local",
+  "Riesgo de sanciones por uso no autorizado",
+];
+
+const muusicaFeatures = [
+  "Licencias comerciales incluidas",
+  "Sin regalías (sin SACM / sin SOMEXFON)",
+  "Certificado digital incluido",
+];
+---
+
+<section id="beneficios" class="section bg-bg-page">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <h2 class="section-title">Música para negocios ≠ música personal</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Reproducir música en un local es exhibición pública. Evita riesgos usando licencias comerciales incluidas.
+      </p>
+    </div>
+    
+    <!-- Comparison Cards -->
+    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-12">
+      <!-- Streaming Personal Card -->
+      <div class="reveal animation-delay-100 card bg-white/[0.02]">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center">
+              <i data-lucide="disc-3" class="w-6 h-6 text-text-secondary"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white">Streaming personal</h3>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-white/5 text-text-tertiary text-xs font-medium">
+            Solo uso personal
+          </span>
+        </div>
+        
+        <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+          Spotify, YouTube Music y Apple Music están pensados para uso personal y doméstico. Usarlos en un negocio puede violar términos y considerarse exhibición pública sin autorización.
+        </p>
+        
+        <ul class="space-y-3 mb-6">
+          {personalFeatures.map((feature) => (
+            <li class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-red-500/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="x" class="w-3 h-3 text-red-400"></i>
+              </div>
+              <span class="text-text-secondary text-sm">{feature}</span>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="pt-4 border-t border-white/5">
+          <p class="text-red-400 text-sm font-medium">Uso en negocio: NO recomendado</p>
+        </div>
+      </div>
+      
+      <!-- MUUSICA Card -->
+      <div class="reveal animation-delay-200 card bg-primary-teal/5 border-primary-teal/20 relative">
+        <div class="absolute -top-3 right-4">
+          <span class="px-3 py-1 rounded-full bg-primary-teal text-white text-xs font-semibold">
+            Recomendado
+          </span>
+        </div>
+        
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-primary-blue to-primary-teal flex items-center justify-center">
+              <i data-lucide="music" class="w-6 h-6 text-white"></i>
+            </div>
+            <div>
+              <h3 class="text-lg font-semibold text-white">Muusica</h3>
+            </div>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-primary-teal/20 text-primary-teal text-xs font-medium">
+            Uso comercial incluido
+          </span>
+        </div>
+        
+        <p class="text-text-secondary text-sm mb-6 leading-relaxed">
+          Música licenciada para uso en lugares públicos. Sin regalías y con respaldo para tu operación.
+        </p>
+        
+        <ul class="space-y-3 mb-6">
+          {muusicaFeatures.map((feature) => (
+            <li class="flex items-start gap-3">
+              <div class="w-5 h-5 rounded-full bg-primary-teal/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <i data-lucide="check" class="w-3 h-3 text-primary-teal"></i>
+              </div>
+              <span class="text-text-secondary text-sm">{feature}</span>
+            </li>
+          ))}
+        </ul>
+        
+        <div class="pt-4 border-t border-primary-teal/20">
+          <p class="text-primary-teal text-sm font-medium">Uso en negocio: 100% permitido</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Callout -->
+    <div class="reveal animation-delay-300 flex justify-center mb-8">
+      <div class="glass rounded-xl px-6 py-4 flex items-center gap-3 max-w-2xl">
+        <i data-lucide="info" class="w-5 h-5 text-primary-teal flex-shrink-0"></i>
+        <span class="text-text-secondary text-sm">
+          Si tu música suena para clientes, es uso público. Mejor estar cubierto desde el día 1.
+        </span>
+      </div>
+    </div>
+    
+    <!-- CTA -->
+    <div class="reveal animation-delay-400 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="https://play.muusica.com" class="btn-primary">
+        <span>Probar gratis</span>
+      </a>
+      <a href="#legal" class="nav-link text-sm flex items-center gap-1">
+        <span>Ver cómo funciona la licencia</span>
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </div>
+</section>

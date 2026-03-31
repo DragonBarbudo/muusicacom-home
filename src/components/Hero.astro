@@ -1,0 +1,446 @@
+---
+const ambientes = ["Restaurante", "Cafetería", "Gimnasio", "Spa", "Tienda"];
+
+const songs = {
+  "Restaurante": { title: "Jazz Suave", artist: "Muusica", color: "from-primary-purple to-primary-blue" },
+  "Cafetería": { title: "Chill Acústico", artist: "Muusica", color: "from-primary-teal to-primary-blue" },
+  "Gimnasio": { title: "Workout Energy", artist: "Muusica", color: "from-primary-blue to-primary-teal" },
+  "Spa": { title: "Relax Zen", artist: "Muusica", color: "from-primary-teal to-green-500" },
+  "Tienda": { title: "Pop Trendy", artist: "Muusica", color: "from-primary-purple to-pink-500" }
+};
+---
+
+<section class="relative min-h-screen bg-hero-gradient overflow-hidden">
+  <!-- Background decorations -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/4 right-1/4 w-96 h-96 bg-primary-purple/20 rounded-full blur-[120px]"></div>
+    <div class="absolute bottom-1/4 left-1/4 w-80 h-80 bg-primary-blue/15 rounded-full blur-[100px]"></div>
+  </div>
+  
+  <div class="relative max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 pt-28 sm:pt-32 pb-16 sm:pb-20 md:py-32">
+    <div class="flex flex-col lg:flex-row items-center gap-8 sm:gap-16">
+      <!-- Left Content -->
+      <div class="flex-1 text-center lg:text-left space-y-4 sm:space-y-6 max-w-xl lg:max-w-[580px]">
+        <!-- Main headline -->
+        <h1 class="reveal text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] sm:leading-tight tracking-tight">
+          La música perfecta para tu negocio.
+        </h1>
+        
+        <!-- Subheadline -->
+        <p class="reveal animation-delay-100 text-base sm:text-lg md:text-xl text-text-secondary leading-relaxed px-2 sm:px-0">
+          Streaming 100% legal para lugares públicos. Sin regalías, sin SACM y sin preocupaciones.
+        </p>
+        
+        <!-- Bullet points -->
+        <ul class="reveal animation-delay-200 space-y-2 sm:space-y-3 text-left mx-auto lg:mx-0 max-w-[280px] sm:max-w-none">
+          <li class="flex items-center gap-2 sm:gap-3 text-text-secondary text-sm sm:text-base">
+            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5 text-primary-teal flex-shrink-0"></i>
+            <span>Licencias comerciales incluidas</span>
+          </li>
+          <li class="flex items-center gap-2 sm:gap-3 text-text-secondary text-sm sm:text-base">
+            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5 text-primary-teal flex-shrink-0"></i>
+            <span>Playlists por ambiente</span>
+          </li>
+          <li class="flex items-center gap-2 sm:gap-3 text-text-secondary text-sm sm:text-base">
+            <i data-lucide="check" class="w-4 h-4 sm:w-5 sm:h-5 text-primary-teal flex-shrink-0"></i>
+            <span>Entra y reproduce</span>
+          </li>
+        </ul>
+        
+        <!-- CTA Buttons -->
+        <div class="reveal animation-delay-300 flex flex-col sm:flex-row items-center gap-3 sm:gap-4 justify-center lg:justify-start w-full sm:w-auto px-4 sm:px-0">
+          <a href="https://play.muusica.com" class="btn-primary text-sm sm:text-base w-full sm:w-auto">
+            <span>Probar gratis</span>
+            <i data-lucide="arrow-right" class="w-4 h-4 sm:w-5 sm:h-5 ml-2"></i>
+          </a>
+          <a href="#beneficios" class="btn-ghost text-sm sm:text-base w-full sm:w-auto">
+            <i data-lucide="play-circle" class="w-4 h-4 sm:w-5 sm:h-5 mr-2"></i>
+            <span>Ver cómo funciona</span>
+          </a>
+        </div>
+        
+        <!-- Pricing microcopy -->
+        <p class="reveal animation-delay-400 text-text-tertiary text-xs sm:text-sm px-4 sm:px-0">
+          Desde $175 MXN/locación · 7 días gratis<br class="hidden sm:block" />
+          <span class="text-text-muted block sm:inline">Sin tarjeta · Cancela cuando quieras</span>
+        </p>
+      </div>
+      
+      <!-- Right - Audio Visualization with Player -->
+      <div class="flex-1 reveal-right animation-delay-200 w-full max-w-xl lg:max-w-none mt-4 sm:mt-0">
+        <div class="relative h-[400px] sm:h-[500px] md:h-[600px]">
+          <!-- Audio Visualization Canvas -->
+          <canvas id="heroAudioViz" class="absolute inset-0 w-full h-full"></canvas>
+          
+          <!-- Main simulator card -->
+          <div id="musicPlayer" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-bg-surface/90 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-6 shadow-2xl w-[calc(100%-2rem)] sm:w-full max-w-sm mx-4 sm:mx-0">
+            <!-- Simulator header -->
+            <div class="flex items-center justify-between mb-3 sm:mb-4">
+              <div class="flex items-center gap-2">
+                <span class="text-text-tertiary text-xs sm:text-sm">Reproduciendo ahora</span>
+                <span class="flex items-center gap-1 px-2 py-0.5 rounded-full bg-primary-teal/20 text-primary-teal text-xs font-medium">
+                  <span class="w-1.5 h-1.5 rounded-full bg-primary-teal animate-pulse"></span>
+                  EN VIVO
+                </span>
+              </div>
+            </div>
+            
+            <!-- Now playing -->
+            <div class="bg-white/5 rounded-xl p-3 sm:p-4 mb-3 sm:mb-4">
+              <div class="flex items-center gap-3 sm:gap-4">
+                <div id="albumArt" class="w-12 h-12 sm:w-14 sm:h-14 rounded-lg bg-gradient-to-br from-primary-purple to-primary-blue flex items-center justify-center flex-shrink-0">
+                  <i data-lucide="disc-3" class="w-6 h-6 sm:w-8 sm:h-8 text-white animate-spin" style="animation-duration: 3s;"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <p id="ambienteLabel" class="text-text-tertiary text-xs mb-1">Ambiente Restaurante</p>
+                  <h4 id="songTitle" class="text-white font-medium text-sm sm:text-base truncate">Jazz Suave · Muusica</h4>
+                  <div class="mt-2 h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div id="progressBar" class="h-full w-2/3 bg-gradient-to-r from-primary-blue to-primary-teal rounded-full transition-all duration-1000"></div>
+                  </div>
+                </div>
+                <div class="flex items-center gap-1 sm:gap-2">
+                  <button id="prevBtn" class="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="skip-back" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-secondary"></i>
+                  </button>
+                  <button id="playPauseBtn" class="p-2.5 sm:p-3 rounded-xl bg-gradient-to-r from-primary-blue to-primary-teal hover:opacity-90 transition-opacity">
+                    <i data-lucide="pause" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
+                  </button>
+                  <button id="nextBtn" class="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                    <i data-lucide="skip-forward" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-secondary"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Ambiente selector -->
+            <div class="mb-3 sm:mb-4">
+              <p class="text-text-tertiary text-xs mb-2 sm:mb-3">Ambiente seleccionado:</p>
+              <div id="ambienteButtons" class="flex flex-wrap gap-1.5 sm:gap-2">
+                {ambientes.map((ambiente, i) => (
+                  <button 
+                    data-ambiente={ambiente}
+                    class:list={[
+                      "ambiente-btn px-2 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all",
+                      i === 0 
+                        ? "bg-primary-teal/20 text-primary-teal border border-primary-teal/40" 
+                        : "bg-white/5 text-text-secondary border border-white/10 hover:bg-white/10"
+                    ]}
+                  >
+                    {ambiente}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
+            <!-- Volume & settings -->
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between pt-3 sm:pt-4 border-t border-white/5 gap-2 sm:gap-0">
+              <div class="flex items-center gap-2 sm:gap-3">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-tertiary"></i>
+                <div class="w-20 sm:w-24 h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div class="h-full w-3/4 bg-white/40 rounded-full"></div>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 text-text-tertiary text-xs">
+                <i data-lucide="info" class="w-3 h-3 flex-shrink-0"></i>
+                <span id="volumeInfo" class="text-[10px] sm:text-xs">Ambiente: Restaurante (volumen moderado)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  (function() {
+    // Music Player State
+    const ambientes = ["Restaurante", "Cafetería", "Gimnasio", "Spa", "Tienda"];
+    const songs = {
+      "Restaurante": { title: "Jazz Suave", artist: "Muusica", color: "from-primary-purple to-primary-blue", volume: "moderado" },
+      "Cafetería": { title: "Chill Acústico", artist: "Muusica", color: "from-primary-teal to-primary-blue", volume: "suave" },
+      "Gimnasio": { title: "Workout Energy", artist: "Muusica", color: "from-primary-blue to-primary-teal", volume: "alto" },
+      "Spa": { title: "Relax Zen", artist: "Muusica", color: "from-primary-teal to-green-500", volume: "muy suave" },
+      "Tienda": { title: "Pop Trendy", artist: "Muusica", color: "from-primary-purple to-pink-500", volume: "moderado" }
+    };
+    
+    let currentIndex = 0;
+    let isPlaying = true;
+    
+    function updatePlayer() {
+      const ambiente = ambientes[currentIndex];
+      const song = songs[ambiente];
+      
+      // Update text
+      document.getElementById('ambienteLabel').textContent = `Ambiente ${ambiente}`;
+      document.getElementById('songTitle').textContent = `${song.title} · ${song.artist}`;
+      document.getElementById('volumeInfo').textContent = `Ambiente: ${ambiente} (volumen ${song.volume})`;
+      
+      // Update album art gradient
+      const albumArt = document.getElementById('albumArt');
+      albumArt.className = `w-14 h-14 rounded-lg bg-gradient-to-br ${song.color} flex items-center justify-center flex-shrink-0`;
+      
+      // Update buttons
+      document.querySelectorAll('.ambiente-btn').forEach((btn, idx) => {
+        if (idx === currentIndex) {
+          btn.className = "ambiente-btn px-3 py-1.5 rounded-full text-sm font-medium transition-all bg-primary-teal/20 text-primary-teal border border-primary-teal/40";
+        } else {
+          btn.className = "ambiente-btn px-3 py-1.5 rounded-full text-sm font-medium transition-all bg-white/5 text-text-secondary border border-white/10 hover:bg-white/10";
+        }
+      });
+      
+      // Reset progress bar animation
+      const progressBar = document.getElementById('progressBar');
+      progressBar.style.width = '0%';
+      setTimeout(() => {
+        progressBar.style.width = '66%';
+      }, 100);
+    }
+    
+    function nextSong() {
+      currentIndex = (currentIndex + 1) % ambientes.length;
+      updatePlayer();
+    }
+    
+    function prevSong() {
+      currentIndex = (currentIndex - 1 + ambientes.length) % ambientes.length;
+      updatePlayer();
+    }
+    
+    function togglePlayPause() {
+      isPlaying = !isPlaying;
+      const icon = document.querySelector('#playPauseBtn i');
+      const disc = document.querySelector('#albumArt i');
+      
+      if (isPlaying) {
+        icon.setAttribute('data-lucide', 'pause');
+        disc.style.animationPlayState = 'running';
+      } else {
+        icon.setAttribute('data-lucide', 'play');
+        disc.style.animationPlayState = 'paused';
+      }
+      
+      if (window.lucide) window.lucide.createIcons();
+    }
+    
+    function selectAmbiente(index) {
+      currentIndex = index;
+      updatePlayer();
+    }
+    
+    // Event listeners
+    document.getElementById('nextBtn')?.addEventListener('click', nextSong);
+    document.getElementById('prevBtn')?.addEventListener('click', prevSong);
+    document.getElementById('playPauseBtn')?.addEventListener('click', togglePlayPause);
+    
+    document.querySelectorAll('.ambiente-btn').forEach((btn, idx) => {
+      btn.addEventListener('click', () => selectAmbiente(idx));
+    });
+    
+    // Auto-progress bar
+    setInterval(() => {
+      if (isPlaying) {
+        const progressBar = document.getElementById('progressBar');
+        const currentWidth = parseFloat(progressBar.style.width) || 0;
+        if (currentWidth >= 100) {
+          nextSong();
+        } else {
+          progressBar.style.width = (currentWidth + 0.5) + '%';
+        }
+      }
+    }, 1000);
+    
+    // Audio Visualization
+    const canvas = document.getElementById('heroAudioViz');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let animationId;
+    let time = 0;
+    
+    const colors = {
+      purple: '#8B5CF6',
+      blue: '#3B82F6', 
+      teal: '#14B8A6',
+      green: '#22C55E'
+    };
+    
+    function resize() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+    
+    function drawOrb(x, y, radius, color, alpha = 0.3) {
+      const gradient = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      gradient.addColorStop(0, color + Math.floor(alpha * 255).toString(16).padStart(2, '0'));
+      gradient.addColorStop(0.5, color + Math.floor(alpha * 0.5 * 255).toString(16).padStart(2, '0'));
+      gradient.addColorStop(1, color + '00');
+      
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+    }
+    
+    function drawRing(x, y, radius, color, lineWidth = 1, alpha = 0.2) {
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = color + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+      ctx.lineWidth = lineWidth;
+      ctx.stroke();
+    }
+    
+    function drawParticle(x, y, size, color, alpha = 1) {
+      ctx.beginPath();
+      ctx.arc(x, y, size, 0, Math.PI * 2);
+      ctx.fillStyle = color + Math.floor(alpha * 255).toString(16).padStart(2, '0');
+      ctx.shadowBlur = 15;
+      ctx.shadowColor = color;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    
+    function drawSpectrumBar(x, y, width, height, color) {
+      const gradient = ctx.createLinearGradient(x, y, x, y - height);
+      gradient.addColorStop(0, color + 'FF');
+      gradient.addColorStop(0.5, color + '80');
+      gradient.addColorStop(1, color + '40');
+      
+      ctx.fillStyle = gradient;
+      ctx.fillRect(x, y - height, width, height);
+      
+      // Top glow
+      ctx.beginPath();
+      ctx.arc(x + width/2, y - height, width/2, 0, Math.PI * 2);
+      ctx.fillStyle = color + '60';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = color;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+    
+    function animate() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      time += 0.016;
+      
+      // Center the visualization
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      
+      // Scale factor based on canvas size
+      const scale = Math.min(canvas.width, canvas.height) / 600;
+      
+      // Draw background orbs (pulsing to beat)
+      const beatIntensity = isPlaying ? (Math.sin(time * 3) + 1) / 2 : 0.3;
+      const pulseRadius = (150 + beatIntensity * 30) * scale;
+      
+      // Main central orbs - larger and more visible
+      drawOrb(centerX, centerY, pulseRadius, colors.purple, 0.25);
+      drawOrb(centerX, centerY, pulseRadius * 0.7, colors.blue, 0.2);
+      drawOrb(centerX, centerY, pulseRadius * 0.4, colors.teal, 0.3);
+      drawOrb(centerX, centerY, pulseRadius * 0.2, colors.green, 0.4);
+      
+      // Concentric rings (pulsing) - more rings, larger
+      const rings = [
+        { radius: (200 + beatIntensity * 20) * scale, color: colors.purple, width: 2, alpha: 0.2 },
+        { radius: (250 + beatIntensity * 15) * scale, color: colors.blue, width: 1.5, alpha: 0.15 },
+        { radius: (300 + beatIntensity * 10) * scale, color: colors.teal, width: 1, alpha: 0.12 },
+        { radius: 350 * scale, color: colors.purple, width: 1, alpha: 0.08 },
+        { radius: 400 * scale, color: colors.blue, width: 0.5, alpha: 0.05 },
+      ];
+      
+      rings.forEach(ring => {
+        drawRing(centerX, centerY, ring.radius, ring.color, ring.width, ring.alpha);
+      });
+      
+      // Audio spectrum bars - positioned below center
+      const numBars = 20;
+      const barWidth = 10 * scale;
+      const barSpacing = 6 * scale;
+      const startX = centerX - (numBars * (barWidth + barSpacing)) / 2;
+      const baseY = centerY + (200 * scale);
+      
+      for (let i = 0; i < numBars; i++) {
+        const barX = startX + i * (barWidth + barSpacing);
+        
+        // Create varying heights based on multiple sine waves for organic look
+        let barHeight = 40 * scale;
+        if (isPlaying) {
+          barHeight += Math.sin(time * 4 + i * 0.5) * 30 * scale +
+                       Math.sin(time * 7 + i * 0.8) * 20 * scale +
+                       Math.sin(time * 2 + i * 0.3) * 15 * scale +
+                       (beatIntensity * 40 * scale);
+        }
+        
+        const color = i < numBars / 3 ? colors.purple : 
+                     i < (numBars * 2) / 3 ? colors.blue : colors.teal;
+        
+        drawSpectrumBar(barX, baseY, barWidth, Math.max(15 * scale, barHeight), color);
+      }
+      
+      // Floating particles - more particles, larger area
+      const particleConfigs = [
+        { x: -200, y: -150, size: 4, color: colors.purple, speed: 0.8, offset: 0 },
+        { x: -180, y: 100, size: 3, color: colors.blue, speed: 0.6, offset: 1 },
+        { x: 200, y: -120, size: 3.5, color: colors.teal, speed: 0.7, offset: 2 },
+        { x: 220, y: 80, size: 3, color: colors.purple, speed: 0.5, offset: 3 },
+        { x: -120, y: -200, size: 3, color: colors.blue, speed: 0.9, offset: 4 },
+        { x: 150, y: 180, size: 4, color: colors.teal, speed: 0.6, offset: 5 },
+        { x: -250, y: -50, size: 3, color: colors.green, speed: 0.7, offset: 6 },
+        { x: 100, y: -220, size: 3.5, color: colors.purple, speed: 0.8, offset: 7 },
+        { x: -80, y: 200, size: 3, color: colors.blue, speed: 0.5, offset: 8 },
+        { x: 220, y: -80, size: 4, color: colors.teal, speed: 0.6, offset: 9 },
+        { x: -150, y: 50, size: 2.5, color: colors.green, speed: 0.7, offset: 10 },
+        { x: 180, y: -180, size: 3, color: colors.purple, speed: 0.8, offset: 11 },
+      ];
+      
+      particleConfigs.forEach(p => {
+        const floatY = Math.sin(time * p.speed + p.offset) * 20;
+        const floatX = Math.cos(time * p.speed * 0.5 + p.offset) * 12;
+        drawParticle(centerX + (p.x * scale) + floatX, centerY + (p.y * scale) + floatY, p.size * scale, p.color, 0.9);
+      });
+      
+      // Small sparkles orbiting the main orb
+      if (isPlaying) {
+        for (let i = 0; i < 12; i++) {
+          const angle = (time * 0.5 + i * (Math.PI * 2) / 12);
+          const distance = (180 + Math.sin(time * 2 + i) * 30) * scale;
+          const sx = centerX + Math.cos(angle) * distance;
+          const sy = centerY + Math.sin(angle) * distance;
+          const size = (2 + Math.sin(time * 3 + i) * 0.8) * scale;
+          
+          drawParticle(sx, sy, size, colors.teal, 0.8);
+        }
+      }
+      
+      animationId = requestAnimationFrame(animate);
+    }
+    
+    window.addEventListener('resize', () => {
+      resize();
+    });
+    
+    // Intersection Observer
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          if (!animationId) {
+            resize();
+            animate();
+          }
+        } else {
+          if (animationId) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+          }
+        }
+      });
+    }, { threshold: 0.1 });
+    
+    observer.observe(canvas);
+    
+    resize();
+    animate();
+  })();
+</script>

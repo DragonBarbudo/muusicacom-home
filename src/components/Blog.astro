@@ -1,0 +1,89 @@
+---
+import { getRecentPosts, blogCategories } from '../data/blog.js';
+import AudioVisualizer from './AudioVisualizer.astro';
+
+const recentPosts = await getRecentPosts(3);
+---
+
+<section id="blog" class="section bg-blog-gradient">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <h2 class="section-title">Aprende sobre música legal y experiencia de cliente</h2>
+      <p class="text-text-secondary mt-4 max-w-2xl mx-auto">
+        Descubre las últimas guías, tips y casos de éxito para potenciar tu negocio
+      </p>
+      
+      <!-- Category chips -->
+      <div class="flex flex-wrap justify-center gap-3 mt-6">
+        {blogCategories.slice(0, 5).map((cat, i) => (
+          <a 
+            href={cat.slug === 'all' ? '/blog' : `/blog?category=${cat.slug}`}
+            class:list={[
+              "reveal-scale chip transition-all duration-300",
+              cat.slug === 'all' ? "chip-active" : "chip-inactive"
+            ]}
+            style={`animation-delay: ${i * 100}ms`}
+          >
+            {cat.name}
+          </a>
+        ))}
+      </div>
+    </div>
+    
+    <!-- Blog Grid - Newest 3 Posts -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {recentPosts.map((post, i) => (
+        <a 
+          href={`/blog/${post.slug}`}
+          class="reveal group"
+          style={`animation-delay: ${i * 150}ms`}
+        >
+          <article class="card p-0 overflow-hidden h-full">
+            <!-- Image with Audio Visualizer -->
+            <div class={`h-44 bg-gradient-to-br ${post.data.gradient} relative overflow-hidden`}>
+              <AudioVisualizer type={i} size="large" />
+              <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors z-10"></div>
+              <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                <div class="w-12 h-12 rounded-full bg-white/20 backdrop-blur flex items-center justify-center">
+                  <i data-lucide="arrow-right" class="w-6 h-6 text-white"></i>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Content -->
+            <div class="p-5">
+              <!-- Category -->
+              <span 
+                class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3"
+                style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}`}
+              >
+                {post.data.category}
+              </span>
+              
+              <!-- Title -->
+              <h3 class="text-white font-semibold text-lg leading-snug mb-3 group-hover:text-primary-teal transition-colors line-clamp-2">
+                {post.data.title}
+              </h3>
+              
+              <!-- Meta -->
+              <div class="flex items-center gap-2 text-text-tertiary text-sm">
+                <span>{post.data.dateFormatted}</span>
+                <span>·</span>
+                <span>{post.data.readTime} de lectura</span>
+              </div>
+            </div>
+          </article>
+        </a>
+      ))}
+    </div>
+    
+    <!-- View All Link -->
+    <div class="text-center mt-12 reveal">
+      <a href="/blog" class="btn-ghost inline-flex items-center gap-2">
+        Ver todos los artículos
+        <i data-lucide="arrow-right" class="w-4 h-4"></i>
+      </a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,31 @@
+---
+// Statistic highlight card
+interface Props {
+  value: string;
+  label: string;
+  icon?: string;
+  color?: 'teal' | 'blue' | 'purple' | 'amber' | 'red';
+}
+
+const { value, label, icon, color = 'teal' } = Astro.props;
+
+const colors = {
+  teal: 'from-primary-teal/20 to-primary-teal/5 border-primary-teal/30 text-primary-teal',
+  blue: 'from-primary-blue/20 to-primary-blue/5 border-primary-blue/30 text-primary-blue',
+  purple: 'from-primary-purple/20 to-primary-purple/5 border-primary-purple/30 text-primary-purple',
+  amber: 'from-amber-500/20 to-amber-500/5 border-amber-500/30 text-amber-500',
+  red: 'from-red-500/20 to-red-500/5 border-red-500/30 text-red-500'
+};
+---
+
+<div class={`bg-gradient-to-br ${colors[color]} border rounded-xl p-6 text-center`}>
+  {icon && (
+    <i data-lucide={icon} class={`w-8 h-8 mx-auto mb-3 ${colors[color].split(' ').pop()}`}></i>
+  )}
+  <div class={`text-3xl md:text-4xl font-bold mb-1 ${colors[color].split(' ').pop()}`}>
+    {value}
+  </div>
+  <div class="text-text-secondary text-sm">
+    {label}
+  </div>
+</div>

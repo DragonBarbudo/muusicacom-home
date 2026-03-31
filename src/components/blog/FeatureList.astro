@@ -1,0 +1,74 @@
+---
+// Feature list with icons
+interface Props {
+  title?: string;
+  items: Array<{
+    icon?: string;
+    title: string;
+    description?: string;
+  }>;
+  variant?: 'cards' | 'list' | 'compact';
+}
+
+const { title, items, variant = 'list' } = Astro.props;
+---
+
+{variant === 'cards' && (
+  <div class="my-8">
+    {title && <h4 class="text-white font-semibold mb-4">{title}</h4>}
+    <div class="grid md:grid-cols-2 gap-4">
+      {items.map((item) => (
+        <div class="bg-white/5 rounded-xl p-5 border border-white/10 hover:border-primary-teal/30 transition-colors">
+          <div class="flex gap-4">
+            {item.icon && (
+              <div class="w-10 h-10 rounded-lg bg-primary-teal/20 flex items-center justify-center flex-shrink-0">
+                <i data-lucide={item.icon} class="w-5 h-5 text-primary-teal"></i>
+              </div>
+            )}
+            <div>
+              <h5 class="text-white font-medium mb-1">{item.title}</h5>
+              {item.description && (
+                <p class="text-text-secondary text-sm">{item.description}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+{variant === 'list' && (
+  <div class="my-8 bg-white/5 rounded-xl p-6 border border-white/10">
+    {title && <h4 class="text-white font-semibold mb-4">{title}</h4>}
+    <ul class="space-y-3">
+      {items.map((item) => (
+        <li class="flex gap-3">
+          <div class="w-6 h-6 rounded-full bg-primary-teal/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+            <i data-lucide={item.icon || 'check'} class="w-3.5 h-3.5 text-primary-teal"></i>
+          </div>
+          <div>
+            <span class="text-white font-medium">{item.title}</span>
+            {item.description && (
+              <p class="text-text-secondary text-sm mt-0.5">{item.description}</p>
+            )}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+)}
+
+{variant === 'compact' && (
+  <div class="my-6">
+    {title && <h4 class="text-white font-semibold mb-3">{title}</h4>}
+    <div class="flex flex-wrap gap-3">
+      {items.map((item) => (
+        <span class="inline-flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full text-sm text-text-secondary border border-white/10">
+          {item.icon && <i data-lucide={item.icon} class="w-4 h-4 text-primary-teal"></i>}
+          {item.title}
+        </span>
+      ))}
+    </div>
+  </div>
+)}

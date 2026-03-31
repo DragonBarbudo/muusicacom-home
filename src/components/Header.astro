@@ -1,0 +1,114 @@
+---
+interface Props {
+  transparent?: boolean;
+}
+
+const { transparent = true } = Astro.props;
+---
+
+<header 
+  id="header"
+  class:list={[
+    "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+    transparent ? "bg-transparent" : "bg-bg-page/80 backdrop-blur-lg border-b border-white/5"
+  ]}
+>
+  <div class="max-w-[1440px] mx-auto px-8 md:px-16 h-20 flex items-center justify-between">
+    <!-- Logo -->
+    <a href="/" class="flex items-center group">
+      <img src="/logo.svg" alt="Muusica" class="h-6 sm:h-7 w-auto" />
+    </a>
+    
+    <!-- Navigation -->
+    <nav class="hidden md:flex items-center gap-8">
+      <a href="/#beneficios" class="nav-link">Beneficios</a>
+      <a href="/#legal" class="nav-link">Legal</a>
+      <a href="/#negocios" class="nav-link">Negocios</a>
+      <a href="/#precio" class="nav-link">Precio</a>
+      <a href="/blog" class="nav-link">Blog</a>
+      <a href="/#faq" class="nav-link">FAQ</a>
+    </nav>
+    
+    <!-- CTAs -->
+    <div class="flex items-center gap-2 md:gap-4">
+      <a href="https://play.muusica.com" class="hidden md:flex btn-secondary text-sm">
+        Iniciar sesión
+      </a>
+      <a href="https://play.muusica.com" class="hidden md:flex btn-primary text-xs md:text-sm px-3 py-2 md:px-4 md:py-2">
+        Probar gratis
+      </a>
+      
+      <!-- Mobile menu button -->
+      <button 
+        id="mobile-menu-btn"
+        class="md:hidden p-2 text-text-secondary hover:text-white transition-colors"
+        aria-label="Menu"
+      >
+        <i data-lucide="menu" class="w-6 h-6"></i>
+      </button>
+    </div>
+  </div>
+  
+  <!-- Mobile Navigation -->
+  <div 
+    id="mobile-menu"
+    class="hidden md:hidden absolute top-full left-0 right-0 bg-bg-page/95 backdrop-blur-lg border-b border-white/5"
+  >
+    <nav class="flex flex-col p-6 gap-4">
+      <a href="/#beneficios" class="nav-link text-lg py-2">Beneficios</a>
+      <a href="/#legal" class="nav-link text-lg py-2">Legal</a>
+      <a href="/#negocios" class="nav-link text-lg py-2">Negocios</a>
+      <a href="/#precio" class="nav-link text-lg py-2">Precio</a>
+      <a href="/blog" class="nav-link text-lg py-2">Blog</a>
+      <a href="/#faq" class="nav-link text-lg py-2">FAQ</a>
+      <hr class="border-white/10 my-2" />
+      <a href="https://play.muusica.com" class="btn-secondary justify-center">Iniciar sesión</a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  // Mobile menu toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  menuBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    const icon = menuBtn.querySelector('i');
+    if (icon) {
+      const isOpen = !mobileMenu?.classList.contains('hidden');
+      icon.setAttribute('data-lucide', isOpen ? 'x' : 'menu');
+      if (window.lucide) window.lucide.createIcons();
+    }
+  });
+  
+  // Close mobile menu on link click
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+      const icon = menuBtn?.querySelector('i');
+      if (icon) {
+        icon.setAttribute('data-lucide', 'menu');
+        if (window.lucide) window.lucide.createIcons();
+      }
+    });
+  });
+  
+  // Header background on scroll
+  const header = document.getElementById('header');
+  let lastScroll = 0;
+  
+  window.addEventListener('scroll', () => {
+    const currentScroll = window.scrollY;
+    
+    if (currentScroll > 50) {
+      header?.classList.add('bg-bg-page/80', 'backdrop-blur-lg', 'border-b', 'border-white/5');
+      header?.classList.remove('bg-transparent');
+    } else {
+      header?.classList.remove('bg-bg-page/80', 'backdrop-blur-lg', 'border-b', 'border-white/5');
+      header?.classList.add('bg-transparent');
+    }
+    
+    lastScroll = currentScroll;
+  });
+</script>

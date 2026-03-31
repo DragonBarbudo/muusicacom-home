@@ -1,0 +1,24 @@
+---
+const badges = [
+  { icon: "ban", text: "Sin regalías" },
+  { icon: "shield-off", text: "Sin SACM" },
+  { icon: "building-2", text: "Uso comercial" },
+  { icon: "file-check", text: "Certificado incluido" },
+];
+---
+
+<section class="relative bg-bg-surface/50 border-y border-white/5 py-10 overflow-hidden">
+  <div class="max-w-[1440px] mx-auto px-8 md:px-16">
+    <div class="flex flex-wrap items-center justify-center gap-8 md:gap-12">
+      {badges.map((badge, i) => (
+        <div 
+          class="reveal flex items-center gap-3 text-text-secondary hover:text-white transition-colors duration-300"
+          style={`animation-delay: ${i * 100}ms`}
+        >
+          <i data-lucide={badge.icon} class="w-5 h-5 text-primary-teal"></i>
+          <span class="text-sm font-medium">{badge.text}</span>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

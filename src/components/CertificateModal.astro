@@ -1,0 +1,245 @@
+---
+interface Props {
+  businessName?: string;
+}
+
+const { businessName = "Tu Negocio" } = Astro.props;
+---
+
+<!-- Certificate Trigger Button -->
+<button 
+  id="certTriggerBtn" 
+  class="text-primary-teal text-sm font-medium hover:underline flex items-center justify-center gap-2 transition-colors"
+>
+  <i data-lucide="external-link" class="w-4 h-4"></i>
+  Ver ejemplo del certificado
+</button>
+
+<!-- Certificate Modal Overlay -->
+<div id="certModalOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
+  <div class="min-h-screen flex items-center justify-center p-4">
+    
+    <!-- Certificate Preview Modal - Demo Only -->
+    <div id="certPreviewModal" class="bg-bg-surface border border-white/10 rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden">
+      <!-- Header -->
+      <div class="p-4 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
+        <div class="flex items-center gap-3">
+          <i data-lucide="file-text" class="w-5 h-5 text-primary-teal"></i>
+          <span class="text-white font-medium">Vista previa del certificado</span>
+          <span class="px-2 py-0.5 rounded-full bg-yellow-500/20 text-yellow-400 text-xs font-medium">
+            Ejemplo
+          </span>
+        </div>
+        <button id="closePreviewBtn" class="p-2 rounded-lg hover:bg-white/10 transition-colors text-text-secondary hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      
+      <!-- PDF Preview -->
+      <div class="p-8 bg-[#0A0A12] overflow-auto max-h-[70vh]">
+        <div id="certificatePdf" class="bg-white rounded-lg shadow-2xl p-8 max-w-[800px] mx-auto text-gray-900 relative overflow-hidden">
+          <!-- Demo Watermark -->
+          <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-10 opacity-[0.08]">
+            <span class="text-6xl font-bold text-gray-400 rotate-[-30deg]">EJEMPLO</span>
+          </div>
+          
+          <!-- Security Watermark -->
+          <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(0,0,0,0.1) 35px, rgba(0,0,0,0.1) 70px);"></div>
+          
+          <!-- Header -->
+          <div class="flex items-start justify-between mb-8 border-b-2 border-gray-100 pb-6">
+            <div class="flex items-center gap-3">
+              <img src="/logo-light.svg" alt="Muusica" class="h-10 w-auto" />
+              <span class="text-gray-500 text-sm">muusica.com</span>
+            </div>
+            <div class="text-right">
+              <p class="text-xs text-gray-400">Certificado No.</p>
+              <p class="text-sm font-mono text-gray-600">MUU-2024-001234</p>
+            </div>
+          </div>
+          
+          <!-- Title -->
+          <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 mb-2">Certificado de Licencia de Reproducción Comercial</h1>
+            <p class="text-gray-600 text-sm">Uso de música en establecimiento (exhibición pública)</p>
+            
+            <!-- Digital Seal -->
+            <div class="inline-flex items-center gap-2 mt-4 px-4 py-2 rounded-full bg-gradient-to-r from-primary-teal/10 to-primary-blue/10 border border-primary-teal/20">
+              <i data-lucide="shield-check" class="w-5 h-5 text-primary-teal"></i>
+              <span class="text-sm font-medium text-primary-teal">Sello digital verificado</span>
+            </div>
+          </div>
+          
+          <!-- Section 1: Datos del establecimiento -->
+          <div class="mb-6">
+            <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 border-b border-gray-200 pb-2">
+              1. Datos del establecimiento
+            </h2>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p class="text-gray-500 text-xs mb-1">Nombre del negocio</p>
+                <p class="font-medium text-gray-900">{businessName}</p>
+              </div>
+              <div>
+                <p class="text-gray-500 text-xs mb-1">Titular de la cuenta</p>
+                <p class="font-medium text-gray-900">Juan Pérez García</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-gray-500 text-xs mb-1">Dirección de la locación</p>
+                <p class="font-medium text-gray-900">Av. Insurgentes Sur 1234, Col. Del Valle</p>
+              </div>
+              <div>
+                <p class="text-gray-500 text-xs mb-1">Ciudad/Estado/País</p>
+                <p class="font-medium text-gray-900">Ciudad de México, CDMX, México</p>
+              </div>
+              <div>
+                <p class="text-gray-500 text-xs mb-1">Locación ID</p>
+                <p class="font-medium text-gray-900 font-mono">LOC-8X9K2M4N</p>
+              </div>
+              <div class="col-span-2">
+                <p class="text-gray-500 text-xs mb-1">Cliente ID</p>
+                <p class="font-medium text-gray-900 font-mono">CLI-2024-56789</p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Section 2: Vigencia -->
+          <div class="mb-6">
+            <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 border-b border-gray-200 pb-2">
+              2. Vigencia
+            </h2>
+            <div class="grid grid-cols-2 gap-4 text-sm">
+              <div>
+                <p class="text-gray-500 text-xs mb-1">Fecha de emisión</p>
+                <p class="font-medium text-gray-900">15 de enero de 2024</p>
+              </div>
+              <div>
+                <p class="text-gray-500 text-xs mb-1">Vigencia</p>
+                <p class="font-medium text-gray-900">15 ene 2024 – 15 ene 2025</p>
+              </div>
+            </div>
+            <div class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-medium">
+              <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+              Suscripción activa
+            </div>
+          </div>
+          
+          <!-- Section 3: Alcance y cobertura -->
+          <div class="mb-6">
+            <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 border-b border-gray-200 pb-2">
+              3. Alcance y cobertura
+            </h2>
+            <p class="text-sm text-gray-700 mb-4 leading-relaxed">
+              Muusica.com certifica que el establecimiento arriba indicado cuenta con autorización para reproducir públicamente el catálogo de Muusica dentro de la locación registrada, conforme a la suscripción activa.
+            </p>
+            <ul class="space-y-2 text-sm">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-primary-teal flex-shrink-0 mt-0.5"></i>
+                <span class="text-gray-700"><strong>Uso permitido:</strong> reproducción comercial en espacios abiertos al público</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-primary-teal flex-shrink-0 mt-0.5"></i>
+                <span class="text-gray-700"><strong>Cobertura:</strong> catálogo de Muusica (música libre de regalías)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-primary-teal flex-shrink-0 mt-0.5"></i>
+                <span class="text-gray-700"><strong>Incluye:</strong> licencias comerciales necesarias para el uso del catálogo</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check" class="w-4 h-4 text-primary-teal flex-shrink-0 mt-0.5"></i>
+                <span class="text-gray-700"><strong>Sin pagos adicionales a:</strong> SACM / SOMEXFON (según aplique al catálogo)</span>
+              </li>
+            </ul>
+          </div>
+          
+          <!-- Section 4: Verificación -->
+          <div class="mb-8">
+            <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 border-b border-gray-200 pb-2">
+              4. Verificación
+            </h2>
+            <div class="flex items-start gap-6">
+              <!-- QR Code Placeholder -->
+              <div class="flex-shrink-0">
+                <div class="w-28 h-28 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-gray-200">
+                  <div class="text-center">
+                    <i data-lucide="qr-code" class="w-12 h-12 text-gray-400 mx-auto mb-1"></i>
+                    <span class="text-[10px] text-gray-500">QR de verificación</span>
+                  </div>
+                </div>
+              </div>
+              <div class="flex-1">
+                <p class="text-sm font-medium text-gray-900 mb-2">Verifica este certificado</p>
+                <p class="text-xs text-gray-500 mb-1">Código: <span class="font-mono text-gray-700">VF-9X2K-M8N4-P7Q1</span></p>
+                <p class="text-xs text-gray-500">URL: <span class="text-primary-teal">muusica.com/verificar/VF-9X2K-M8N4-P7Q1</span></p>
+                <p class="text-xs text-gray-400 mt-3 italic">
+                  La verificación confirma que la suscripción de esta locación está activa.
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Footer -->
+          <div class="border-t border-gray-200 pt-4 text-xs text-gray-500">
+            <p class="mb-2">Este certificado aplica únicamente a la locación registrada y mientras la suscripción permanezca activa.</p>
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-4">
+                <span>Términos</span>
+                <span>Privacidad</span>
+                <span>Contacto: hola@muusica.com</span>
+              </div>
+              <span class="text-gray-400">© 2024 Muusica.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Demo Notice Footer -->
+      <div class="p-4 bg-yellow-500/10 border-t border-yellow-500/20">
+        <div class="flex items-center justify-center gap-2 text-yellow-400 text-sm">
+          <i data-lucide="info" class="w-4 h-4"></i>
+          <span>Este es un ejemplo visual. El certificado real se genera al activar tu suscripción.</span>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    // Elements
+    const triggerBtn = document.getElementById('certTriggerBtn');
+    const overlay = document.getElementById('certModalOverlay');
+    const previewModal = document.getElementById('certPreviewModal');
+    const closePreviewBtn = document.getElementById('closePreviewBtn');
+    
+    // Open modal
+    triggerBtn?.addEventListener('click', () => {
+      overlay.classList.remove('hidden');
+      setTimeout(() => {
+        overlay.classList.remove('opacity-0');
+      }, 10);
+    });
+    
+    // Close functions
+    function closeModal() {
+      overlay.classList.add('opacity-0');
+      setTimeout(() => {
+        overlay.classList.add('hidden');
+      }, 300);
+    }
+    
+    // Event listeners
+    closePreviewBtn?.addEventListener('click', closeModal);
+    overlay?.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+    
+    // Escape key to close
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !overlay.classList.contains('hidden')) {
+        closeModal();
+      }
+    });
+  })();
+</script>

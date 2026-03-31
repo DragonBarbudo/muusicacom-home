@@ -1,0 +1,37 @@
+---
+// Info card for highlighted information sections
+interface Props {
+  title?: string;
+  icon?: string;
+  variant?: 'default' | 'highlight' | 'dark';
+}
+
+const { title, icon, variant = 'default' } = Astro.props;
+
+let bgClass = 'bg-white/5';
+let borderClass = 'border-white/10';
+
+if (variant === 'highlight') {
+  bgClass = 'bg-gradient-to-br from-primary-teal/10 to-primary-blue/10';
+  borderClass = 'border-primary-teal/20';
+} else if (variant === 'dark') {
+  bgClass = 'bg-black/30';
+  borderClass = 'border-white/5';
+}
+---
+
+<div class={`my-8 rounded-xl p-6 border ${bgClass} ${borderClass}`}>
+  {(title || icon) && (
+    <div class="flex items-center gap-3 mb-4">
+      {icon && (
+        <div class="w-10 h-10 rounded-lg bg-primary-teal/20 flex items-center justify-center flex-shrink-0">
+          <i data-lucide={icon} class="w-5 h-5 text-primary-teal"></i>
+        </div>
+      )}
+      {title && <h4 class="text-white font-semibold">{title}</h4>}
+    </div>
+  )}
+  <div class="text-text-secondary text-sm leading-relaxed">
+    <slot />
+  </div>
+</div>
