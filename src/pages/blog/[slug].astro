@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import AudioVisualizer from '../../components/AudioVisualizer.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<Layout title={`${post.data.title} | Blog MUUSICA`} description={post.data.excerpt}>
+  <Header transparent={false} />
+  
+  <article class="pt-32 pb-20">
+    <div class="max-w-[1440px] mx-auto px-8 md:px-16">
+      <!-- Header -->
+      <header class="mb-12 max-w-4xl mx-auto text-center">
+        <!-- Category -->
+        <span 
+          class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider"
+          style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}; border: 1px solid ${post.data.categoryColor}40`}
+        >
+          {post.data.category}
+        </span>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+          {post.data.title}
+        </h1>
+        
+        <!-- Meta -->
+        <div class="flex items-center justify-center gap-8 text-text-secondary font-medium">
+          <div class="flex items-center gap-2">
+            <i data-lucide="calendar" class="w-4 h-4 text-primary-teal"></i>
+            <span>{post.data.dateFormatted}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-primary-teal"></i>
+            <span>{post.data.readTime} de lectura</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="user" class="w-4 h-4 text-primary-teal"></i>
+            <span>{post.data.author.name}</span>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Featured Gradient -->
+      <div class={`max-w-5xl mx-auto h-[400px] md:h-[500px] rounded-3xl bg-gradient-to-br ${post.data.gradient} relative overflow-hidden mb-16 shadow-2xl`}>
+        <AudioVisualizer type={0} size="large" />
+        <div class="absolute inset-0 bg-black/10"></div>
+      </div>
+      
+      <!-- Content Wrapper -->
+      <div class="max-w-3xl mx-auto prose prose-invert prose-lg prose-headings:text-white prose-a:text-primary-teal prose-strong:text-white prose-img:rounded-2xl pb-16">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* Markdown Content Styling */
+  .prose h2 {
+    @apply text-3xl font-bold mt-12 mb-6 text-white leading-tight;
+  }
+  
+  .prose h3 {
+    @apply text-2xl font-semibold mt-10 mb-4 text-white leading-snug;
+  }
+  
+  .prose p {
+    @apply text-text-secondary leading-relaxed mb-6;
+  }
+  
+  .prose ul, .prose ol {
+    @apply mb-8 ml-6;
+  }
+  
+  .prose li {
+    @apply mb-2 text-text-secondary;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-primary-teal pl-6 italic text-white my-10 py-2;
+  }
+</style>

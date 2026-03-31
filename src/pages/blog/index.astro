@@ -1,0 +1,73 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { getAllPosts, blogCategories } from '../../data/blog.js';
+import AudioVisualizer from '../../components/AudioVisualizer.astro';
+
+const posts = await getAllPosts();
+---
+
+<Layout title="Blog | MUUSICA - Música legal para tu negocio">
+  <Header transparent={false} />
+  
+  <main class="pt-32 pb-20">
+    <div class="max-w-[1440px] mx-auto px-8 md:px-16">
+      <div class="mb-12 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Blog MUUSICA</h1>
+        <p class="text-text-secondary max-w-2xl mx-auto text-lg">
+          Aprende sobre música legal, psicología del consumidor y cómo potenciar tu negocio a través del audio.
+        </p>
+        
+        <!-- Categories -->
+        <div class="flex flex-wrap justify-center gap-3 mt-8">
+          {blogCategories.map((cat) => (
+            <a 
+              href={cat.slug === 'all' ? '/blog' : `/blog?category=${cat.slug}`}
+              class:list={[
+                "chip transition-all duration-300",
+                cat.slug === 'all' ? "chip-active" : "chip-inactive"
+              ]}
+            >
+              {cat.name}
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Posts grid -->
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post, i) => (
+          <a href={`/blog/${post.slug}`} class="group">
+            <article class="card p-0 overflow-hidden h-full flex flex-col">
+              <div class={`h-48 bg-gradient-to-br ${post.data.gradient} relative overflow-hidden flex-shrink-0`}>
+                <AudioVisualizer type={i % 5} size="large" />
+                <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
+              </div>
+              <div class="p-6 flex-1 flex flex-col">
+                <span 
+                  class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit"
+                  style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}`}
+                >
+                  {post.data.category}
+                </span>
+                <h2 class="text-white font-bold text-xl mb-3 group-hover:text-primary-teal transition-colors">
+                  {post.data.title}
+                </h2>
+                <p class="text-text-secondary text-sm line-clamp-3 mb-6">
+                  {post.data.excerpt}
+                </p>
+                <div class="mt-auto flex items-center justify-between text-text-tertiary text-xs">
+                  <span>{post.data.dateFormatted}</span>
+                  <span>{post.data.readTime} de lectura</span>
+                </div>
+              </div>
+            </article>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>

@@ -1,0 +1,153 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Pricing from '../../components/Pricing.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+export function getStaticPaths() {
+  const businesses = [
+    {
+      slug: "restaurantes",
+      title: "Restaurantes",
+      icon: "utensils",
+      description: "Crea el ambiente perfecto para cada momento del día",
+      longDescription: "La música es el ingrediente secreto de un gran restaurante. Desde un brunch relajado hasta una cena sofisticada, MUUSICA te ayuda a crear la atmósfera ideal para que tus clientes disfruten cada bocado.",
+      color: "#8B5CF6",
+      benefits: [
+        "Control de ambiente por horarios",
+        "Música que invita a la sobremesa",
+        "Sin interrupciones ni anuncios",
+        "Licencia comercial incluida"
+      ]
+    },
+    {
+      slug: "cafeterias",
+      title: "Cafeterías",
+      icon: "coffee",
+      description: "Ambiente acogedor que invita a quedarse",
+      longDescription: "Convierte tu cafetería en el refugio perfecto. Nuestras playlists acústicas y chill están diseñadas para acompañar conversaciones y sesiones de trabajo, creando un espacio donde todos quieran volver.",
+      color: "#14B8A6",
+      benefits: [
+        "Ritmos acústicos relajantes",
+        "Ideal para coworking y estudio",
+        "Volumen moderado optimizado",
+        "Aumento en el tiempo de permanencia"
+      ]
+    },
+    {
+      slug: "gimnasios",
+      title: "Gimnasios",
+      icon: "dumbbell",
+      description: "Energía y motivación para entrenar",
+      longDescription: "La música es el motor del entrenamiento. Con MUUSICA, mantén a tus usuarios motivados con ritmos de alta energía, BPMs constantes y las últimas tendencias en música fitness.",
+      color: "#3B82F6",
+      benefits: [
+        "Alta energía constante (BPM)",
+        "Mixes sin pausas para entrenar",
+        "Géneros: Electrónica, Rock, Pop Urbano",
+        "Reduce la fatiga percibida"
+      ]
+    },
+    {
+      slug: "tiendas",
+      title: "Tiendas",
+      icon: "shopping-bag",
+      description: "Música que acompaña la experiencia de compra",
+      longDescription: "El audio branding es clave en el retail. Crea una experiencia de compra memorable que refleje la identidad de tu marca y anime a tus clientes a explorar tu tienda por más tiempo.",
+      color: "#F59E0B",
+      benefits: [
+        "Identidad de marca sonora",
+        "Ritmo que guía el flujo de clientes",
+        "Ambientación moderna y trendy",
+        "Mejora la percepción de valor"
+      ]
+    },
+    {
+      slug: "spas",
+      title: "Spas",
+      icon: "sparkles",
+      description: "Relajación y bienestar para tus clientes",
+      longDescription: "El bienestar comienza por el oído. Nuestras playlists para spas y centros de bienestar están cuidadosamente seleccionadas para reducir el estrés y facilitar la relajación profunda.",
+      color: "#EC4899",
+      benefits: [
+        "Sonidos zen y relajantes",
+        "Frecuencias que reducen el estrés",
+        "Ambientación inmersiva",
+        "Ideal para masajes y tratamientos"
+      ]
+    },
+  ];
+
+  return businesses.map(biz => ({
+    params: { slug: biz.slug },
+    props: { biz },
+  }));
+}
+
+const { biz } = Astro.props;
+---
+
+<Layout title={`Música para ${biz.title} | MUUSICA`} description={biz.description}>
+  <Header transparent={false} />
+  
+  <main class="pt-32 pb-20">
+    <!-- Hero Section -->
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-12 sm:mb-20">
+      <div class="flex flex-col lg:flex-row items-center gap-12 sm:gap-16">
+        <div class="flex-1 space-y-6 sm:space-y-8 text-center lg:text-left">
+          <div 
+            class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto lg:mx-0"
+            style={`background: ${biz.color}20`}
+          >
+            <i data-lucide={biz.icon} class="w-8 h-8" style={`color: ${biz.color}`}></i>
+          </div>
+          
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+            Música legal para <span style={`color: ${biz.color}`}>{biz.title}</span>
+          </h1>
+          
+          <p class="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto lg:mx-0">
+            {biz.longDescription}
+          </p>
+          
+          <div class="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
+            <a href="https://play.muusica.com" class="btn-primary w-full sm:w-auto">
+              Probar gratis en mi {biz.slug.slice(0, -1)}
+            </a>
+          </div>
+        </div>
+        
+        <div class="flex-1 w-full lg:w-auto">
+          <div 
+            class="aspect-video rounded-3xl bg-gradient-to-br from-bg-surface to-bg-elevated border border-white/5 p-6 sm:p-8 flex flex-col justify-center shadow-2xl relative overflow-hidden"
+          >
+            <div class="absolute inset-0 opacity-10 pointer-events-none">
+              <div class="absolute -top-1/4 -right-1/4 w-96 h-96 bg-white/20 rounded-full blur-[100px]"></div>
+            </div>
+            
+            <h3 class="text-white font-bold text-2xl mb-8 relative z-10">Beneficios exclusivos</h3>
+            <ul class="space-y-6 relative z-10">
+              {biz.benefits.map((benefit) => (
+                <li class="flex items-center gap-4 text-text-secondary text-base sm:text-lg">
+                  <div class="w-6 h-6 rounded-full bg-primary-teal/20 flex items-center justify-center flex-shrink-0">
+                    <i data-lucide="check" class="w-4 h-4 text-primary-teal"></i>
+                  </div>
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing (Reused) -->
+    <Pricing />
+    
+    <!-- Final CTA (Reused) -->
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</Layout>
