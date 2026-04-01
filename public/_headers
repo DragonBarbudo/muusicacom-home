@@ -6,7 +6,7 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=()
 
 # Cache static assets
-/assets/*
+/_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
 # Cache fonts
