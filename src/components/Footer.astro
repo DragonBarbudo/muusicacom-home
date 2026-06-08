@@ -19,6 +19,8 @@ const bottomLinks = [
   { label: "Privacidad", href: "#" },
   { label: "Contacto", href: "#" },
 ];
+
+const currentYear = new Date().getFullYear();
 ---
 
 <footer class="py-16 px-8 md:px-16" style="background: linear-gradient(180deg, #0A0A15 0%, #050508 100%);">
@@ -84,7 +86,7 @@ const bottomLinks = [
     <!-- Bottom section -->
     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
       <p class="text-text-tertiary text-sm">
-        © 2025 Muusica.com
+        © {currentYear} Muusica.com
       </p>
       <div class="flex items-center gap-6">
         {bottomLinks.map((link) => (

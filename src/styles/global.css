@@ -47,9 +47,15 @@
   html {
     scroll-behavior: smooth;
   }
-  
+
   body {
     @apply bg-bg-page text-text-primary font-body antialiased;
+  }
+
+  /* Offset anchored sections so the fixed header doesn't cover them */
+  section[id],
+  [id].section {
+    scroll-margin-top: 6rem;
   }
   
   /* Custom scrollbar */
@@ -238,48 +244,63 @@
     box-shadow: 0 0 60px rgba(139, 92, 246, 0.3);
   }
   
-  /* Intersection observer animations */
-  .reveal {
+  /* Intersection observer animations.
+     Content is fully visible by default. The hidden/animated starting state is
+     applied ONLY when JS is available (html.js), so crawlers, no-JS visitors and
+     full-page screenshot tools always see the content even if they never scroll. */
+  .js .reveal {
     opacity: 0;
     transform: translateY(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   }
-  
-  .reveal.visible {
+
+  .js .reveal.visible {
     opacity: 1;
     transform: translateY(0);
   }
-  
-  .reveal-left {
+
+  .js .reveal-left {
     opacity: 0;
     transform: translateX(-30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   }
-  
-  .reveal-left.visible {
+
+  .js .reveal-left.visible {
     opacity: 1;
     transform: translateX(0);
   }
-  
-  .reveal-right {
+
+  .js .reveal-right {
     opacity: 0;
     transform: translateX(30px);
     transition: opacity 0.6s ease-out, transform 0.6s ease-out;
   }
-  
-  .reveal-right.visible {
+
+  .js .reveal-right.visible {
     opacity: 1;
     transform: translateX(0);
   }
-  
-  .reveal-scale {
+
+  .js .reveal-scale {
     opacity: 0;
     transform: scale(0.95);
     transition: opacity 0.5s ease-out, transform 0.5s ease-out;
   }
-  
-  .reveal-scale.visible {
+
+  .js .reveal-scale.visible {
     opacity: 1;
     transform: scale(1);
+  }
+
+  /* Never hide content for users who prefer reduced motion. */
+  @media (prefers-reduced-motion: reduce) {
+    .js .reveal,
+    .js .reveal-left,
+    .js .reveal-right,
+    .js .reveal-scale {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
   }
 }
