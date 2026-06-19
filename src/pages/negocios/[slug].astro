@@ -77,6 +77,48 @@ export function getStaticPaths() {
         "Ideal para masajes y tratamientos"
       ]
     },
+    {
+      slug: "bares",
+      title: "Bares",
+      icon: "wine",
+      description: "Ritmo y energía para la noche",
+      longDescription: "La música hace la noche. Crea el ambiente justo para cada momento de tu bar, desde el after-office relajado hasta la pista llena, siempre con licencia comercial incluida.",
+      color: "#6366F1",
+      benefits: [
+        "Ambiente que evoluciona con la noche",
+        "Ritmos para mantener la energía",
+        "Sin interrupciones ni anuncios",
+        "Licencia comercial incluida"
+      ]
+    },
+    {
+      slug: "oficinas",
+      title: "Oficinas",
+      icon: "briefcase",
+      description: "Concentración y buen ambiente de trabajo",
+      longDescription: "Un buen ambiente sonoro mejora el día a día del equipo. Música de fondo que favorece la concentración sin distraer, ideal para espacios de trabajo y áreas comunes.",
+      color: "#0EA5E9",
+      benefits: [
+        "Música que favorece la concentración",
+        "Volumen de fondo equilibrado",
+        "Ideal para áreas comunes y recepción",
+        "Licencia comercial incluida"
+      ]
+    },
+    {
+      slug: "hoteles",
+      title: "Hoteles",
+      icon: "hotel",
+      description: "Una experiencia cuidada en cada espacio",
+      longDescription: "Cada espacio del hotel merece su propia atmósfera. Desde el lobby hasta el restaurante y la alberca, ambienta la estancia de tus huéspedes con música seleccionada y 100% legal.",
+      color: "#10B981",
+      benefits: [
+        "Ambientes distintos por espacio",
+        "Experiencia premium para huéspedes",
+        "Sin interrupciones ni anuncios",
+        "Licencia comercial incluida"
+      ]
+    },
   ];
 
   return businesses.map(biz => ({
@@ -86,6 +128,19 @@ export function getStaticPaths() {
 }
 
 const { biz } = Astro.props;
+
+// ponytail: explicit singulares; slice(0,-1) rompía "bares"→"bare", "hoteles"→"hotele"
+const singulares = {
+  restaurantes: "restaurante",
+  cafeterias: "cafetería",
+  gimnasios: "gimnasio",
+  tiendas: "tienda",
+  spas: "spa",
+  bares: "bar",
+  oficinas: "oficina",
+  hoteles: "hotel",
+};
+const singular = singulares[biz.slug] ?? biz.slug;
 ---
 
 <Layout title={`Música para ${biz.title} | MUUSICA`} description={biz.description}>
@@ -113,7 +168,7 @@ const { biz } = Astro.props;
           
           <div class="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
             <a href="https://play.muusica.com" class="btn-primary w-full sm:w-auto">
-              Probar gratis en mi {biz.slug.slice(0, -1)}
+              Probar gratis en mi {singular}
             </a>
           </div>
         </div>
