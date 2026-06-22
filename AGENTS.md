@@ -36,7 +36,7 @@ This is an **Astro 4.x** static website with TypeScript and Tailwind CSS. The pr
 - **Styling**: Tailwind CSS v4
 - **Content**: MDX via @astrojs/mdx
 - **Icons**: Lucide (via data-lucide attributes)
-- **Package Manager**: npm
+- **Package Manager**: pnpm (committed `pnpm-lock.yaml`)
 
 ## Blog System (Content Collections)
 
@@ -88,16 +88,19 @@ from-pink-500 to-rose-500
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start dev server
-npm run dev
+pnpm dev
 
-# Build for production
-npm run build
+# Build for production (see pnpm gotcha under Deployment if this fails)
+pnpm build
 
 # Preview production build
-npm run preview
+pnpm preview
+
+# Build + deploy to production (muusica.com)
+pnpm deploy
 ```
 
 ## Lucide Icons
@@ -139,6 +142,42 @@ The homepage has an audio visualization canvas in `Hero.astro`.
 - Static files are generated in `dist/`
 - All blog posts are pre-rendered as static HTML
 - No server-side rendering (output: 'static')
+
+## Deployment (Cloudflare Pages)
+
+The live site **muusica.com** is hosted on **Cloudflare Pages**, project name
+**`muusicacom-home`** (account `749fddd2fc3c14d436d163395cfaa923`, ealbinu@gmail.com).
+`www.muusica.com` → `muusica.com` is handled by `public/_redirects`.
+
+**IMPORTANT — the production branch is `production`, NOT `main`.** The custom
+domain serves the latest deployment of the Cloudflare Pages `production` branch.
+Deploying to any other branch (e.g. `main`) only creates a *preview* at
+`<branch>.muusicacom-home.pages.dev` and does **not** update muusica.com.
+
+### Automatic deploy (preferred)
+`.github/workflows/deploy.yml` runs on every push to `main` (and via manual
+*Run workflow* / `workflow_dispatch`). It builds and runs:
+```
+wrangler pages deploy dist --project-name=muusicacom-home --branch=production
+```
+Requires the repo secret **`CLOUDFLARE_API_TOKEN`** (permission: Account ·
+Cloudflare Pages · Edit). The account ID is hard-coded in the workflow (not secret).
+
+So: **push to `main` → site goes live automatically.** There is no Cloudflare
+git integration; deployment happens only through this Action (or the manual
+fallback below).
+
+### Manual fallback
+```
+pnpm deploy   # = astro build && wrangler pages deploy dist --project-name=muusicacom-home --branch=production
+```
+Needs local `wrangler` auth (`npx wrangler login`) for the ealbinu@gmail.com account.
+
+### pnpm gotcha
+pnpm 10+ blocks dependency build scripts (`esbuild`, `sharp`) with
+`ERR_PNPM_IGNORED_BUILDS`, which breaks `pnpm build`. CI pins **pnpm 9** to avoid
+this. Locally, either run `npx astro build` directly or run `pnpm approve-builds`
+once.
 
 ## Mobile Optimization
 
