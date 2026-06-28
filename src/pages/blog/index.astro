@@ -6,26 +6,31 @@ import { getAllPosts, blogCategories } from '../../data/blog.js';
 import AudioVisualizer from '../../components/AudioVisualizer.astro';
 
 const posts = await getAllPosts();
+
+// Map a post's display category name to its slug so cards can be filtered client-side.
+const slugForCategory = (name) =>
+  blogCategories.find((c) => c.name === name)?.slug ?? 'all';
 ---
 
-<Layout title="Blog | MUUSICA - Música legal para tu negocio">
+<Layout title="Blog | Muusica - Música legal para tu negocio">
   <Header transparent={false} />
-  
+
   <main class="pt-32 pb-20">
     <div class="max-w-[1440px] mx-auto px-8 md:px-16">
       <div class="mb-12 text-center">
-        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Blog MUUSICA</h1>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Blog Muusica</h1>
         <p class="text-text-secondary max-w-2xl mx-auto text-lg">
           Aprende sobre música legal, psicología del consumidor y cómo potenciar tu negocio a través del audio.
         </p>
-        
+
         <!-- Categories -->
-        <div class="flex flex-wrap justify-center gap-3 mt-8">
+        <div id="blog-categories" class="flex flex-wrap justify-center gap-3 mt-8">
           {blogCategories.map((cat) => (
-            <a 
+            <a
               href={cat.slug === 'all' ? '/blog' : `/blog?category=${cat.slug}`}
+              data-category={cat.slug}
               class:list={[
-                "chip transition-all duration-300",
+                "blog-chip chip transition-all duration-300",
                 cat.slug === 'all' ? "chip-active" : "chip-inactive"
               ]}
             >
@@ -33,19 +38,28 @@ const posts = await getAllPosts();
             </a>
           ))}
         </div>
+
+        <!-- Result count -->
+        <p id="blog-count" class="text-text-tertiary text-sm mt-6">
+          Mostrando {posts.length} de {posts.length} artículos
+        </p>
       </div>
 
       <!-- Posts grid -->
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div id="blog-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {posts.map((post, i) => (
-          <a href={`/blog/${post.slug}`} class="group">
+          <a
+            href={`/blog/${post.slug}`}
+            class="blog-card group"
+            data-category={slugForCategory(post.data.category)}
+          >
             <article class="card p-0 overflow-hidden h-full flex flex-col">
               <div class={`h-48 bg-gradient-to-br ${post.data.gradient} relative overflow-hidden flex-shrink-0`}>
                 <AudioVisualizer type={i % 5} size="large" />
                 <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
               </div>
               <div class="p-6 flex-1 flex flex-col">
-                <span 
+                <span
                   class="inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3 w-fit"
                   style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}`}
                 >
@@ -66,8 +80,70 @@ const posts = await getAllPosts();
           </a>
         ))}
       </div>
+
+      <!-- Empty state -->
+      <p id="blog-empty" class="hidden text-center text-text-secondary py-16">
+        No hay artículos en esta categoría todavía.
+      </p>
     </div>
   </main>
 
   <Footer />
 </Layout>
+
+<script>
+  // Client-side category filtering. Works on a static host: links point to
+  // /blog?category=<slug>; the same page is served and this script reads the
+  // query string to show only the matching cards.
+  function applyBlogFilter() {
+    const cards = Array.from(document.querySelectorAll('.blog-card'));
+    const chips = Array.from(document.querySelectorAll('.blog-chip'));
+    const countEl = document.getElementById('blog-count');
+    const emptyEl = document.getElementById('blog-empty');
+    if (!cards.length) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const active = params.get('category') || 'all';
+
+    let shown = 0;
+    cards.forEach((card) => {
+      const match = active === 'all' || card.getAttribute('data-category') === active;
+      card.classList.toggle('hidden', !match);
+      if (match) shown++;
+    });
+
+    chips.forEach((chip) => {
+      const isActive = chip.getAttribute('data-category') === active;
+      chip.classList.toggle('chip-active', isActive);
+      chip.classList.toggle('chip-inactive', !isActive);
+    });
+
+    if (countEl) {
+      countEl.textContent = `Mostrando ${shown} de ${cards.length} artículos`;
+    }
+    if (emptyEl) {
+      emptyEl.classList.toggle('hidden', shown !== 0);
+    }
+  }
+
+  // Filter without a full reload when a chip is clicked.
+  function initBlogFilter() {
+    document.querySelectorAll('.blog-chip').forEach((chip) => {
+      chip.addEventListener('click', (e) => {
+        e.preventDefault();
+        const slug = chip.getAttribute('data-category') || 'all';
+        const url = slug === 'all' ? '/blog' : `/blog?category=${slug}`;
+        history.pushState(null, '', url);
+        applyBlogFilter();
+      });
+    });
+    window.addEventListener('popstate', applyBlogFilter);
+    applyBlogFilter();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlogFilter);
+  } else {
+    initBlogFilter();
+  }
+</script>

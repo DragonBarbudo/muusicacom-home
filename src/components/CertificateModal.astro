@@ -4,6 +4,7 @@ interface Props {
 }
 
 const { businessName = "Tu Negocio" } = Astro.props;
+const currentYear = new Date().getFullYear();
 ---
 
 <!-- Certificate Trigger Button -->
@@ -187,7 +188,7 @@ const { businessName = "Tu Negocio" } = Astro.props;
                 <span>Privacidad</span>
                 <span>Contacto: hola@muusica.com</span>
               </div>
-              <span class="text-gray-400">© 2024 Muusica.com</span>
+              <span class="text-gray-400">© {currentYear} Muusica.com</span>
             </div>
           </div>
         </div>

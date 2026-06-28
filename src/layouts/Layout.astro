@@ -4,7 +4,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "MUUSICA - Música legal para tu negocio. Playlists curadas profesionalmente para crear el ambiente perfecto." } = Astro.props;
+const { title, description = "Muusica - Música legal para tu negocio. Playlists curadas profesionalmente para crear el ambiente perfecto." } = Astro.props;
 ---
 
 <!doctype html>
@@ -26,60 +26,126 @@ const { title, description = "MUUSICA - Música legal para tu negocio. Playlists
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     
+    <!-- Mark JS as available before paint so reveal animations have a starting
+         state only when they can actually be driven (avoids hidden content). -->
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-    
+
     <title>{title}</title>
   </head>
   <body class="min-h-screen bg-bg-page overflow-x-hidden">
     <slot />
     
     <script>
-      // Initialize Lucide icons
-      document.addEventListener('DOMContentLoaded', () => {
-        if (window.lucide) {
+      // Initialize Lucide icons. The Lucide UMD script is loaded from a CDN and
+      // may not be ready when this code first runs, so try now and also retry
+      // once the script (or the page) finishes loading. Without this, icons stay
+      // as empty <i data-lucide> placeholders until something else calls createIcons.
+      function createLucideIcons() {
+        if (window.lucide && typeof window.lucide.createIcons === 'function') {
           window.lucide.createIcons();
+          return true;
         }
-      });
-      
-      // Intersection Observer for reveal animations
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-      };
-      
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
+        return false;
+      }
+
+      function initLucideIcons() {
+        if (createLucideIcons()) return;
+        const lucideScript = document.querySelector('script[src*="lucide"]');
+        if (lucideScript) {
+          lucideScript.addEventListener('load', createLucideIcons, { once: true });
+        }
+        window.addEventListener('load', createLucideIcons, { once: true });
+      }
+
+      // Reveal-on-scroll animations.
+      // Robust against: missing IntersectionObserver, reduced-motion preferences,
+      // the script running after DOMContentLoaded, and non-scrolling agents
+      // (crawlers / full-page screenshot tools) which must never see hidden content.
+      const REVEAL_SELECTOR = '.reveal, .reveal-left, .reveal-right, .reveal-scale';
+
+      function revealAll() {
+        document.querySelectorAll(REVEAL_SELECTOR).forEach(el => el.classList.add('visible'));
+      }
+
+      // Reveal everything currently in or above the viewport, synchronously.
+      // This guarantees whatever is on screen paints immediately on any load
+      // (including reloads that restore a scrolled position and screenshot tools),
+      // so content is never captured as an empty/black region.
+      function revealInView() {
+        const vh = window.innerHeight || document.documentElement.clientHeight;
+        document.querySelectorAll(REVEAL_SELECTOR).forEach(el => {
+          if (el.getBoundingClientRect().top < vh * 1.25) {
+            el.classList.add('visible');
           }
         });
-      }, observerOptions);
-      
-      document.addEventListener('DOMContentLoaded', () => {
-        const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale');
-        revealElements.forEach(el => observer.observe(el));
-      });
-      
-      // Smooth scroll for anchor links
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId && targetId !== '#') {
-              const target = document.querySelector(targetId);
-              if (target) {
-                target.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                });
-              }
+      }
+
+      function initReveals() {
+        const prefersReducedMotion = window.matchMedia
+          && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (!('IntersectionObserver' in window) || prefersReducedMotion) {
+          revealAll();
+          return;
+        }
+
+        // Paint what is already visible right away, then animate the rest on scroll.
+        revealInView();
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+              observer.unobserve(entry.target);
             }
           });
+        }, { root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.1 });
+
+        document.querySelectorAll(REVEAL_SELECTOR).forEach(el => observer.observe(el));
+
+        // Safety net: never leave content permanently hidden for visitors or tools
+        // that do not scroll. Elements scrolled into view before this fires still
+        // animate; the rest are simply shown.
+        setTimeout(() => {
+          observer.disconnect();
+          revealAll();
+        }, 800);
+      }
+
+      // Smooth scroll for in-page anchor links (handles both "#id" and "/#id").
+      function initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"], a[href^="/#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            const hashIndex = href.indexOf('#');
+            const targetId = hashIndex >= 0 ? href.slice(hashIndex) : '';
+            // Only intercept when the target exists on the current page.
+            if (!targetId || targetId === '#') return;
+            const target = document.querySelector(targetId);
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            history.replaceState(null, '', targetId);
+          });
         });
-      });
+      }
+
+      function init() {
+        initLucideIcons();
+        initReveals();
+        initSmoothScroll();
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+      } else {
+        init();
+      }
     </script>
   </body>
 </html>
