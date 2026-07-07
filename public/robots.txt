@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://muusica.com/sitemap-index.xml

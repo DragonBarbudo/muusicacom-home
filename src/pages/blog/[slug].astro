@@ -1,12 +1,13 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import AudioVisualizer from '../../components/AudioVisualizer.astro';
+import { getAllPosts } from '../../data/blog.js';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
+  // getAllPosts filtra posts con fecha futura (publicación programada)
+  const posts = await getAllPosts();
   return posts.map(post => ({
     params: { slug: post.slug },
     props: { post },
@@ -15,9 +16,43 @@ export async function getStaticPaths() {
 
 const { post } = Astro.props;
 const { Content } = await post.render();
+
+const canonicalURL = new URL(`/blog/${post.slug}`, Astro.site);
+
+// JSON-LD para SEO/GEO: Article + FAQPage (si el post trae faq)
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.data.title,
+    description: post.data.excerpt,
+    datePublished: post.data.date.toISOString().split('T')[0],
+    inLanguage: 'es-MX',
+    author: { '@type': 'Person', name: post.data.author.name, jobTitle: post.data.author.role },
+    publisher: {
+      '@type': 'Organization',
+      name: 'MUUSICA',
+      url: 'https://muusica.com',
+      logo: { '@type': 'ImageObject', url: 'https://muusica.com/logo.svg' },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.href },
+  },
+  ...(post.data.faq?.length
+    ? [{
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: post.data.faq.map(({ q, a }) => ({
+          '@type': 'Question',
+          name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      }]
+    : []),
+];
 ---
 
-<Layout title={`${post.data.title} | Blog MUUSICA`} description={post.data.excerpt}>
+<Layout title={`${post.data.title} | Blog MUUSICA`} description={post.data.excerpt} type="article">
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <Header transparent={false} />
   
   <article class="pt-32 pb-20">
@@ -55,7 +90,7 @@ const { Content } = await post.render();
       
       <!-- Featured Gradient -->
       <div class={`max-w-5xl mx-auto h-[400px] md:h-[500px] rounded-3xl bg-gradient-to-br ${post.data.gradient} relative overflow-hidden mb-16 shadow-2xl`}>
-        <AudioVisualizer type={0} size="large" />
+        <AudioVisualizer type={post.data.vizType ?? 0} size="large" />
         <div class="absolute inset-0 bg-black/10"></div>
       </div>
       

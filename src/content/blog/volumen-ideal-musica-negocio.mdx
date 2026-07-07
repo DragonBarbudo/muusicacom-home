@@ -1,0 +1,98 @@
+---
+title: "El volumen ideal de la música en tu negocio, según la ciencia"
+excerpt: "Cuántos decibeles debe tener la música según tu giro, y cómo el volumen equivocado ahuyenta clientes sin que lo notes."
+category: "Música y Psicología"
+categoryColor: "#8B5CF6"
+readTime: "6 min"
+date: 2026-07-31
+dateFormatted: "31 Jul 2026"
+author:
+  name: "Dra. Elena Vásquez"
+  role: "Neurocientífica"
+gradient: "from-primary-purple to-pink-500"
+featured: false
+vizType: 4
+faq:
+  - q: "¿Cuál es el volumen ideal de música para un negocio?"
+    a: "Depende del giro: restaurantes y cafeterías 55-65 dB, tiendas 60-70 dB, bares 70-80 dB, gimnasios 75-85 dB, spas y consultorios 45-55 dB. La regla general: la música nunca debe obligar a subir la voz, salvo que el concepto lo busque."
+  - q: "¿Cómo mido los decibeles en mi local?"
+    a: "Con una app gratuita de sonómetro en el celular (por ejemplo, Decibel X o Sound Meter). Mide en la zona donde están los clientes, no junto a la bocina."
+  - q: "¿El volumen alto hace que la gente consuma más?"
+    a: "En bares sí acelera el consumo de bebidas, pero en restaurantes y retail reduce la permanencia y la percepción de calidad. El volumen correcto depende del objetivo del negocio."
+---
+
+import StatCard from '../../components/blog/StatCard.astro';
+import StatsGrid from '../../components/blog/StatsGrid.astro';
+import ComparisonTable from '../../components/blog/ComparisonTable.astro';
+import AlertBox from '../../components/blog/AlertBox.astro';
+import StepList from '../../components/blog/StepList.astro';
+import CTABox from '../../components/blog/CTABox.astro';
+
+## Respuesta rápida
+
+El volumen ideal depende del giro: **45-55 dB** en spas y consultorios, **55-65 dB** en restaurantes y cafeterías, **60-70 dB** en tiendas, **70-80 dB** en bares y **75-85 dB** en gimnasios. La prueba práctica: si tus clientes tienen que subir la voz para conversar y tu concepto no es de alta energía, el volumen está mal.
+
+## El volumen que no se nota es el que funciona
+
+El cerebro procesa el volumen antes que la melodía. Un nivel inadecuado activa respuestas de estrés (cortisol) aunque la canción sea perfecta, y el cliente solo registra "algo incómodo" y se va antes.
+
+<StatsGrid cols={3}>
+  <StatCard value="-27%" label="Permanencia con volumen excesivo" icon="log-out" color="red" />
+  <StatCard value="+15%" label="Consumo de bebidas en bares con volumen alto" icon="beer" color="amber" />
+  <StatCard value="38%" label="De clientes abandona un local por ruido" icon="volume-x" color="purple" />
+</StatsGrid>
+
+## Tabla de decibeles por giro
+
+<ComparisonTable
+  title="Volumen recomendado según tipo de negocio"
+  headers={["Giro", "Rango ideal", "Sensación buscada"]}
+  rows={[
+    { label: "Spa / consultorio", values: [{ text: "45-55 dB", type: "neutral" }, { text: "Calma profunda", type: "neutral" }] },
+    { label: "Cafetería / restaurante", values: [{ text: "55-65 dB", type: "neutral" }, { text: "Conversación cómoda", type: "neutral" }] },
+    { label: "Tienda / retail", values: [{ text: "60-70 dB", type: "neutral" }, { text: "Energía de compra", type: "neutral" }] },
+    { label: "Bar / antro", values: [{ text: "70-80 dB", type: "neutral" }, { text: "Socialización intensa", type: "neutral" }] },
+    { label: "Gimnasio", values: [{ text: "75-85 dB", type: "neutral" }, { text: "Máxima activación", type: "neutral" }] }
+  ]}
+/>
+
+<AlertBox type="warning" title="Cuidado con el oído del encargado">
+  Quien pasa 8 horas en el local se habitúa al ruido y tiende a subir el volumen durante el día. Define el nivel con sonómetro, no de oído.
+</AlertBox>
+
+## Calibra tu local en 4 pasos
+
+<StepList
+  steps={[
+    { title: "Mide el ruido base", description: "Con el local vacío y sin música, mide los decibeles ambientales (refrigeradores, aire acondicionado, calle)." },
+    { title: "Suma la música", description: "Ajusta la música a unos 5-10 dB por encima del ruido base: audible pero no dominante." },
+    { title: "Mide en hora pico", description: "Con el local lleno el ruido de fondo sube; muchos sistemas modernos ajustan solos, o define dos niveles: valle y pico." },
+    { title: "Verifica los puntos muertos", description: "Camina el local: no debe haber zonas donde la música golpee ni zonas de silencio incómodo. Reubica bocinas antes que subir volumen." }
+  ]}
+/>
+
+## Volumen y percepción de precio
+
+Estudios de ambientación muestran que el volumen bajo se asocia con exclusividad y el alto con accesibilidad y energía. Un restaurante de manteles largos con música a 75 dB manda un mensaje contradictorio, igual que un gimnasio de crossfit a 55 dB. El volumen es parte del posicionamiento, no un detalle técnico.
+
+## Preguntas frecuentes
+
+### ¿Cuál es el volumen ideal para mi negocio?
+
+Entre 45 dB (spa) y 85 dB (gimnasio) según el giro; en la mayoría de los comercios, 55-70 dB.
+
+### ¿Cómo mido los decibeles?
+
+Con una app de sonómetro gratuita, midiendo donde están los clientes.
+
+### ¿El volumen alto vende más?
+
+Solo en bares (acelera el consumo). En el resto de giros reduce permanencia y percepción de calidad.
+
+<CTABox 
+  variant="gradient"
+  title="El ambiente perfecto, sin adivinar"
+  description="Playlists con energía consistente por giro, para que el volumen y el ritmo siempre estén donde deben."
+  buttonText="Probar MUUSICA gratis"
+  buttonLink="https://play.muusica.com"
+/>

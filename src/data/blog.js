@@ -15,8 +15,11 @@ import { getCollection } from 'astro:content';
 
 export async function getAllPosts() {
   const posts = await getCollection('blog');
-  // Sort by date (newest first)
-  return posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  // Oculta posts con fecha futura: el rebuild diario (cron en deploy.yml) los publica automáticamente
+  const now = Date.now();
+  return posts
+    .filter(post => post.data.date.valueOf() <= now)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
 export async function getRecentPosts(count = 3) {

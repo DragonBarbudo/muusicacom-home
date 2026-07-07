@@ -2,9 +2,11 @@
 interface Props {
   title: string;
   description?: string;
+  type?: 'website' | 'article';
 }
 
-const { title, description = "MUUSICA - Música legal para tu negocio. Playlists curadas profesionalmente para crear el ambiente perfecto." } = Astro.props;
+const { title, description = "MUUSICA - Música legal para tu negocio. Playlists curadas profesionalmente para crear el ambiente perfecto.", type = 'website' } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 ---
 
 <!doctype html>
@@ -16,11 +18,24 @@ const { title, description = "MUUSICA - Música legal para tu negocio. Playlists
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     
+    <!-- SEO -->
+    <link rel="canonical" href={canonicalURL} />
+
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="es_MX" />
+    <meta property="og:site_name" content="MUUSICA" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <slot name="head" />
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
