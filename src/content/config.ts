@@ -16,6 +16,10 @@ const blogCollection = defineCollection({
     }),
     gradient: z.string(),
     featured: z.boolean().default(false),
+    // Animación de portada (0-7, ver AudioVisualizer.astro)
+    vizType: z.number().optional(),
+    // Preguntas frecuentes: se emiten como JSON-LD FAQPage (GEO)
+    faq: z.array(z.object({ q: z.string(), a: z.string() })).optional(),
   }),
 });
 

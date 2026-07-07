@@ -45,8 +45,9 @@ Blog posts are in `src/content/blog/` as **MDX files** (not .md).
 ### Key Points:
 1. **File format**: Use `.mdx` extension, not `.md`
 2. **Components**: Import components at the top of each MDX file
-3. **Frontmatter**: Required fields include title, excerpt, category, date, author, gradient, featured
-4. **Components available**:
+3. **Frontmatter**: Required fields include title, excerpt, category, date, author, gradient, featured. Optional: `vizType` (0-7, cover animation from AudioVisualizer) and `faq` (array of `{q, a}`, emitted as FAQPage JSON-LD for SEO/GEO)
+4. **Scheduled publishing**: Posts with a future `date` are hidden at build time (`src/data/blog.js`). A daily cron in `.github/workflows/deploy.yml` (12:00 UTC) rebuilds and deploys, so each post goes live automatically on its date. Editorial calendar: `docs/BLOG_SEO_PLAN.md`
+5. **Components available**:
    - `AlertBox` (warning/info/success/danger)
    - `StatCard` + `StatsGrid` (statistics)
    - `ComparisonTable` (comparisons with highlighting)
