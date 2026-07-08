@@ -5,7 +5,7 @@ interface Props {
   type?: 'website' | 'article';
 }
 
-const { title, description = "Muusica - Música legal para tu negocio. Playlists curadas profesionalmente para crear el ambiente perfecto.", type = 'website' } = Astro.props;
+const { title, description = "Muusica.com - Música legal para tu negocio. Playlists curadas profesionalmente para crear el ambiente perfecto.", type = 'website' } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 // JSON-LD global: Organization + WebSite (SEO/GEO)
@@ -13,7 +13,7 @@ const siteJsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    name: 'Muusica',
+    name: 'Muusica.com',
     url: 'https://muusica.com',
     logo: 'https://muusica.com/logo.svg',
     description: 'Música legal para negocios en México: streaming con licencia comercial incluida, sin regalías de SACM ni SOMEXFON.',
@@ -22,7 +22,7 @@ const siteJsonLd = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'Muusica',
+    name: 'Muusica.com',
     url: 'https://muusica.com',
     inLanguage: 'es-MX',
   },
@@ -47,7 +47,7 @@ const siteJsonLd = [
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:locale" content="es_MX" />
-    <meta property="og:site_name" content="Muusica" />
+    <meta property="og:site_name" content="Muusica.com" />
     <script type="application/ld+json" set:html={JSON.stringify(siteJsonLd)} />
 
     <!-- Twitter -->
