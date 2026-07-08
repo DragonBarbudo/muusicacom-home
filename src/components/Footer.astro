@@ -1,4 +1,5 @@
 ---
+const currentYear = new Date().getFullYear();
 const navigationLinks = [
   { label: "Beneficios", href: "#beneficios" },
   { label: "Legal", href: "#legal" },
@@ -84,7 +85,7 @@ const bottomLinks = [
     <!-- Bottom section -->
     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
       <p class="text-text-tertiary text-sm">
-        © 2025 Muusica.com
+        © {currentYear} Muusica.com
       </p>
       <div class="flex items-center gap-6">
         {bottomLinks.map((link) => (
