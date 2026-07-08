@@ -31,7 +31,7 @@ const jsonLd = [
     author: { '@type': 'Person', name: post.data.author.name, jobTitle: post.data.author.role },
     publisher: {
       '@type': 'Organization',
-      name: 'Muusica',
+      name: 'Muusica.com',
       url: 'https://muusica.com',
       logo: { '@type': 'ImageObject', url: 'https://muusica.com/logo.svg' },
     },
@@ -51,7 +51,7 @@ const jsonLd = [
 ];
 ---
 
-<Layout title={`${post.data.title} | Blog Muusica`} description={post.data.excerpt} type="article">
+<Layout title={`${post.data.title} | Blog Muusica.com`} description={post.data.excerpt} type="article">
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <Header transparent={false} />
   

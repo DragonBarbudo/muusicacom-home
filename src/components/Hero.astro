@@ -6,11 +6,11 @@
 //   title / artist → texto mostrado en el reproductor
 // Los clips son extractos de 30s de playlists reales del catálogo (title = playlist)
 const songs = [
-  { ambiente: "Restaurante", title: "Amanecer Jazz",    artist: "Muusica", src: "/audio/restaurante.mp3", volume: 60, color: "from-primary-purple to-primary-blue" },
-  { ambiente: "Cafetería",   title: "Café con Soul",    artist: "Muusica", src: "/audio/cafeteria.mp3",   volume: 45, color: "from-primary-teal to-primary-blue" },
-  { ambiente: "Gimnasio",    title: "Salsa Clásica",    artist: "Muusica", src: "/audio/gimnasio.mp3",    volume: 85, color: "from-primary-blue to-primary-teal" },
-  { ambiente: "Spa",         title: "Spa Relajación",   artist: "Muusica", src: "/audio/spa.mp3",         volume: 30, color: "from-primary-teal to-green-500" },
-  { ambiente: "Tienda",      title: "Unplugged Covers", artist: "Muusica", src: "/audio/tienda.mp3",      volume: 60, color: "from-primary-purple to-pink-500" },
+  { ambiente: "Restaurante", title: "Amanecer Jazz",    artist: "Muusica.com", src: "/audio/restaurante.mp3", volume: 60, color: "from-primary-purple to-primary-blue" },
+  { ambiente: "Cafetería",   title: "Café con Soul",    artist: "Muusica.com", src: "/audio/cafeteria.mp3",   volume: 45, color: "from-primary-teal to-primary-blue" },
+  { ambiente: "Gimnasio",    title: "Salsa Clásica",    artist: "Muusica.com", src: "/audio/gimnasio.mp3",    volume: 85, color: "from-primary-blue to-primary-teal" },
+  { ambiente: "Spa",         title: "Spa Relajación",   artist: "Muusica.com", src: "/audio/spa.mp3",         volume: 30, color: "from-primary-teal to-green-500" },
+  { ambiente: "Tienda",      title: "Unplugged Covers", artist: "Muusica.com", src: "/audio/tienda.mp3",      volume: 60, color: "from-primary-purple to-pink-500" },
 ];
 const ambientes = songs.map((s) => s.ambiente);
 const firstSong = songs[0];
@@ -99,7 +99,7 @@ const firstSong = songs[0];
                 </div>
                 <div class="flex-1 min-w-0">
                   <p id="ambienteLabel" class="text-text-tertiary text-xs mb-1">Ambiente Restaurante</p>
-                  <h4 id="songTitle" class="text-white font-medium text-sm sm:text-base truncate">Jazz Suave · Muusica</h4>
+                  <h4 id="songTitle" class="text-white font-medium text-sm sm:text-base truncate">Jazz Suave · Muusica.com</h4>
                   <div id="progressTrack" class="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer" role="slider" aria-label="Progreso de la canción" tabindex="0">
                     <div id="progressBar" class="h-full w-0 bg-gradient-to-r from-primary-blue to-primary-teal rounded-full transition-[width] duration-150 ease-linear"></div>
                   </div>
