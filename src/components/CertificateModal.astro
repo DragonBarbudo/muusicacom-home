@@ -7,16 +7,7 @@ const { businessName = "Tu Negocio" } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
-<!-- Certificate Trigger Button -->
-<button 
-  id="certTriggerBtn" 
-  class="text-primary-teal text-sm font-medium hover:underline flex items-center justify-center gap-2 transition-colors"
->
-  <i data-lucide="external-link" class="w-4 h-4"></i>
-  Ver ejemplo del certificado
-</button>
-
-<!-- Certificate Modal Overlay -->
+<!-- Certificate Modal Overlay (el botón que lo abre, #certTriggerBtn, vive en el Footer) -->
 <div id="certModalOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
   <div class="min-h-screen flex items-center justify-center p-4">
     
