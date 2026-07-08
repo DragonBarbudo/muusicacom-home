@@ -1,0 +1,413 @@
+---
+// Sección del visualizador: 4 demos en vivo portadas de los visualizadores
+// reales de play.muusica.com (Wave, Galaxy, Tunnel, LogoBounce), animadas en
+// canvas con una señal de audio simulada. Paletas = visualizerPalettes del player.
+const demos = [
+  { viz: 'wave', palette: 'marca', name: 'Ondas', desc: 'Líneas de energía que fluyen con la música' },
+  { viz: 'galaxy', palette: 'atardecer', name: 'Galaxia', desc: 'Partículas en espiral que laten con el ritmo' },
+  { viz: 'tunnel', palette: 'oceano', name: 'Túnel', desc: 'Anillos que viajan al compás de cada beat' },
+  { viz: 'bounce', palette: 'fuego', name: 'Tu logo en movimiento', desc: 'Tu marca recorre la pantalla y cambia de color' },
+];
+
+// Fondos = gradientes bg de cada paleta del player
+const bgs: Record<string, string> = {
+  marca: 'linear-gradient(135deg, #0a0f28, #1b1140, #0a1432)',
+  atardecer: 'linear-gradient(135deg, #240a14, #3a0f1e, #180a20)',
+  oceano: 'linear-gradient(135deg, #04141f, #062a3a, #04101c)',
+  fuego: 'linear-gradient(135deg, #1f0a05, #2e0f08, #170805)',
+};
+---
+
+<section id="visualizador" class="section bg-bg-page">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <span class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider bg-primary-teal/10 text-primary-teal border border-primary-teal/30">
+        Incluido en tu suscripción
+      </span>
+      <h2 class="section-title">Convierte tus pantallas en ambiente</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        El visualizador de pantalla completa transforma cualquier TV de tu negocio en una
+        experiencia audiovisual que reacciona a la música en tiempo real, con tus colores y tu logo.
+      </p>
+    </div>
+
+    <!-- Live demos grid -->
+    <div class="grid md:grid-cols-2 gap-6 mb-12">
+      {demos.map((demo, i) => (
+        <div class="reveal rounded-2xl overflow-hidden relative border border-white/10 shadow-2xl group" style={`animation-delay: ${i * 100}ms`}>
+          <div class="relative aspect-video" style={`background: ${bgs[demo.palette]}`}>
+            <canvas class="viz-demo absolute inset-0 w-full h-full" data-viz={demo.viz} data-palette={demo.palette}></canvas>
+            {demo.viz !== 'bounce' && (
+              <div class="absolute inset-0 flex items-center justify-center pb-12 pointer-events-none">
+                <span class="px-5 py-2.5 rounded-xl border border-dashed border-white/30 bg-black/20 backdrop-blur-sm text-white/85 text-sm font-semibold tracking-wide">
+                  Logo de tu negocio
+                </span>
+              </div>
+            )}
+          </div>
+          <div class="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/70 to-transparent pointer-events-none">
+            <h3 class="text-white font-semibold">{demo.name}</h3>
+            <p class="text-white/60 text-sm">{demo.desc}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Features + CTA -->
+    <div class="reveal flex flex-col items-center gap-8">
+      <div class="flex flex-wrap justify-center gap-x-8 gap-y-3 text-text-secondary text-sm">
+        <span class="flex items-center gap-2"><i data-lucide="monitor" class="w-4 h-4 text-primary-teal"></i> Funciona en cualquier TV con navegador</span>
+        <span class="flex items-center gap-2"><i data-lucide="palette" class="w-4 h-4 text-primary-teal"></i> 6 paletas de color para tu marca</span>
+        <span class="flex items-center gap-2"><i data-lucide="image" class="w-4 h-4 text-primary-teal"></i> Sube el logo de tu negocio</span>
+        <span class="flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4 text-primary-teal"></i> Reacciona a la música en tiempo real</span>
+      </div>
+      <a href="https://play.muusica.com" class="btn-primary text-base px-8 py-3.5 inline-flex">
+        Probar el visualizador gratis
+        <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Réplica ligera de los visualizadores de play.muusica.com con señal simulada
+  // (el home no reproduce audio). Misma estética: halos aditivos + núcleos nítidos.
+  const PALETTES: Record<string, string[]> = {
+    marca: ['#14B8A6', '#3B82F6', '#8B5CF6', '#22C55E'],
+    oceano: ['#22d3ee', '#38bdf8', '#3b82f6', '#14b8a6'],
+    atardecer: ['#f59e0b', '#fb7185', '#f43f5e', '#a855f7'],
+    fuego: ['#f97316', '#ef4444', '#f59e0b', '#dc2626'],
+  };
+
+  const hexToRgb = (hex: string): [number, number, number] => {
+    const n = parseInt(hex.replace('#', ''), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+
+  const makeGlowSprites = (colors: string[], size = 64) =>
+    colors.map((hex) => {
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const g = c.getContext('2d')!;
+      const r = size / 2;
+      const grad = g.createRadialGradient(r, r, 0, r, r, r);
+      grad.addColorStop(0, hex + 'dd');
+      grad.addColorStop(0.45, hex + '44');
+      grad.addColorStop(1, hex + '00');
+      g.fillStyle = grad;
+      g.beginPath();
+      g.arc(r, r, r, 0, Math.PI * 2);
+      g.fill();
+      return c;
+    });
+
+  const drawHalo = (ctx: CanvasRenderingContext2D, sprite: HTMLCanvasElement, x: number, y: number, r: number, alpha = 0.9) => {
+    ctx.globalAlpha = alpha;
+    ctx.drawImage(sprite, x - r, y - r, r * 2, r * 2);
+    ctx.globalAlpha = 1;
+  };
+
+  const drawCore = (ctx: CanvasRenderingContext2D, x: number, y: number, r: number, color: string) => {
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fillStyle = color;
+    ctx.fill();
+  };
+
+  // Señal simulada ~112 BPM: level/bass/beat como las bandas del analizador real
+  const fakeBands = (t: number) => {
+    const beatPhase = (t * (112 / 60)) % 1;
+    const beat = Math.pow(Math.max(0, 1 - beatPhase * 2.4), 2.2);
+    const level = Math.min(1, Math.max(0, 0.45 + 0.2 * Math.sin(t * 0.7) + 0.12 * Math.sin(t * 1.9) + beat * 0.25));
+    const bass = Math.min(1, Math.max(0, 0.38 + 0.22 * Math.sin(t * 1.1 + 1.4) + beat * 0.4));
+    return { level, bass, beat };
+  };
+
+  type Demo = {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    viz: string;
+    colors: string[];
+    sprites: HTMLCanvasElement[];
+    W: number; H: number; dpr: number;
+    visible: boolean;
+    state: any;
+  };
+
+  const demos: Demo[] = [];
+
+  const resize = (d: Demo) => {
+    d.dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    d.W = d.canvas.width = Math.max(1, Math.round(d.canvas.offsetWidth * d.dpr));
+    d.H = d.canvas.height = Math.max(1, Math.round(d.canvas.offsetHeight * d.dpr));
+    initState(d);
+  };
+
+  const initState = (d: Demo) => {
+    if (d.viz === 'wave') {
+      const cols = Math.max(28, Math.min(72, Math.round(d.canvas.offsetWidth / 24)));
+      d.state = { cols, colE: [0, 1, 2].map(() => new Float32Array(cols).fill(0)), flow: 0, level: 0, bass: 0 };
+    } else if (d.viz === 'galaxy') {
+      const maxR = Math.min(d.W, d.H) * 0.46;
+      const parts: any[] = [];
+      const ARMS = 4;
+      const n = Math.max(100, Math.min(220, Math.round(d.canvas.offsetWidth * d.canvas.offsetHeight / 6500)));
+      const per = Math.floor(n / ARMS);
+      for (let arm = 0; arm < ARMS; arm++) {
+        const base = arm * (Math.PI * 2 / ARMS);
+        for (let i = 0; i < per; i++) {
+          const prog = i / per;
+          const radius = 18 * d.dpr + Math.pow(prog, 0.62) * maxR + (Math.random() - 0.5) * 30 * d.dpr;
+          const nr = radius / maxR;
+          parts.push({
+            angle: base + prog * 4.2 + (Math.random() - 0.5) * 0.45,
+            radius, nr,
+            size: (1.4 + Math.random() * 2.6) * d.dpr * (1.1 - nr * 0.5),
+            ci: arm % 4,
+            spin: 0.0016 / (0.12 + nr),
+          });
+        }
+      }
+      d.state = { parts, maxR, level: 0, bass: 0, beat: 0 };
+    } else if (d.viz === 'tunnel') {
+      const RINGS = 14;
+      d.state = {
+        rings: Array.from({ length: RINGS }, (_, i) => ({ z: i / RINGS, ci: i % 4, rot: Math.random() * Math.PI * 2 })),
+        maxR: Math.hypot(d.W, d.H) / 2,
+        level: 0, beat: 0, gRot: 0,
+      };
+    } else if (d.viz === 'bounce') {
+      const sp = 1.6 * d.dpr;
+      d.state = { x: d.W * 0.3, y: d.H * 0.35, vx: sp, vy: sp, ci: 0, level: 0, beat: 0 };
+    }
+  };
+
+  const drawWave = (d: Demo, t: number) => {
+    const { ctx, W, H, dpr, colors, sprites } = d;
+    const s = d.state;
+    const LAYERS = [
+      { off: -0.15, amp: 0.09, ci: 0, speed: 1.0, dot: 0.75 },
+      { off: 0.0, amp: 0.14, ci: 1, speed: 0.8, dot: 2.1 },
+      { off: 0.15, amp: 0.09, ci: 2, speed: 1.22, dot: 0.75 },
+    ];
+    const b = fakeBands(t);
+    s.level += (b.level - s.level) * 0.08;
+    s.bass += (b.bass - s.bass) * 0.1;
+    s.flow += 0.016 * (0.12 + s.level * 1.7);
+
+    ctx.clearRect(0, 0, W, H);
+    const cy = H / 2;
+    const step = W / (s.cols - 1);
+    const dots: any[] = [];
+
+    for (let li = 0; li < LAYERS.length; li++) {
+      const L = LAYERS[li];
+      const E = s.colE[li];
+      const baseY = cy + L.off * H;
+      const amp = L.amp * H * (0.03 + s.level * 1.15);
+      const [r, g, bl] = hexToRgb(colors[L.ci]);
+      ctx.beginPath();
+      for (let c = 0; c < s.cols; c++) {
+        const x = c * step;
+        // pseudo-FFT: mezcla de senos por columna en lugar del analizador real
+        const target = Math.max(0, 0.32 + 0.3 * Math.sin(t * 1.9 + c * 0.45) * Math.sin(t * 0.7 + c * 0.13) + b.beat * 0.2);
+        E[c] += (target - E[c]) * (target > E[c] ? 0.22 : 0.07);
+        const phase = s.flow * L.speed + c * 0.32;
+        const y = baseY + Math.sin(phase) * amp + (E[c] - 0.3) * H * 0.08;
+        if (c === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        dots.push({ x, y, r: (2.2 + E[c] * 3.0 + s.bass * 0.6) * dpr * L.dot, ci: L.ci });
+      }
+      ctx.strokeStyle = `rgba(${r},${g},${bl},${0.1 + s.level * 0.22})`;
+      ctx.lineWidth = Math.max(1, dpr);
+      ctx.stroke();
+    }
+
+    ctx.globalCompositeOperation = 'lighter';
+    for (const dot of dots) drawHalo(ctx, sprites[dot.ci], dot.x, dot.y, dot.r * 2.6, 0.85);
+    ctx.globalCompositeOperation = 'source-over';
+    for (const dot of dots) drawCore(ctx, dot.x, dot.y, dot.r, colors[dot.ci]);
+  };
+
+  const drawGalaxy = (d: Demo, t: number) => {
+    const { ctx, W, H, colors, sprites } = d;
+    const s = d.state;
+    const b = fakeBands(t);
+    s.level += (b.level - s.level) * 0.12;
+    s.bass += (b.bass - s.bass) * 0.18;
+    s.beat += (b.beat - s.beat) * (b.beat > s.beat ? 0.55 : 0.12);
+
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    const spinMul = 1 + s.level * 2 + s.beat * 4.5;
+    const pulse = 1 + s.bass * 0.4 + s.beat * 0.9;
+
+    const dots: any[] = [];
+    for (const p of s.parts) {
+      p.angle += p.spin * spinMul;
+      dots.push({ x: cx + Math.cos(p.angle) * p.radius, y: cy + Math.sin(p.angle) * p.radius, r: p.size * pulse, ci: p.ci });
+    }
+
+    ctx.globalCompositeOperation = 'lighter';
+    const coreR = s.maxR * (0.14 + s.bass * 0.05 + s.beat * 0.14);
+    const [r, g, bl] = hexToRgb(colors[0]);
+    const cg = ctx.createRadialGradient(cx, cy, 0, cx, cy, coreR);
+    cg.addColorStop(0, 'rgba(255,255,255,0.9)');
+    cg.addColorStop(0.4, `rgba(${r},${g},${bl},0.5)`);
+    cg.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+    ctx.fillStyle = cg;
+    ctx.beginPath(); ctx.arc(cx, cy, coreR, 0, Math.PI * 2); ctx.fill();
+
+    for (const dot of dots) drawHalo(ctx, sprites[dot.ci], dot.x, dot.y, dot.r * 2.4, 0.85);
+    ctx.globalCompositeOperation = 'source-over';
+    for (const dot of dots) drawCore(ctx, dot.x, dot.y, dot.r, colors[dot.ci]);
+  };
+
+  const drawTunnel = (d: Demo, t: number) => {
+    const { ctx, W, H, colors, sprites } = d;
+    const s = d.state;
+    const DOTS = 18;
+    const b = fakeBands(t);
+    s.level += (b.level - s.level) * 0.1;
+    s.beat += (b.beat - s.beat) * (b.beat > s.beat ? 0.4 : 0.1);
+
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2, cy = H / 2;
+    const speed = 0.0016 + s.level * 0.006 + s.beat * 0.01;
+    s.gRot += 0.0015 + s.level * 0.004;
+    const baseSize = Math.min(W, H) * 0.0075;
+
+    for (const ring of s.rings) {
+      ring.z += speed;
+      if (ring.z >= 1) { ring.z -= 1; ring.ci = Math.floor(Math.random() * 4); ring.rot = Math.random() * Math.PI * 2; }
+    }
+
+    const ordered = [...s.rings].sort((a: any, b2: any) => a.z - b2.z);
+    ctx.globalCompositeOperation = 'lighter';
+    const dots: any[] = [];
+    for (const ring of ordered) {
+      const radius = ring.z * ring.z * s.maxR * 1.15;
+      const edgeFade = 1 - Math.max(0, (ring.z - 0.9) / 0.1);
+      const a = Math.min(1, ring.z * 2.4) * edgeFade;
+      if (a <= 0.01) continue;
+      const size = (0.35 + ring.z * 1.8) * baseSize * (1 + s.beat * 0.5);
+      for (let i = 0; i < DOTS; i++) {
+        const ang = (i / DOTS) * Math.PI * 2 + ring.rot + s.gRot;
+        const x = cx + Math.cos(ang) * radius;
+        const y = cy + Math.sin(ang) * radius;
+        drawHalo(ctx, sprites[ring.ci], x, y, size * 2.4, 0.85 * a);
+        dots.push({ x, y, s: size, ci: ring.ci });
+      }
+    }
+    const [cr, cg2, cb] = hexToRgb(colors[0]);
+    const cgrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, s.maxR * 0.18);
+    cgrad.addColorStop(0, `rgba(${cr},${cg2},${cb},${0.5 + s.beat * 0.3})`);
+    cgrad.addColorStop(1, `rgba(${cr},${cg2},${cb},0)`);
+    ctx.fillStyle = cgrad;
+    ctx.beginPath(); ctx.arc(cx, cy, s.maxR * 0.18, 0, Math.PI * 2); ctx.fill();
+
+    ctx.globalCompositeOperation = 'source-over';
+    for (const dot of dots) drawCore(ctx, dot.x, dot.y, dot.s, colors[dot.ci]);
+  };
+
+  const drawBounce = (d: Demo, t: number) => {
+    const { ctx, W, H, dpr, colors } = d;
+    const s = d.state;
+    const b = fakeBands(t);
+    s.level += (b.level - s.level) * 0.1;
+    s.beat += (b.beat - s.beat) * (b.beat > s.beat ? 0.4 : 0.1);
+
+    ctx.clearRect(0, 0, W, H);
+
+    // Placa "Logo de tu negocio" en lugar de la imagen del cliente
+    const fontSize = Math.max(11, Math.min(W, H) * 0.055);
+    ctx.font = `600 ${fontSize}px Inter, sans-serif`;
+    const label = 'Logo de tu negocio';
+    const padX = fontSize * 0.9, padY = fontSize * 0.65;
+    const w = (ctx.measureText(label).width + padX * 2) * (1 + s.beat * 0.06);
+    const h = (fontSize + padY * 2) * (1 + s.beat * 0.06);
+    const speed = 0.5 + s.level * 2.2;
+
+    s.x += s.vx * speed;
+    s.y += s.vy * speed;
+    // el borde inferior se reserva para la etiqueta de la tarjeta
+    const bottom = H * 0.76;
+    let bounced = false;
+    if (s.x <= 0) { s.x = 0; s.vx = Math.abs(s.vx); bounced = true; }
+    else if (s.x + w >= W) { s.x = W - w; s.vx = -Math.abs(s.vx); bounced = true; }
+    if (s.y <= 0) { s.y = 0; s.vy = Math.abs(s.vy); bounced = true; }
+    else if (s.y + h >= bottom) { s.y = bottom - h; s.vy = -Math.abs(s.vy); bounced = true; }
+    if (bounced) s.ci = (s.ci + 1) % colors.length;
+
+    const cx = s.x + w / 2, cy = s.y + h / 2;
+    const [r, g, bl] = hexToRgb(colors[s.ci]);
+
+    ctx.globalCompositeOperation = 'lighter';
+    const glowR = Math.max(w, h) * (0.8 + s.beat * 0.3);
+    const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+    grad.addColorStop(0, `rgba(${r},${g},${bl},${0.45 + s.beat * 0.25})`);
+    grad.addColorStop(1, `rgba(${r},${g},${bl},0)`);
+    ctx.fillStyle = grad;
+    ctx.beginPath(); ctx.arc(cx, cy, glowR, 0, Math.PI * 2); ctx.fill();
+    ctx.globalCompositeOperation = 'source-over';
+
+    const radius = h * 0.28;
+    ctx.beginPath();
+    ctx.roundRect(s.x, s.y, w, h, radius);
+    ctx.fillStyle = 'rgba(0,0,0,0.35)';
+    ctx.fill();
+    ctx.strokeStyle = `rgba(${r},${g},${bl},0.9)`;
+    ctx.lineWidth = Math.max(1, 1.5 * dpr);
+    ctx.setLineDash([5 * dpr, 4 * dpr]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(255,255,255,0.92)';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(label, cx, cy + fontSize * 0.05);
+  };
+
+  const DRAWERS: Record<string, (d: Demo, t: number) => void> = {
+    wave: drawWave, galaxy: drawGalaxy, tunnel: drawTunnel, bounce: drawBounce,
+  };
+
+  const init = () => {
+    const canvases = document.querySelectorAll<HTMLCanvasElement>('canvas.viz-demo');
+    if (!canvases.length) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    canvases.forEach((canvas) => {
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      const colors = PALETTES[canvas.dataset.palette || 'marca'];
+      const d: Demo = {
+        canvas, ctx, viz: canvas.dataset.viz || 'wave', colors,
+        sprites: makeGlowSprites(colors), W: 0, H: 0, dpr: 1, visible: false, state: {},
+      };
+      resize(d);
+      new ResizeObserver(() => resize(d)).observe(canvas);
+      new IntersectionObserver((entries) => { d.visible = entries[0].isIntersecting; }, { threshold: 0.05 }).observe(canvas);
+      demos.push(d);
+    });
+
+    if (reduced) {
+      // Sin animación: un solo cuadro estático
+      demos.forEach((d) => DRAWERS[d.viz]?.(d, 1.8));
+      return;
+    }
+
+    let rafId: number | null = null;
+    const loop = (ms: number) => {
+      const t = ms / 1000;
+      for (const d of demos) if (d.visible) DRAWERS[d.viz]?.(d, t);
+      rafId = requestAnimationFrame(loop);
+    };
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { if (rafId) { cancelAnimationFrame(rafId); rafId = null; } }
+      else if (!rafId) rafId = requestAnimationFrame(loop);
+    });
+    rafId = requestAnimationFrame(loop);
+  };
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
