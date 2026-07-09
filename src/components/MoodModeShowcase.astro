@@ -1,0 +1,216 @@
+---
+// Sección Mood Mode: demo interactiva del pad real de play.muusica.com.
+// Los moods (posiciones, colores, etiquetas) y la mezcla por distancia inversa
+// son un port 1:1 de app/lib/moods.ts del player. Sin audio: la demo muestra
+// cómo la posición del punto se convierte en porcentajes de mezcla.
+const moods = [
+  { id: 'relajado',      label: 'Relajado',      sub: 'Calma y aire',      color: '#14b8a6', x: 0.16, y: 0.17 },
+  { id: 'concentracion', label: 'Concentración', sub: 'Foco sin distraer', color: '#3b82f6', x: 0.50, y: 0.10 },
+  { id: 'sofisticado',   label: 'Sofisticado',   sub: 'Elegante, jazzy',   color: '#8b5cf6', x: 0.84, y: 0.17 },
+  { id: 'sonador',       label: 'Soñador',       sub: 'Nostalgia y sueño', color: '#d946ef', x: 0.10, y: 0.50 },
+  { id: 'romantico',     label: 'Romántico',     sub: 'Cercano, sensual',  color: '#fb7185', x: 0.90, y: 0.50 },
+  { id: 'calido',        label: 'Cálido',        sub: 'Acogedor',          color: '#f59e0b', x: 0.16, y: 0.83 },
+  { id: 'alegre',        label: 'Alegre',        sub: 'Luz y buen humor',  color: '#facc15', x: 0.50, y: 0.90 },
+  { id: 'energico',      label: 'Enérgico',      sub: 'Sube el pulso',     color: '#ef4444', x: 0.84, y: 0.83 },
+];
+
+// Fondo del pad: un brillo suave del color de cada mood en su posición
+const padBg = moods
+  .map((m) => `radial-gradient(circle at ${m.x * 100}% ${m.y * 100}%, ${m.color}26 0%, transparent 34%)`)
+  .join(', ');
+
+const features = [
+  { icon: 'move', title: 'Tú marcas el punto', description: 'Arrastra el punto entre ocho ambientes y crea tu propia mezcla: 70% cálido + 30% soñador, por ejemplo.' },
+  { icon: 'infinity', title: 'La música nunca se detiene', description: 'La mezcla genera una cola continua que no se repite: ideal para jornadas completas sin tocar el reproductor.' },
+  { icon: 'clock', title: 'Un ambiente para cada hora', description: 'Mañana relajada, mediodía enérgico, cierre sofisticado: mueve el punto y todo el local cambia contigo.' },
+];
+---
+
+<section id="mood-mode" class="section bg-section-gradient">
+  <div class="max-w-[1440px] mx-auto">
+    <!-- Header -->
+    <div class="section-header reveal">
+      <span class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider bg-primary-purple/10 text-primary-purple border border-primary-purple/30">
+        Nuevo en el reproductor
+      </span>
+      <h2 class="section-title">Mood Mode: elige el ambiente, no las canciones</h2>
+      <p class="section-subtitle max-w-2xl mx-auto">
+        Mueve un punto entre ocho estados de ánimo y la música se mezcla a tu medida,
+        sin listas que armar y sin silencios. Pruébalo aquí mismo:
+      </p>
+    </div>
+
+    <div class="flex flex-col lg:flex-row items-center gap-12">
+      <!-- Interactive pad demo -->
+      <div class="flex-1 w-full max-w-2xl reveal-left">
+        <div
+          id="moodPad"
+          class="relative w-full aspect-[16/10] rounded-3xl border border-white/10 overflow-hidden select-none touch-none cursor-pointer shadow-2xl bg-bg-surface"
+          style={`background-image: ${padBg};`}
+        >
+          <!-- Líneas del punto a cada mood que contribuye -->
+          <svg id="moodLines" class="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 100 100" preserveAspectRatio="none"></svg>
+
+          <!-- Chips de moods -->
+          {moods.map((m) => (
+            <div
+              class="mood-chip absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-1 px-2.5 py-1.5 rounded-2xl text-center pointer-events-none"
+              style={`left: ${m.x * 100}%; top: ${m.y * 100}%;`}
+              data-mood={m.id}
+            >
+              <span class="mood-dot block w-3 h-3 rounded-full ring-2 ring-black/30 transition-transform" style={`background-color: ${m.color};`}></span>
+              <span class="mood-label text-xs sm:text-sm font-semibold leading-tight text-white/60 transition-colors">{m.label}</span>
+              <span class="mood-pct text-[10px] font-bold leading-none hidden" style={`color: ${m.color};`}></span>
+            </div>
+          ))}
+
+          <!-- Puck -->
+          <div id="moodPuck" class="absolute -translate-x-1/2 -translate-y-1/2 pointer-events-none" style="left: 50%; top: 50%;">
+            <div id="moodPuckDot" class="w-9 h-9 rounded-full border-2 border-white shadow-lg transition-colors" style="background-color: #8b5cf6; box-shadow: 0 0 0 6px #8b5cf633;"></div>
+          </div>
+
+          <!-- Hint -->
+          <p id="moodHint" class="absolute inset-x-0 top-[62%] text-center px-6 pointer-events-none text-sm text-white/50">
+            Arrastra el punto para crear tu mezcla
+          </p>
+        </div>
+
+        <!-- Live blend readout -->
+        <div class="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 min-h-[24px]">
+          <span class="text-sm text-text-tertiary">Tu mezcla:</span>
+          <span id="moodReadout" class="flex flex-wrap items-center gap-x-3 gap-y-1"></span>
+        </div>
+      </div>
+
+      <!-- Features + CTA -->
+      <div class="flex-1 reveal-right">
+        <ul class="space-y-6 mb-8">
+          {features.map((f) => (
+            <li class="flex items-start gap-4">
+              <div class="w-11 h-11 rounded-xl bg-primary-purple/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide={f.icon} class="w-5 h-5 text-primary-purple"></i>
+              </div>
+              <div>
+                <h3 class="text-white font-semibold mb-1">{f.title}</h3>
+                <p class="text-text-secondary text-sm leading-relaxed">{f.description}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+        <a href="https://play.muusica.com" class="btn-primary inline-flex">
+          Probar Mood Mode gratis
+          <i data-lucide="arrow-right" class="w-4 h-4 ml-2"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Port de computeMoodWeights + blend de app/lib/moods.ts (player real)
+  const MOODS = [
+    { id: 'relajado',      label: 'Relajado',      color: '#14b8a6', x: 0.16, y: 0.17 },
+    { id: 'concentracion', label: 'Concentración', color: '#3b82f6', x: 0.50, y: 0.10 },
+    { id: 'sofisticado',   label: 'Sofisticado',   color: '#8b5cf6', x: 0.84, y: 0.17 },
+    { id: 'sonador',       label: 'Soñador',       color: '#d946ef', x: 0.10, y: 0.50 },
+    { id: 'romantico',     label: 'Romántico',     color: '#fb7185', x: 0.90, y: 0.50 },
+    { id: 'calido',        label: 'Cálido',        color: '#f59e0b', x: 0.16, y: 0.83 },
+    { id: 'alegre',        label: 'Alegre',        color: '#facc15', x: 0.50, y: 0.90 },
+    { id: 'energico',      label: 'Enérgico',      color: '#ef4444', x: 0.84, y: 0.83 },
+  ];
+
+  const computeWeights = (x: number, y: number, topK = 3, minWeight = 0.08) => {
+    const eps = 0.05, exp = 2.2;
+    let ws = MOODS
+      .map((m) => ({ mood: m, d: Math.hypot(x - m.x, y - m.y) }))
+      .sort((a, b) => a.d - b.d)
+      .slice(0, topK)
+      .map(({ mood, d }) => ({ mood, weight: 1 / Math.pow(d + eps, exp) }));
+    const norm = (arr: typeof ws) => {
+      const s = arr.reduce((acc, w) => acc + w.weight, 0) || 1;
+      return arr.map((w) => ({ mood: w.mood, weight: w.weight / s }));
+    };
+    ws = norm(norm(ws).filter((w) => w.weight >= minWeight));
+    return ws.sort((a, b) => b.weight - a.weight);
+  };
+
+  const hexToRgb = (hex: string) => {
+    const n = parseInt(hex.replace('#', ''), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+
+  const blendHex = (weights: { mood: { color: string }; weight: number }[]) => {
+    let r = 0, g = 0, b = 0;
+    for (const w of weights) {
+      const [cr, cg, cb] = hexToRgb(w.mood.color);
+      r += cr * w.weight; g += cg * w.weight; b += cb * w.weight;
+    }
+    return `rgb(${Math.round(r)}, ${Math.round(g)}, ${Math.round(b)})`;
+  };
+
+  const init = () => {
+    const pad = document.getElementById('moodPad');
+    if (!pad) return;
+    const puck = document.getElementById('moodPuck')!;
+    const puckDot = document.getElementById('moodPuckDot')!;
+    const lines = document.getElementById('moodLines')!;
+    const readout = document.getElementById('moodReadout')!;
+    const hint = document.getElementById('moodHint');
+
+    const pos = { x: 0.5, y: 0.5 };
+    let dragging = false;
+    let engaged = false;
+
+    const render = () => {
+      const weights = computeWeights(pos.x, pos.y);
+      const color = blendHex(weights);
+
+      puck.style.left = pos.x * 100 + '%';
+      puck.style.top = pos.y * 100 + '%';
+      puckDot.style.backgroundColor = color;
+      puckDot.style.boxShadow = `0 0 0 6px ${color.replace('rgb', 'rgba').replace(')', ', 0.2)')}`;
+
+      // Líneas hacia los moods que contribuyen
+      lines.innerHTML = weights
+        .map((w) => `<line x1="${pos.x * 100}" y1="${pos.y * 100}" x2="${w.mood.x * 100}" y2="${w.mood.y * 100}" stroke="${w.mood.color}" stroke-width="${0.3 + w.weight * 1.4}" opacity="${0.25 + w.weight * 0.55}" />`)
+        .join('');
+
+      // Chips: porcentaje y énfasis
+      const byId = new Map(weights.map((w) => [w.mood.id, w.weight]));
+      document.querySelectorAll<HTMLElement>('.mood-chip').forEach((chip) => {
+        const w = byId.get(chip.dataset.mood || '') || 0;
+        const dot = chip.querySelector<HTMLElement>('.mood-dot')!;
+        const label = chip.querySelector<HTMLElement>('.mood-label')!;
+        const pct = chip.querySelector<HTMLElement>('.mood-pct')!;
+        dot.style.transform = `scale(${1 + w * 1.4})`;
+        label.classList.toggle('text-white', w > 0.12);
+        label.classList.toggle('text-white/60', w <= 0.12);
+        pct.classList.toggle('hidden', w < 0.08);
+        if (w >= 0.08) pct.textContent = Math.round(w * 100) + '%';
+      });
+
+      // Readout
+      readout.innerHTML = weights
+        .map((w) => `<span class="inline-flex items-center gap-1.5 text-sm font-semibold text-white"><span class="w-2.5 h-2.5 rounded-full" style="background-color: ${w.mood.color}"></span>${w.mood.label} <span class="text-text-tertiary font-normal">${Math.round(w.weight * 100)}%</span></span>`)
+        .join('');
+    };
+
+    const moveTo = (clientX: number, clientY: number) => {
+      const r = pad.getBoundingClientRect();
+      pos.x = Math.min(0.97, Math.max(0.03, (clientX - r.left) / r.width));
+      pos.y = Math.min(0.95, Math.max(0.05, (clientY - r.top) / r.height));
+      if (!engaged) { engaged = true; hint?.remove(); }
+      render();
+    };
+
+    pad.addEventListener('pointerdown', (e) => { dragging = true; pad.setPointerCapture(e.pointerId); moveTo(e.clientX, e.clientY); });
+    pad.addEventListener('pointermove', (e) => { if (dragging) moveTo(e.clientX, e.clientY); });
+    const stop = () => { dragging = false; };
+    pad.addEventListener('pointerup', stop);
+    pad.addEventListener('pointercancel', stop);
+
+    render();
+  };
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
