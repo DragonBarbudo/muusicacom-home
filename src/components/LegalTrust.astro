@@ -20,6 +20,7 @@ const cards = [
     description: "Descarga tu comprobante de licencia comercial en cualquier momento desde tu cuenta",
     extra: "Descargable y validable por QR",
     color: "#8B5CF6",
+    showCertExample: true,
   },
 ];
 ---
@@ -55,6 +56,16 @@ const cards = [
           
           <!-- Extra info -->
           <p class="text-sm text-primary-teal">{card.extra}</p>
+
+          {card.showCertExample && (
+            <button
+              data-cert-trigger
+              class="mt-4 text-primary-teal text-sm font-medium hover:underline flex items-center gap-2 transition-colors"
+            >
+              <i data-lucide="external-link" class="w-4 h-4"></i>
+              Ver ejemplo del certificado
+            </button>
+          )}
         </div>
       ))}
     </div>

@@ -7,7 +7,7 @@ const { businessName = "Tu Negocio" } = Astro.props;
 const currentYear = new Date().getFullYear();
 ---
 
-<!-- Certificate Modal Overlay (el botón que lo abre, #certTriggerBtn, vive en el Footer) -->
+<!-- Certificate Modal Overlay (lo abren los botones [data-cert-trigger]: footer y sección Legal) -->
 <div id="certModalOverlay" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden opacity-0 transition-opacity duration-300">
   <div class="min-h-screen flex items-center justify-center p-4">
     
@@ -200,17 +200,17 @@ const currentYear = new Date().getFullYear();
 <script is:inline>
   (function() {
     // Elements
-    const triggerBtn = document.getElementById('certTriggerBtn');
     const overlay = document.getElementById('certModalOverlay');
-    const previewModal = document.getElementById('certPreviewModal');
     const closePreviewBtn = document.getElementById('closePreviewBtn');
-    
-    // Open modal
-    triggerBtn?.addEventListener('click', () => {
-      overlay.classList.remove('hidden');
-      setTimeout(() => {
-        overlay.classList.remove('opacity-0');
-      }, 10);
+
+    // Cualquier elemento [data-cert-trigger] abre el modal (footer, sección Legal, etc.)
+    document.querySelectorAll('[data-cert-trigger]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        overlay.classList.remove('hidden');
+        setTimeout(() => {
+          overlay.classList.remove('opacity-0');
+        }, 10);
+      });
     });
     
     // Close functions
