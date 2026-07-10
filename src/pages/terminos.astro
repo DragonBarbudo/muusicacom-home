@@ -1,0 +1,102 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+
+// NOTA: sustituir [RAZÓN SOCIAL] con los datos legales reales antes de
+// considerar estos términos definitivos.
+const sections = [
+  {
+    title: 'Objeto del servicio',
+    legal: [
+      'Muusica.com, operado por [RAZÓN SOCIAL] ("Muusica.com", "nosotros"), es un servicio de streaming de música por suscripción diseñado para la ambientación sonora de establecimientos comerciales. El catálogo está integrado por obras cuyos derechos de comunicación pública en establecimientos han sido resueltos directamente con sus titulares, por lo que su reproducción a través del servicio no genera obligaciones de pago ante sociedades de gestión colectiva mexicanas (SACM, SOMEXFON, ANDI) respecto del catálogo de Muusica.com.',
+      'Al crear una cuenta o utilizar el servicio, aceptas estos Términos y Condiciones y el Aviso de Privacidad. Si no estás de acuerdo, no utilices el servicio.',
+    ],
+    resumen: 'Muusica.com es música por suscripción para ambientar tu negocio, con los derechos de uso comercial ya resueltos. Al usar el servicio, aceptas estas reglas.',
+  },
+  {
+    title: 'Cuenta y registro',
+    legal: [
+      'Para usar el servicio debes crear una cuenta con información veraz, completa y actualizada. Declaras ser mayor de edad y contar con facultades para obligar al negocio que registras. Eres responsable de la confidencialidad de tus credenciales y de toda actividad realizada desde tu cuenta.',
+      'Debes notificarnos de inmediato cualquier uso no autorizado de tu cuenta a hola@muusica.com. Podemos suspender cuentas con información falsa o actividad que comprometa la seguridad del servicio.',
+    ],
+    resumen: 'Registra datos reales, cuida tu contraseña y avísanos si alguien usa tu cuenta sin permiso.',
+  },
+  {
+    title: 'Licencia de uso y restricciones',
+    legal: [
+      'Cada suscripción otorga una licencia limitada, revocable, no exclusiva e intransferible para reproducir el catálogo de Muusica.com como ambientación sonora en UNA locación física (establecimiento). Si operas varias locaciones, cada una requiere su propia suscripción.',
+      'Queda expresamente prohibido: (a) redistribuir, retransmitir o revender el servicio o su catálogo; (b) sincronizar las obras con contenido audiovisual (videos, publicidad, redes sociales); (c) usar el servicio como música principal de eventos con cobro de acceso (conciertos, espectáculos, servicios de DJ); (d) descargar, extraer o copiar los fonogramas fuera de la plataforma; y (e) usar el servicio fuera del establecimiento registrado.',
+      'La licencia cubre exclusivamente el catálogo reproducido a través de la plataforma de Muusica.com. La música que reproduzcas por otros medios (radio, otros servicios de streaming, música en vivo) no está amparada por esta licencia ni por el certificado.',
+    ],
+    resumen: 'Tu suscripción cubre la música de Muusica.com sonando en TU local (una suscripción por local). No cubre revenderla, ponerla en videos, eventos con boleto, ni la música que pongas por otros medios.',
+  },
+  {
+    title: 'Planes, precios y prueba gratuita',
+    legal: [
+      'El servicio ofrece: (a) un plan gratuito, con reproducción de anuncios de forma periódica; y (b) un plan de suscripción por $175 MXN mensuales por locación (impuestos incluidos), sin anuncios y con todas las funciones. Los precios vigentes se publican en muusica.com y pueden actualizarse; cualquier cambio de precio se notificará con al menos 30 días de anticipación y aplicará a partir del siguiente periodo de facturación.',
+      'La prueba gratuita de 7 días no requiere tarjeta. La suscripción de pago se renueva automáticamente cada periodo hasta que la canceles. Los pagos se procesan a través de Stripe.',
+    ],
+    resumen: 'Hay plan gratis con anuncios y plan de $175 MXN/mes por local. Pruebas 7 días gratis sin tarjeta; si contratas, se renueva solo cada mes.',
+  },
+  {
+    title: 'Cancelación y reembolsos',
+    legal: [
+      'Puedes cancelar tu suscripción en cualquier momento desde tu cuenta, sin penalización. La cancelación surte efectos al finalizar el periodo ya pagado: conservas el acceso hasta esa fecha y no se generan cargos posteriores. Los periodos iniciados no son reembolsables, salvo error de cobro imputable a Muusica.com.',
+    ],
+    resumen: 'Cancela cuando quieras sin penalización: usas lo que ya pagaste y no te volvemos a cobrar.',
+  },
+  {
+    title: 'Certificado de licencia',
+    legal: [
+      'Con tu suscripción activa puedes descargar un certificado digital por locación que acredita tu derecho a reproducir el catálogo de Muusica.com en tu establecimiento, validable mediante código QR. El certificado es válido únicamente mientras la suscripción de la locación esté activa y respecto del catálogo de Muusica.com.',
+    ],
+    resumen: 'Tu certificado (con QR) demuestra que la música de Muusica.com en tu local es legal. Vale mientras tu suscripción esté activa.',
+  },
+  {
+    title: 'Disponibilidad del servicio',
+    legal: [
+      'El servicio se presta a través de internet y procuramos su disponibilidad continua; sin embargo, puede interrumpirse temporalmente por mantenimiento, actualizaciones o causas ajenas a nuestro control. No somos responsables de interrupciones atribuibles a tu conexión a internet, a tu equipo o a terceros proveedores de acceso.',
+    ],
+    resumen: 'Hacemos lo posible por que el servicio nunca se caiga, pero necesitas internet propio y estable para usarlo.',
+  },
+  {
+    title: 'Propiedad intelectual',
+    legal: [
+      'La plataforma, la marca Muusica.com, el software, los diseños y el catálogo musical son propiedad de Muusica.com o de sus licenciantes y están protegidos por las leyes de propiedad intelectual. Tu suscripción otorga únicamente la licencia de uso descrita en estos términos y no transfiere ningún derecho de propiedad.',
+    ],
+    resumen: 'La música y la plataforma son nuestras (o de nuestros artistas). Tu suscripción te deja usarlas, no te las vende.',
+  },
+  {
+    title: 'Limitación de responsabilidad',
+    legal: [
+      'El servicio se proporciona "tal cual". En la máxima medida permitida por la ley, la responsabilidad total de Muusica.com frente a ti, por cualquier causa, se limita al monto efectivamente pagado por tu suscripción durante los 12 meses anteriores al hecho que la origine.',
+      'Muusica.com no será responsable por sanciones derivadas de la reproducción de música ajena a su catálogo en tu establecimiento, ni por el uso del servicio en contravención de estos términos.',
+    ],
+    resumen: 'Respondemos por nuestro servicio y nuestro catálogo, hasta lo que hayas pagado en el último año. La música que pongas por fuera es tu responsabilidad.',
+  },
+  {
+    title: 'Modificaciones, terminación y ley aplicable',
+    legal: [
+      'Podemos actualizar estos términos publicando la nueva versión en muusica.com/terminos con su fecha de actualización; los cambios sustanciales se notificarán al correo de tu cuenta con al menos 15 días de anticipación. El uso continuado del servicio tras la entrada en vigor de los cambios constituye su aceptación.',
+      'Podemos suspender o terminar el servicio a cuentas que incumplan estos términos. Estos términos se rigen por las leyes de los Estados Unidos Mexicanos; para cualquier controversia, las partes se someten a los tribunales competentes de la Ciudad de México, renunciando a cualquier otro fuero.',
+    ],
+    resumen: 'Si cambiamos las reglas, te avisamos antes por correo. Aplican las leyes mexicanas.',
+  },
+];
+---
+
+<Layout
+  title="Términos y Condiciones | Muusica.com"
+  description="Términos y condiciones del servicio de música para negocios de Muusica.com: licencia de uso, planes, cancelación y certificado."
+>
+  <Header transparent={false} />
+  <LegalDoc
+    title="Términos y Condiciones"
+    updated="9 de julio de 2026"
+    intro="Estas son las reglas del servicio de Muusica.com. A la derecha de cada sección está la versión corta en lenguaje llano; el texto de la izquierda es el que tiene validez legal."
+    sections={sections}
+  />
+  <Footer />
+</Layout>

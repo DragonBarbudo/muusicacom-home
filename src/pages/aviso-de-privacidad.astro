@@ -1,0 +1,88 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import LegalDoc from '../components/LegalDoc.astro';
+
+// NOTA: sustituir [RAZÓN SOCIAL] y [DOMICILIO] con los datos legales reales antes
+// de considerar este aviso definitivo.
+const sections = [
+  {
+    title: 'Responsable del tratamiento de tus datos',
+    legal: [
+      'Muusica.com, operado por [RAZÓN SOCIAL], con domicilio en [DOMICILIO], es el responsable del tratamiento de los datos personales que nos proporciones, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP), su Reglamento y los Lineamientos del Aviso de Privacidad.',
+      'Para cualquier asunto relacionado con este aviso o con el tratamiento de tus datos personales, puedes contactarnos en el correo electrónico hola@muusica.com.',
+    ],
+    resumen: 'Muusica.com es quien recibe y cuida tus datos. Cualquier duda: hola@muusica.com.',
+  },
+  {
+    title: 'Datos personales que recabamos',
+    legal: [
+      'Recabamos los siguientes datos personales cuando creas una cuenta o utilizas nuestros servicios: (a) datos de identificación y contacto: nombre y correo electrónico; (b) datos de tu negocio: nombre comercial, giro y dirección de la locación, utilizados para emitir tu certificado de licencia; (c) datos de facturación y pago: procesados directamente por nuestro proveedor de pagos Stripe — Muusica.com no almacena números de tarjeta; (d) datos de uso del servicio: historial de reproducción, preferencias musicales, y datos técnicos como dirección IP, tipo de dispositivo y navegador.',
+      'No recabamos datos personales sensibles (origen étnico, estado de salud, creencias religiosas, afiliación sindical, opiniones políticas o preferencia sexual). Te pedimos no compartirnos este tipo de información por ningún medio.',
+    ],
+    resumen: 'Pedimos lo mínimo: tu nombre, correo y datos de tu negocio. Los pagos los procesa Stripe (nunca vemos tu tarjeta). No pedimos datos sensibles.',
+  },
+  {
+    title: 'Para qué usamos tus datos (finalidades)',
+    legal: [
+      'Finalidades primarias (necesarias para el servicio): crear y administrar tu cuenta; prestarte el servicio de música para tu negocio; procesar pagos y emitir comprobantes; generar tu certificado de licencia comercial por locación; brindarte soporte técnico y atención a clientes; y cumplir obligaciones legales y fiscales aplicables.',
+      'Finalidades secundarias (no necesarias, pero útiles): enviarte comunicaciones sobre novedades del servicio, contenidos y promociones; y elaborar estadísticas internas para mejorar el producto. Puedes oponerte a las finalidades secundarias en cualquier momento escribiendo a hola@muusica.com, sin que ello afecte la prestación del servicio.',
+    ],
+    resumen: 'Usamos tus datos para darte el servicio, cobrarte y emitir tu certificado. Lo demás (novedades y promos) es opcional: puedes pedirnos que no te enviemos nada.',
+  },
+  {
+    title: 'Con quién compartimos tus datos',
+    legal: [
+      'No vendemos ni rentamos tus datos personales. Para operar el servicio utilizamos proveedores que tratan datos por cuenta nuestra (encargados): Stripe, Inc. (procesamiento de pagos), Supabase, Inc. (base de datos y autenticación) y Cloudflare, Inc. (infraestructura y entrega de contenido). Estos proveedores pueden ubicarse fuera de México, por lo que tus datos pueden ser objeto de transferencias internacionales exclusivamente para la operación del servicio, con obligaciones de confidencialidad y seguridad equivalentes a las de este aviso.',
+      'Fuera de estos casos, solo compartiremos datos personales cuando lo exija una autoridad competente debidamente fundada y motivada, o en los demás supuestos previstos por el artículo 37 de la LFPDPPP.',
+    ],
+    resumen: 'No vendemos tus datos. Solo los tocan los proveedores que hacen funcionar el servicio (Stripe, Supabase, Cloudflare) y autoridades si la ley lo exige.',
+  },
+  {
+    title: 'Tus derechos (ARCO) y cómo ejercerlos',
+    legal: [
+      'Tienes derecho a Acceder a tus datos personales, Rectificarlos cuando sean inexactos, Cancelarlos y Oponerte a su tratamiento (derechos ARCO), así como a revocar el consentimiento que nos hayas otorgado y a limitar el uso o divulgación de tus datos.',
+      'Para ejercer estos derechos, envía una solicitud a hola@muusica.com indicando: tu nombre completo, el correo asociado a tu cuenta, el derecho que deseas ejercer y una descripción clara de tu solicitud. Responderemos en un plazo máximo de 20 días hábiles. Si consideras que tu derecho a la protección de datos ha sido vulnerado, puedes acudir al Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales (INAI).',
+    ],
+    resumen: 'Puedes pedirnos ver, corregir o borrar tus datos cuando quieras: escribe a hola@muusica.com y respondemos en máximo 20 días hábiles.',
+  },
+  {
+    title: 'Cookies y tecnologías similares',
+    legal: [
+      'Nuestro sitio utiliza cookies esenciales (necesarias para el funcionamiento del sitio y para recordar tus preferencias, como la aceptación de este aviso) y cookies de medición (estadísticas agregadas y anónimas de visitas que nos ayudan a mejorar el sitio). No utilizamos cookies para vender publicidad de terceros.',
+      'Puedes deshabilitar las cookies desde la configuración de tu navegador; hacerlo puede afectar el funcionamiento de algunas partes del sitio y del reproductor.',
+    ],
+    resumen: 'Usamos cookies para que el sitio funcione y para contar visitas de forma anónima. Nada de publicidad de terceros.',
+  },
+  {
+    title: 'Seguridad y conservación',
+    legal: [
+      'Implementamos medidas de seguridad administrativas, técnicas y físicas razonables para proteger tus datos: cifrado de las comunicaciones (HTTPS), control de accesos y proveedores con certificaciones de seguridad reconocidas.',
+      'Conservamos tus datos mientras tu cuenta exista y, tras su cancelación, durante los plazos necesarios para cumplir obligaciones legales y fiscales. Concluidos esos plazos, los datos se eliminan o anonimizan de forma segura.',
+    ],
+    resumen: 'Tus datos viajan cifrados y se guardan solo mientras tengas cuenta (más el tiempo que la ley fiscal nos obliga).',
+  },
+  {
+    title: 'Cambios a este aviso',
+    legal: [
+      'Podemos actualizar este aviso de privacidad para reflejar cambios legales o del servicio. Cualquier modificación se publicará en esta página (muusica.com/aviso-de-privacidad) con la fecha de última actualización visible. Los cambios sustanciales se notificarán además al correo asociado a tu cuenta.',
+    ],
+    resumen: 'Si cambiamos algo importante, lo publicamos aquí y te avisamos por correo.',
+  },
+];
+---
+
+<Layout
+  title="Aviso de Privacidad | Muusica.com"
+  description="Aviso de privacidad de Muusica.com: qué datos recabamos, para qué los usamos y cómo ejercer tus derechos ARCO."
+>
+  <Header transparent={false} />
+  <LegalDoc
+    title="Aviso de Privacidad"
+    updated="9 de julio de 2026"
+    intro="Este aviso explica qué datos personales recabamos cuando usas Muusica.com, para qué los usamos y qué derechos tienes sobre ellos. A la derecha de cada sección encontrarás la versión corta en lenguaje llano; el texto de la izquierda es el que tiene validez legal."
+    sections={sections}
+  />
+  <Footer />
+</Layout>

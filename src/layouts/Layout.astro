@@ -1,4 +1,6 @@
 ---
+import CookieBanner from '../components/CookieBanner.astro';
+
 interface Props {
   title: string;
   description?: string;
@@ -69,7 +71,8 @@ const siteJsonLd = [
   </head>
   <body class="min-h-screen bg-bg-page overflow-x-hidden">
     <slot />
-    
+    <CookieBanner />
+
     <script>
       // Initialize Lucide icons
       document.addEventListener('DOMContentLoaded', () => {
