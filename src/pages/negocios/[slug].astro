@@ -2,186 +2,134 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import LegalTrust from '../../components/LegalTrust.astro';
 import Pricing from '../../components/Pricing.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
+import { negocios } from '../../data/negocios.js';
+import { getAllPosts } from '../../data/blog.js';
 
-export function getStaticPaths() {
-  const businesses = [
-    {
-      slug: "restaurantes",
-      title: "Restaurantes",
-      icon: "utensils",
-      description: "Crea el ambiente perfecto para cada momento del día",
-      longDescription: "La música es el ingrediente secreto de un gran restaurante. Desde un brunch relajado hasta una cena sofisticada, Muusica.com te ayuda a crear la atmósfera ideal para que tus clientes disfruten cada bocado.",
-      color: "#8B5CF6",
-      benefits: [
-        "Control de ambiente por horarios",
-        "Música que invita a la sobremesa",
-        "Sin interrupciones ni anuncios",
-        "Licencia comercial incluida"
-      ]
-    },
-    {
-      slug: "cafeterias",
-      title: "Cafeterías",
-      icon: "coffee",
-      description: "Ambiente acogedor que invita a quedarse",
-      longDescription: "Convierte tu cafetería en el refugio perfecto. Nuestras playlists acústicas y chill están diseñadas para acompañar conversaciones y sesiones de trabajo, creando un espacio donde todos quieran volver.",
-      color: "#14B8A6",
-      benefits: [
-        "Ritmos acústicos relajantes",
-        "Ideal para coworking y estudio",
-        "Volumen moderado optimizado",
-        "Aumento en el tiempo de permanencia"
-      ]
-    },
-    {
-      slug: "gimnasios",
-      title: "Gimnasios",
-      icon: "dumbbell",
-      description: "Energía y motivación para entrenar",
-      longDescription: "La música es el motor del entrenamiento. Con Muusica.com, mantén a tus usuarios motivados con ritmos de alta energía, BPMs constantes y las últimas tendencias en música fitness.",
-      color: "#3B82F6",
-      benefits: [
-        "Alta energía constante (BPM)",
-        "Mixes sin pausas para entrenar",
-        "Géneros: Electrónica, Rock, Pop Urbano",
-        "Reduce la fatiga percibida"
-      ]
-    },
-    {
-      slug: "tiendas",
-      title: "Tiendas",
-      icon: "shopping-bag",
-      description: "Música que acompaña la experiencia de compra",
-      longDescription: "El audio branding es clave en el retail. Crea una experiencia de compra memorable que refleje la identidad de tu marca y anime a tus clientes a explorar tu tienda por más tiempo.",
-      color: "#F59E0B",
-      benefits: [
-        "Identidad de marca sonora",
-        "Ritmo que guía el flujo de clientes",
-        "Ambientación moderna y trendy",
-        "Mejora la percepción de valor"
-      ]
-    },
-    {
-      slug: "spas",
-      title: "Spas",
-      icon: "sparkles",
-      description: "Relajación y bienestar para tus clientes",
-      longDescription: "El bienestar comienza por el oído. Nuestras playlists para spas y centros de bienestar están cuidadosamente seleccionadas para reducir el estrés y facilitar la relajación profunda.",
-      color: "#EC4899",
-      benefits: [
-        "Sonidos zen y relajantes",
-        "Frecuencias que reducen el estrés",
-        "Ambientación inmersiva",
-        "Ideal para masajes y tratamientos"
-      ]
-    },
-    {
-      slug: "bares",
-      title: "Bares",
-      icon: "wine",
-      description: "Ritmo y energía para la noche",
-      longDescription: "La música hace la noche. Crea el ambiente justo para cada momento de tu bar, desde el after-office relajado hasta la pista llena, siempre con licencia comercial incluida.",
-      color: "#6366F1",
-      benefits: [
-        "Ambiente que evoluciona con la noche",
-        "Ritmos para mantener la energía",
-        "Sin interrupciones ni anuncios",
-        "Licencia comercial incluida"
-      ]
-    },
-    {
-      slug: "oficinas",
-      title: "Oficinas",
-      icon: "briefcase",
-      description: "Concentración y buen ambiente de trabajo",
-      longDescription: "Un buen ambiente sonoro mejora el día a día del equipo. Música de fondo que favorece la concentración sin distraer, ideal para espacios de trabajo y áreas comunes.",
-      color: "#0EA5E9",
-      benefits: [
-        "Música que favorece la concentración",
-        "Volumen de fondo equilibrado",
-        "Ideal para áreas comunes y recepción",
-        "Licencia comercial incluida"
-      ]
-    },
-    {
-      slug: "hoteles",
-      title: "Hoteles",
-      icon: "hotel",
-      description: "Una experiencia cuidada en cada espacio",
-      longDescription: "Cada espacio del hotel merece su propia atmósfera. Desde el lobby hasta el restaurante y la alberca, ambienta la estancia de tus huéspedes con música seleccionada y 100% legal.",
-      color: "#10B981",
-      benefits: [
-        "Ambientes distintos por espacio",
-        "Experiencia premium para huéspedes",
-        "Sin interrupciones ni anuncios",
-        "Licencia comercial incluida"
-      ]
-    },
-  ];
+export async function getStaticPaths() {
+  // Sólo enlazamos posts ya publicados (getAllPosts filtra los programados)
+  const posts = await getAllPosts();
 
-  return businesses.map(biz => ({
+  return negocios.map(biz => ({
     params: { slug: biz.slug },
-    props: { biz },
+    props: {
+      biz,
+      relacionados: biz.posts
+        .map(slug => posts.find(p => p.slug === slug))
+        .filter(Boolean)
+        .slice(0, 3),
+    },
   }));
 }
 
-const { biz } = Astro.props;
+const { biz, relacionados } = Astro.props;
+const canonicalURL = new URL(`/negocios/${biz.slug}`, Astro.site);
 
-// ponytail: explicit singulares; slice(0,-1) rompía "bares"→"bare", "hoteles"→"hotele"
-const singulares = {
-  restaurantes: "restaurante",
-  cafeterias: "cafetería",
-  gimnasios: "gimnasio",
-  tiendas: "tienda",
-  spas: "spa",
-  bares: "bar",
-  oficinas: "oficina",
-  hoteles: "hotel",
-};
-const singular = singulares[biz.slug] ?? biz.slug;
+// JSON-LD (SEO/GEO): Service + FAQPage + BreadcrumbList
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `Música para ${biz.title.toLowerCase()}`,
+    serviceType: 'Música ambiental con licencia comercial',
+    description: biz.seoDescription,
+    areaServed: { '@type': 'Country', name: 'México' },
+    audience: { '@type': 'BusinessAudience', name: biz.title },
+    provider: {
+      '@type': 'Organization',
+      name: 'Muusica.com',
+      url: 'https://muusica.com',
+      logo: 'https://muusica.com/logo.svg',
+    },
+    url: canonicalURL.href,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: biz.faq.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
+      { '@type': 'ListItem', position: 2, name: 'Negocios', item: 'https://muusica.com/#negocios' },
+      { '@type': 'ListItem', position: 3, name: biz.title, item: canonicalURL.href },
+    ],
+  },
+];
+
+const otros = negocios.filter(n => n.slug !== biz.slug);
+
+// Índice de la página (ancla + etiqueta), útil para lectura y para GEO
+const indice = [
+  { id: 'por-que', label: 'Por qué importa' },
+  { id: 'jornada', label: 'Tu jornada hora por hora' },
+  { id: 'volumen', label: 'Volumen por zona' },
+  { id: 'catalogo', label: 'Ejemplos del catálogo' },
+  { id: 'errores', label: 'Errores comunes' },
+  { id: 'checklist', label: 'Checklist de 5 minutos' },
+  { id: 'preguntas', label: 'Preguntas frecuentes' },
+];
 ---
 
-<Layout title={`Música para ${biz.title} | Muusica.com`} description={biz.description}>
+<Layout title={`${biz.seoTitle} | Muusica.com`} description={biz.seoDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <Header transparent={false} />
-  
+
   <main class="pt-32 pb-20">
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-12 sm:mb-20">
+      <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2 justify-center lg:justify-start">
+        <a href="/" class="hover:text-white transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="/#negocios" class="hover:text-white transition-colors">Negocios</a>
+        <span>/</span>
+        <span class="text-text-secondary">{biz.title}</span>
+      </nav>
+
       <div class="flex flex-col lg:flex-row items-center gap-12 sm:gap-16">
         <div class="flex-1 space-y-6 sm:space-y-8 text-center lg:text-left">
-          <div 
+          <div
             class="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto lg:mx-0"
             style={`background: ${biz.color}20`}
           >
             <i data-lucide={biz.icon} class="w-8 h-8" style={`color: ${biz.color}`}></i>
           </div>
-          
+
           <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
             Música legal para <span style={`color: ${biz.color}`}>{biz.title}</span>
           </h1>
-          
+
           <p class="text-lg sm:text-xl text-text-secondary leading-relaxed max-w-2xl mx-auto lg:mx-0">
             {biz.longDescription}
           </p>
-          
+
           <div class="flex flex-wrap gap-4 pt-4 justify-center lg:justify-start">
             <a href="https://play.muusica.com" class="btn-primary w-full sm:w-auto">
-              Probar gratis en mi {singular}
+              Probar gratis en mi {biz.singular}
+            </a>
+            <a href="#jornada" class="btn-ghost w-full sm:w-auto justify-center">
+              Ver la guía por horarios
             </a>
           </div>
         </div>
-        
+
         <div class="flex-1 w-full lg:w-auto">
-          <div 
+          <div
             class="aspect-video rounded-3xl bg-gradient-to-br from-bg-surface to-bg-elevated border border-white/5 p-6 sm:p-8 flex flex-col justify-center shadow-2xl relative overflow-hidden"
           >
             <div class="absolute inset-0 opacity-10 pointer-events-none">
               <div class="absolute -top-1/4 -right-1/4 w-96 h-96 bg-white/20 rounded-full blur-[100px]"></div>
             </div>
-            
-            <h3 class="text-white font-bold text-2xl mb-8 relative z-10">Beneficios exclusivos</h3>
+
+            <h2 class="text-white font-bold text-2xl mb-8 relative z-10">Beneficios exclusivos</h2>
             <ul class="space-y-6 relative z-10">
               {biz.benefits.map((benefit) => (
                 <li class="flex items-center gap-4 text-text-secondary text-base sm:text-lg">
@@ -197,12 +145,375 @@ const singular = singulares[biz.slug] ?? biz.slug;
       </div>
     </section>
 
-    <!-- Pricing (Reused) -->
+    <!-- Índice de contenido -->
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16">
+      <div class="glass rounded-2xl p-6">
+        <p class="text-text-tertiary text-sm font-semibold uppercase tracking-wider mb-4">En esta página</p>
+        <ul class="flex flex-wrap gap-x-6 gap-y-2">
+          {indice.map((item) => (
+            <li>
+              <a href={`#${item.id}`} class="text-text-secondary hover:text-white transition-colors text-sm">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Por qué importa la música -->
+    <section id="por-que" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Por qué la música importa en un {biz.singular}</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            No es decoración: es una variable operativa que puedes ajustar todos los días
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 mb-12">
+          {biz.porQue.map((item) => (
+            <div class="card reveal">
+              <div
+                class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                style={`background: ${biz.color}20`}
+              >
+                <i data-lucide={item.icon} class="w-5 h-5" style={`color: ${biz.color}`}></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg mb-2">{item.title}</h3>
+              <p class="text-text-secondary leading-relaxed">{item.text}</p>
+            </div>
+          ))}
+        </div>
+
+        <!-- Dato de investigación -->
+        <figure class="max-w-3xl mx-auto glass rounded-2xl p-6 sm:p-8 reveal">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-xl bg-primary-teal/15 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="microscope" class="w-5 h-5 text-primary-teal"></i>
+            </div>
+            <div>
+              <blockquote class="text-text-secondary leading-relaxed">{biz.estudio.texto}</blockquote>
+              <figcaption class="text-text-tertiary text-sm mt-3">— {biz.estudio.fuente}</figcaption>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Jornada hora por hora -->
+    <section id="jornada" class="section bg-bg-page scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Tu jornada sonora, hora por hora</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Punto de partida listo para copiar. Ajústalo a tu local: el oído en el piso manda sobre cualquier tabla.
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          {biz.jornada.map((franja) => (
+            <div class="card reveal">
+              <div class="flex items-baseline justify-between gap-4 mb-4 flex-wrap">
+                <h3 class="text-white font-semibold text-lg">{franja.franja}</h3>
+                <span
+                  class="text-sm font-bold px-3 py-1 rounded-full"
+                  style={`background: ${biz.color}1a; color: ${biz.color}`}
+                >
+                  {franja.horario}
+                </span>
+              </div>
+
+              <p class="text-text-secondary mb-5">{franja.objetivo}</p>
+
+              <dl class="grid grid-cols-3 gap-3 mb-5">
+                <div>
+                  <dt class="text-text-tertiary text-xs uppercase tracking-wider mb-1">Mezcla</dt>
+                  <dd class="text-white text-sm font-medium">{franja.mezcla}</dd>
+                </div>
+                <div>
+                  <dt class="text-text-tertiary text-xs uppercase tracking-wider mb-1">Tempo</dt>
+                  <dd class="text-white text-sm font-medium">{franja.bpm}</dd>
+                </div>
+                <div>
+                  <dt class="text-text-tertiary text-xs uppercase tracking-wider mb-1">Volumen</dt>
+                  <dd class="text-white text-sm font-medium">{franja.volumen}</dd>
+                </div>
+              </dl>
+
+              <div class="flex flex-wrap gap-2 pt-4 border-t border-white/5">
+                <span class="text-text-tertiary text-xs self-center mr-1">Del catálogo:</span>
+                {franja.tracks.map((t) => (
+                  <span class="text-xs px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/5 text-text-secondary">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <p class="text-text-tertiary text-sm text-center mt-8 max-w-2xl mx-auto">
+          Con <a href="/#mood-mode" class="text-primary-teal hover:underline">Mood Mode</a> cada mezcla es un punto que
+          arrastras en el pad: mueves el punto y todo el local cambia de ambiente sin armar listas.
+        </p>
+      </div>
+    </section>
+
+    <!-- Volumen por zona -->
+    <section id="volumen" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Volumen recomendado por zona</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Puedes medirlo hoy mismo con cualquier app de sonómetro en tu celular, a la altura del oído del cliente
+          </p>
+        </div>
+
+        <div class="max-w-4xl mx-auto overflow-x-auto reveal">
+          <table class="w-full text-left border-collapse min-w-[520px]">
+            <thead>
+              <tr class="border-b border-white/10">
+                <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Zona</th>
+                <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Nivel</th>
+                <th class="py-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Por qué</th>
+              </tr>
+            </thead>
+            <tbody>
+              {biz.volumen.map((v) => (
+                <tr class="border-b border-white/5">
+                  <td class="py-4 pr-4 text-white font-medium align-top">{v.zona}</td>
+                  <td class="py-4 pr-4 align-top">
+                    <span class="whitespace-nowrap font-bold" style={`color: ${biz.color}`}>{v.nivel}</span>
+                  </td>
+                  <td class="py-4 text-text-secondary align-top">{v.nota}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ejemplos del catálogo -->
+    <section id="catalogo" class="section bg-bg-page scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Ejemplos reales de nuestro catálogo</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Estas canciones están hoy en Muusica.com y forman parte del repertorio para {biz.title.toLowerCase()}
+          </p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-8 items-start">
+          <!-- Reproductor de muestra -->
+          <div class="w-full lg:w-[380px] lg:flex-shrink-0 card reveal-left">
+            <div class="flex items-center gap-3 mb-5">
+              <div
+                class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={`background: ${biz.color}20`}
+              >
+                <i data-lucide="music" class="w-6 h-6" style={`color: ${biz.color}`}></i>
+              </div>
+              <div class="min-w-0">
+                <p class="text-white font-semibold truncate">{biz.sample.title}</p>
+                <p class="text-text-tertiary text-sm">Muestra de 30 s</p>
+              </div>
+            </div>
+
+            <audio
+              controls
+              preload="none"
+              class="w-full"
+              src={`/audio/negocios/${biz.slug}.mp3`}
+            >
+              Tu navegador no puede reproducir audio.
+            </audio>
+
+            <p class="text-text-secondary text-sm mt-4 leading-relaxed">{biz.sample.nota}</p>
+          </div>
+
+          <!-- Lista de canciones -->
+          <div class="flex-1 w-full overflow-x-auto reveal-right">
+            <table class="w-full text-left border-collapse min-w-[480px]">
+              <thead>
+                <tr class="border-b border-white/10">
+                  <th class="py-3 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Canción</th>
+                  <th class="py-3 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Ambiente</th>
+                  <th class="py-3 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Momento</th>
+                </tr>
+              </thead>
+              <tbody>
+                {biz.tracks.map((t) => (
+                  <tr class="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
+                    <td class="py-3 pr-4 text-white">{t.title}</td>
+                    <td class="py-3 pr-4">
+                      <span class="text-xs px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/5 text-text-secondary whitespace-nowrap">
+                        {t.mood}
+                      </span>
+                    </td>
+                    <td class="py-3 text-text-secondary">{t.momento}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            <p class="text-text-tertiary text-sm mt-6">
+              Son 10 de más de 5,000 canciones, con nuevo repertorio cada semana. Todas con licencia comercial incluida.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Errores comunes -->
+    <section id="errores" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Errores comunes (y cómo corregirlos hoy)</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Lo que más vemos al revisar el audio de un {biz.singular}
+          </p>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-4">
+          {biz.errores.map((e) => (
+            <div class="card reveal">
+              <div class="flex items-start gap-3 mb-3">
+                <i data-lucide="x-circle" class="w-5 h-5 text-red-400 flex-shrink-0 mt-0.5"></i>
+                <h3 class="text-white font-semibold">{e.error}</h3>
+              </div>
+              <div class="flex items-start gap-3 pl-0.5">
+                <i data-lucide="arrow-right" class="w-5 h-5 text-primary-teal flex-shrink-0 mt-0.5"></i>
+                <p class="text-text-secondary leading-relaxed">{e.fix}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Checklist -->
+    <section id="checklist" class="section bg-bg-page scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Checklist de 5 minutos</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Hazlo hoy en tu local y sabrás exactamente qué ajustar
+          </p>
+        </div>
+
+        <ol class="max-w-3xl mx-auto space-y-4">
+          {biz.checklist.map((item, i) => (
+            <li class="flex items-start gap-4 card reveal">
+              <span
+                class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm"
+                style={`background: ${biz.color}20; color: ${biz.color}`}
+              >
+                {i + 1}
+              </span>
+              <span class="text-text-secondary leading-relaxed pt-1">{item}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- Legal (reutilizado) -->
+    <LegalTrust />
+
+    <!-- FAQ específico del giro -->
+    <section id="preguntas" class="section bg-bg-page scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Preguntas frecuentes sobre música para {biz.title.toLowerCase()}</h2>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-3">
+          {biz.faq.map((f) => (
+            <div class="reveal faq-item">
+              <details class="group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer rounded-xl bg-white/[0.03] border border-white/5 hover:border-white/10 transition-colors">
+                  <h3 class="text-white font-medium pr-4 text-left">{f.q}</h3>
+                  <span class="flex-shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-text-secondary"></i>
+                  </span>
+                </summary>
+                <div class="px-5 pb-5 pt-2">
+                  <p class="text-text-secondary leading-relaxed">{f.a}</p>
+                </div>
+              </details>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Artículos relacionados -->
+    {relacionados.length > 0 && (
+      <section class="section bg-section-gradient">
+        <div class="max-w-[1440px] mx-auto">
+          <div class="section-header reveal">
+            <h2 class="section-title">Sigue leyendo</h2>
+            <p class="section-subtitle max-w-2xl mx-auto">
+              Guías del blog que profundizan en lo que acabas de ver
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            {relacionados.map((post) => (
+              <a href={`/blog/${post.slug}`} class="card reveal group block">
+                <span
+                  class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider"
+                  style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}; border: 1px solid ${post.data.categoryColor}40`}
+                >
+                  {post.data.category}
+                </span>
+                <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                  {post.data.title}
+                </h3>
+                <p class="text-text-secondary text-sm leading-relaxed">{post.data.excerpt}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Otros giros -->
+    <section class="section bg-bg-page">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Música para otros giros</h2>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3">
+          {otros.map((n) => (
+            <a
+              href={`/negocios/${n.slug}`}
+              class="chip chip-inactive hover:text-white"
+            >
+              <i data-lucide={n.icon} class="w-4 h-4 mr-2"></i>
+              {n.title}
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <Pricing />
-    
-    <!-- Final CTA (Reused) -->
     <FinalCTA />
   </main>
 
   <Footer />
 </Layout>
+
+<style>
+  details[open] summary {
+    @apply bg-white/[0.05] border-white/10;
+  }
+
+  /* Reproductor nativo: se ve aceptable sobre fondo oscuro */
+  audio {
+    color-scheme: dark;
+  }
+</style>
