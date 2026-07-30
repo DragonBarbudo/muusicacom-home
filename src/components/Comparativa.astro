@@ -2,9 +2,10 @@
 // Tabla comparativa con la competencia.
 //
 // IMPORTANTE: todos los datos son precios de LISTA PUBLICADOS por cada proveedor,
-// consultados el 30 de julio de 2026, con su fuente enlazada al pie. Si actualizas
-// un dato, actualiza también `consultado` y la fuente. Nunca pongas cifras que no
-// estén publicadas por el propio proveedor: la comparación tiene que ser verificable.
+// consultados el 30 de julio de 2026. `fuente` no se enlaza en la página: queda aquí
+// como referencia de dónde salió cada cifra y para saber qué proveedores nombrar al
+// pie. Si actualizas un dato, actualiza también `consultado`. Nunca pongas cifras que
+// no estén publicadas por el propio proveedor: la comparación tiene que ser verificable.
 const consultado = '30 de julio de 2026';
 const tipoCambio = 17.3; // MXN por USD, mercado el mismo día
 
@@ -163,11 +164,7 @@ const fuentes = competidores.filter((c) => c.fuente);
     <p class="text-text-muted text-xs text-center mt-10 max-w-3xl mx-auto leading-relaxed">
       Precios de lista publicados por cada proveedor, consultados el {consultado}. Las cifras en dólares
       se convierten a razón de ${tipoCambio} MXN/USD y son aproximadas. Los planes, precios y condiciones
-      de terceros pueden cambiar sin aviso; verifica siempre en la fuente original:{' '}
-      {/* sin saltos de línea entre el enlace y la coma: JSX los convierte en espacio */}
-      {fuentes.map((c, i) => (
-        <><a href={c.fuente} target="_blank" rel="noopener noreferrer nofollow" class="text-text-tertiary hover:text-white underline">{c.nombre}</a>{i < fuentes.length - 1 ? ', ' : '.'}</>
-      ))}
+      de terceros pueden cambiar sin aviso; verifica siempre en el sitio de cada proveedor: {fuentes.map((c) => c.nombre).join(', ')}.
     </p>
   </div>
 </section>
