@@ -108,8 +108,9 @@ const firstSong = songs[0];
                   <button id="prevBtn" class="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
                     <i data-lucide="skip-back" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-secondary"></i>
                   </button>
-                  <button id="playPauseBtn" class="p-2.5 sm:p-3 rounded-xl bg-gradient-to-r from-primary-blue to-primary-teal hover:opacity-90 transition-opacity">
-                    <i data-lucide="pause" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i>
+                  <button id="playPauseBtn" class="p-2.5 sm:p-3 rounded-xl bg-gradient-to-r from-primary-blue to-primary-teal hover:opacity-90 transition-opacity" aria-label="Reproducir">
+                    <span data-icon="play"><i data-lucide="play" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i></span>
+                    <span data-icon="pause" class="hidden"><i data-lucide="pause" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i></span>
                   </button>
                   <button id="nextBtn" class="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
                     <i data-lucide="skip-forward" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-secondary"></i>
@@ -176,12 +177,20 @@ const firstSong = songs[0];
     let analyser = null;
     let freqData = null;
 
+    // lucide.createIcons() sustituye cada <i data-lucide> por un <svg>, así que
+    // reescribir data-lucide sobre un <i> ya sustituido no cambia nada: en su
+    // lugar alternamos dos contenedores con `hidden`.
     function setPlayIcon(playing) {
-      const icon = document.querySelector('#playPauseBtn i');
-      const disc = document.querySelector('#albumArt i');
-      if (icon) icon.setAttribute('data-lucide', playing ? 'pause' : 'play');
+      const btn = document.getElementById('playPauseBtn');
+      const disc = document.querySelector('#albumArt [data-lucide], #albumArt svg');
+      if (btn) {
+        const p = btn.querySelector('[data-icon="play"]');
+        const q = btn.querySelector('[data-icon="pause"]');
+        if (p) p.classList.toggle('hidden', playing);
+        if (q) q.classList.toggle('hidden', !playing);
+        btn.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
+      }
       if (disc) disc.style.animationPlayState = playing ? 'running' : 'paused';
-      if (window.lucide) window.lucide.createIcons();
     }
 
     function loadSong(index, autoplay) {

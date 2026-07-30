@@ -5,7 +5,8 @@
 // artículos del blog relacionados.
 //
 // Los títulos en `tracks` y `sample` son canciones reales del catálogo.
-// Los samples viven en public/audio/negocios/<slug>.mp3 (30 s, 128 kbps).
+// Las muestras del reproductor son la primera canción de cada franja de `jornada`,
+// recortada a public/audio/negocios/<slug>-<n>.mp3 (20 s, 96 kbps). Ver BusinessPlayer.astro.
 
 export const negocios = [
   {
@@ -109,8 +110,7 @@ export const negocios = [
       { title: "Quietud del Mar", mood: "Relajado", momento: "Cierre" },
     ],
     sample: {
-      title: "Fino all'Alba",
-      nota: "Pieza de cena: guitarra y cuerdas a tempo bajo, sin voz que compita con la conversación.",
+      nota: "Cuatro muestras en el orden real del día: del desayuno cálido a la cena sofisticada. Escúchalas seguidas para oír cómo debería evolucionar tu salón.",
     },
     errores: [
       {
@@ -271,8 +271,7 @@ export const negocios = [
       { title: "Ornamento Romántico", mood: "Romántico", momento: "Cierre" },
     ],
     sample: {
-      title: "Pausa Perfecta (Reprise)",
-      nota: "Acústico de tarde: presencia cálida, sin voz al frente y con dinámica pareja para volumen bajo.",
+      nota: "Las cuatro franjas seguidas: apertura con energía amable, instrumental para las laptops, acústico de tarde y un cierre que baja el pulso.",
     },
     errores: [
       {
@@ -432,8 +431,7 @@ export const negocios = [
       { title: "Bowl Flow", mood: "Relajado", momento: "Estiramiento" },
     ],
     sample: {
-      title: "Explota",
-      nota: "Pista de hora pico: pulso constante y sin caídas de energía a mitad de serie.",
+      nota: "El día completo en cuatro muestras: turno matutino, horas valle, el pico de las 7 y la pista de estiramiento del cierre.",
     },
     errores: [
       {
@@ -593,8 +591,7 @@ export const negocios = [
       { title: "Late Night Chemistry", mood: "Sofisticado", momento: "Cierre" },
     ],
     sample: {
-      title: "Movimiento Natural",
-      nota: "Pieza de flujo: pulso constante que marca el paso sin apurar al cliente.",
+      nota: "Cuatro muestras que recorren el día del piso de venta: apertura, horas valle con recorrido lento, hora pico y cierre de marca.",
     },
     errores: [
       {
@@ -754,8 +751,7 @@ export const negocios = [
       { title: "Tambor Lejano", mood: "Soñador", momento: "Ritual" },
     ],
     sample: {
-      title: "Zen Peace",
-      nota: "Pieza de cabina: sin percusión marcada ni cambios de dinámica que despierten al cliente.",
+      nota: "Las cuatro capas del spa: recepción, cabina de masaje, tratamiento facial y la salida. Todas planas y sin eventos que despierten al cliente.",
     },
     errores: [
       {
@@ -915,8 +911,7 @@ export const negocios = [
       { title: "Silencio Activo Pt. 2", mood: "Soñador", momento: "Cierre" },
     ],
     sample: {
-      title: "Orquesta de Barrio",
-      nota: "Momento de calentamiento: energía en ascenso, todavía compatible con la conversación en mesa.",
+      nota: "La curva de la noche en cuatro muestras: after-office, calentamiento, pico y la última hora. Así debería subir y bajar la energía de tu bar.",
     },
     errores: [
       {
@@ -1076,8 +1071,7 @@ export const negocios = [
       { title: "Quién Toca Esta Noche", mood: "Alegre", momento: "Viernes" },
     ],
     sample: {
-      title: "Study Calm",
-      nota: "Pieza de bloque de foco: sin voz, sin picos y con densidad pareja para sostener horas sin cansar.",
+      nota: "El día de la oficina en cuatro muestras: llegada, bloque de foco instrumental, el bajón de después de comer y el cierre de viernes.",
     },
     errores: [
       {
@@ -1237,8 +1231,7 @@ export const negocios = [
       { title: "El Ruido de Fondo II", mood: "Concentración", momento: "Business center" },
     ],
     sample: {
-      title: "Brisa de Olivo",
-      nota: "Pieza de lobby: presencia constante, sin protagonismo y sin cambios que interrumpan un check-in.",
+      nota: "Cuatro espacios del hotel, uno por muestra: lobby de día, desayuno, alberca y el lobby de noche con el bar.",
     },
     errores: [
       {

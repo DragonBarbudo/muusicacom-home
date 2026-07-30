@@ -1,0 +1,274 @@
+---
+// Reproductor de muestras del catálogo para las páginas /negocios/[slug].
+// La playlist es el arco del día: una canción por franja horaria, en orden.
+// Los clips viven en public/audio/negocios/<slug>-<n>.mp3 (20 s, 96 kbps).
+//
+// Los iconos de play/pause son dos <span> que se alternan con `hidden`:
+// lucide.createIcons() sustituye cada <i data-lucide> por un <svg>, así que
+// cambiar el atributo data-lucide de un <i> ya sustituido no hace nada.
+// `jornada` es el arreglo de franjas de src/data/negocios.js. La canción de cada
+// muestra es la primera de su franja (`tracks[0]`), que es la que se recortó a
+// public/audio/negocios/<slug>-<n>.mp3.
+interface Props {
+  slug: string;
+  color: string;
+  jornada: { franja: string; horario: string; mezcla: string; tracks: string[] }[];
+}
+
+const { slug, color, jornada } = Astro.props;
+const playlist = jornada.map((f, i) => ({
+  title: f.tracks[0],
+  franja: f.franja,
+  horario: f.horario,
+  mezcla: f.mezcla,
+  src: `/audio/negocios/${slug}-${i + 1}.mp3`,
+}));
+const first = playlist[0];
+---
+
+<div
+  class="player rounded-2xl border border-white/10 bg-bg-surface/90 backdrop-blur-xl p-4 sm:p-5 shadow-2xl"
+  data-player
+  style={`--biz: ${color}`}
+>
+  <!-- Header -->
+  <div class="flex items-center justify-between gap-3 mb-4">
+    <span class="text-text-tertiary text-xs sm:text-sm">Escucha el arco del día</span>
+    <span
+      class="flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-medium"
+      style={`background: ${color}1f; color: ${color}`}
+    >
+      <i data-lucide="music" class="w-3 h-3"></i>
+      {playlist.length} muestras · 20 s
+    </span>
+  </div>
+
+  <!-- Now playing -->
+  <div class="bg-white/5 rounded-xl p-3 sm:p-4 mb-4">
+    <div class="flex items-center gap-3 sm:gap-4">
+      <div
+        class="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0"
+        style={`background: linear-gradient(135deg, ${color}, ${color}55)`}
+      >
+        <i
+          data-player-disc
+          data-lucide="disc-3"
+          class="w-7 h-7 text-white animate-spin"
+          style="animation-duration: 3s; animation-play-state: paused;"
+        ></i>
+      </div>
+
+      <div class="flex-1 min-w-0">
+        <p data-player-franja class="text-text-tertiary text-xs mb-0.5 truncate">{first.franja}</p>
+        <h4 data-player-title class="text-white font-medium text-sm sm:text-base truncate">{first.title}</h4>
+
+        <div class="flex items-center gap-2 mt-2">
+          <div
+            data-player-track
+            class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer"
+            role="slider"
+            aria-label="Progreso de la muestra"
+            aria-valuemin="0"
+            aria-valuemax="20"
+            tabindex="0"
+          >
+            <div
+              data-player-bar
+              class="h-full w-0 rounded-full transition-[width] duration-150 ease-linear"
+              style={`background: linear-gradient(90deg, ${color}, #14B8A6)`}
+            ></div>
+          </div>
+          <span data-player-time class="text-text-tertiary text-[11px] tabular-nums flex-shrink-0">0:00 / 0:20</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controles -->
+  <div class="flex items-center justify-center gap-3 mb-4">
+    <button
+      data-player-prev
+      class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+      aria-label="Muestra anterior"
+    >
+      <i data-lucide="skip-back" class="w-4 h-4 text-text-secondary"></i>
+    </button>
+
+    <button
+      data-player-toggle
+      class="p-3.5 rounded-xl hover:opacity-90 transition-opacity"
+      style={`background: linear-gradient(90deg, ${color}, #14B8A6)`}
+      aria-label="Reproducir"
+    >
+      <span data-icon="play"><i data-lucide="play" class="w-5 h-5 text-white"></i></span>
+      <span data-icon="pause" class="hidden"><i data-lucide="pause" class="w-5 h-5 text-white"></i></span>
+    </button>
+
+    <button
+      data-player-next
+      class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+      aria-label="Siguiente muestra"
+    >
+      <i data-lucide="skip-forward" class="w-4 h-4 text-text-secondary"></i>
+    </button>
+  </div>
+
+  <!-- Playlist -->
+  <ul class="space-y-1 border-t border-white/5 pt-3">
+    {playlist.map((t, i) => (
+      <li>
+        <button
+          data-player-pick={i}
+          class="playlist-row w-full flex items-center gap-3 px-2 py-2 rounded-lg text-left transition-colors hover:bg-white/[0.06]"
+          aria-current={i === 0 ? 'true' : 'false'}
+        >
+          <span class="eq flex items-end gap-[2px] w-3.5 h-3.5 flex-shrink-0" aria-hidden="true">
+            <span></span><span></span><span></span>
+          </span>
+          <span class="min-w-0 flex-1">
+            <span data-row-title class="block text-sm text-white truncate">{t.title}</span>
+            <span class="block text-xs text-text-tertiary truncate">{t.franja}</span>
+          </span>
+          <!-- En móvil el horario cede el espacio al título (ya está en la tabla de la jornada) -->
+          <span class="hidden sm:inline text-xs text-text-tertiary flex-shrink-0 whitespace-nowrap">{t.horario}</span>
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <audio data-player-audio preload="none" src={first.src}></audio>
+  <script type="application/json" data-player-data set:html={JSON.stringify(playlist)} />
+</div>
+
+<style>
+  /* Fila activa de la playlist */
+  .playlist-row[aria-current='true'] {
+    background: color-mix(in srgb, var(--biz) 14%, transparent);
+  }
+  .playlist-row[aria-current='true'] [data-row-title] {
+    color: var(--biz);
+  }
+
+  /* Ecualizador: sólo la fila activa y sólo mientras suena */
+  .eq span {
+    display: block;
+    width: 3px;
+    height: 45%;
+    border-radius: 1px;
+    background: currentColor;
+    color: var(--text-tertiary, #6b7280);
+  }
+  .eq span:nth-child(2) { height: 80%; }
+  .eq span:nth-child(3) { height: 60%; }
+  .playlist-row[aria-current='true'] .eq span {
+    color: var(--biz);
+  }
+  .player[data-playing] .playlist-row[aria-current='true'] .eq span {
+    animation: eq 0.9s ease-in-out infinite;
+  }
+  .player[data-playing] .playlist-row[aria-current='true'] .eq span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .player[data-playing] .playlist-row[aria-current='true'] .eq span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+
+  @keyframes eq {
+    0%, 100% { height: 25%; }
+    50% { height: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .player[data-playing] .eq span { animation: none; }
+  }
+</style>
+
+<script is:inline>
+  (function () {
+    document.querySelectorAll('[data-player]').forEach((root) => {
+      const audio = root.querySelector('[data-player-audio]');
+      const dataEl = root.querySelector('[data-player-data]');
+      const list = JSON.parse(dataEl ? dataEl.textContent || '[]' : '[]');
+      if (!list.length || !audio) return;
+
+      const rows = root.querySelectorAll('[data-player-pick]');
+      const titleEl = root.querySelector('[data-player-title]');
+      const franjaEl = root.querySelector('[data-player-franja]');
+      const barEl = root.querySelector('[data-player-bar]');
+      const trackEl = root.querySelector('[data-player-track]');
+      const timeEl = root.querySelector('[data-player-time]');
+      const toggleEl = root.querySelector('[data-player-toggle]');
+      const iconPlay = root.querySelector('[data-icon="play"]');
+      const iconPause = root.querySelector('[data-icon="pause"]');
+
+      let i = 0;
+
+      const fmt = (s) =>
+        !isFinite(s) ? '0:00' : Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+
+      function setPlaying(playing) {
+        // El <i data-lucide> ya fue sustituido por un <svg>: alternamos los
+        // contenedores en lugar de reescribir el atributo.
+        if (iconPlay) iconPlay.classList.toggle('hidden', playing);
+        if (iconPause) iconPause.classList.toggle('hidden', !playing);
+        if (toggleEl) toggleEl.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
+        // El disco se busca en cada llamada: lucide sustituye el <i> por un <svg>
+        // (heredando los atributos), así que una referencia cacheada queda huérfana.
+        const disc = root.querySelector('[data-player-disc]');
+        if (disc) disc.style.animationPlayState = playing ? 'running' : 'paused';
+        root.toggleAttribute('data-playing', playing);
+      }
+
+      function load(index, autoplay) {
+        i = (index + list.length) % list.length;
+        const t = list[i];
+        if (titleEl) titleEl.textContent = t.title;
+        if (franjaEl) franjaEl.textContent = t.franja;
+        rows.forEach((r, idx) => r.setAttribute('aria-current', idx === i ? 'true' : 'false'));
+        if (audio.getAttribute('src') !== t.src) audio.setAttribute('src', t.src);
+        if (barEl) barEl.style.width = '0%';
+        if (timeEl) timeEl.textContent = '0:00 / 0:20';
+        if (autoplay) {
+          const p = audio.play();
+          if (p && p.catch) p.catch(() => setPlaying(false));
+        }
+      }
+
+      if (toggleEl) {
+        toggleEl.addEventListener('click', () => {
+          if (audio.paused) {
+            const p = audio.play();
+            if (p && p.catch) p.catch(() => setPlaying(false));
+          } else {
+            audio.pause();
+          }
+        });
+      }
+      root.querySelector('[data-player-prev]').addEventListener('click', () => load(i - 1, !audio.paused));
+      root.querySelector('[data-player-next]').addEventListener('click', () => load(i + 1, !audio.paused));
+      rows.forEach((r, idx) => r.addEventListener('click', () => load(idx, true)));
+
+      audio.addEventListener('play', () => setPlaying(true));
+      audio.addEventListener('pause', () => setPlaying(false));
+      // Al terminar una muestra sigue la siguiente: se escucha el día completo
+      audio.addEventListener('ended', () => load(i + 1, true));
+
+      audio.addEventListener('timeupdate', () => {
+        const d = audio.duration;
+        if (!d) return;
+        if (barEl) barEl.style.width = (audio.currentTime / d) * 100 + '%';
+        if (timeEl) timeEl.textContent = fmt(audio.currentTime) + ' / ' + fmt(d);
+      });
+
+      if (trackEl) {
+        trackEl.addEventListener('click', (e) => {
+          if (!audio.duration) return;
+          const rect = trackEl.getBoundingClientRect();
+          audio.currentTime = ((e.clientX - rect.left) / rect.width) * audio.duration;
+        });
+      }
+
+      setPlaying(false);
+    });
+  })();
+</script>

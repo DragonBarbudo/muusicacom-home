@@ -2,6 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
+import BusinessPlayer from '../../components/BusinessPlayer.astro';
 import LegalTrust from '../../components/LegalTrust.astro';
 import Pricing from '../../components/Pricing.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
@@ -306,30 +307,9 @@ const indice = [
         </div>
 
         <div class="flex flex-col lg:flex-row gap-8 items-start">
-          <!-- Reproductor de muestra -->
-          <div class="w-full lg:w-[380px] lg:flex-shrink-0 card reveal-left">
-            <div class="flex items-center gap-3 mb-5">
-              <div
-                class="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0"
-                style={`background: ${biz.color}20`}
-              >
-                <i data-lucide="music" class="w-6 h-6" style={`color: ${biz.color}`}></i>
-              </div>
-              <div class="min-w-0">
-                <p class="text-white font-semibold truncate">{biz.sample.title}</p>
-                <p class="text-text-tertiary text-sm">Muestra de 30 s</p>
-              </div>
-            </div>
-
-            <audio
-              controls
-              preload="none"
-              class="w-full"
-              src={`/audio/negocios/${biz.slug}.mp3`}
-            >
-              Tu navegador no puede reproducir audio.
-            </audio>
-
+          <!-- Reproductor de muestras -->
+          <div class="w-full lg:w-[400px] lg:flex-shrink-0 reveal-left">
+            <BusinessPlayer slug={biz.slug} color={biz.color} jornada={biz.jornada} />
             <p class="text-text-secondary text-sm mt-4 leading-relaxed">{biz.sample.nota}</p>
           </div>
 
