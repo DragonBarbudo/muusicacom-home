@@ -1,0 +1,173 @@
+---
+// Tabla comparativa con la competencia.
+//
+// IMPORTANTE: todos los datos son precios de LISTA PUBLICADOS por cada proveedor,
+// consultados el 30 de julio de 2026, con su fuente enlazada al pie. Si actualizas
+// un dato, actualiza también `consultado` y la fuente. Nunca pongas cifras que no
+// estén publicadas por el propio proveedor: la comparación tiene que ser verificable.
+const consultado = '30 de julio de 2026';
+const tipoCambio = 17.3; // MXN por USD, mercado el mismo día
+
+const competidores = [
+  {
+    nombre: 'Muusica.com',
+    destacado: true,
+    precio: '$175 MXN',
+    licencia: 'incluida',
+    licenciaNota: 'Sin pagos aparte a SACM ni SOMEXFON',
+  },
+  {
+    nombre: 'Soundtrack',
+    plan: 'Plan Essential',
+    precio: `24 USD ≈ $${Math.round(24 * tipoCambio)} MXN`,
+    precioNota: 'por zona, con pago anual',
+    licencia: 'no',
+    licenciaNota: 'Su tabla de precios indica que se debe comprar por separado',
+    fuente: 'https://www.soundtrack.io/es/pricing',
+  },
+  {
+    nombre: 'Kasimu Global',
+    precio: '$239 MXN',
+    licencia: 'no',
+    licenciaNota: 'Música comercial: se paga aparte a SACM o SOMEXFON',
+    fuente: 'https://www.kasimu.mx/precio-servicio-de-musica-ambiental-kasimu-mexico/',
+  },
+  {
+    nombre: 'Kasimu Freedom',
+    precio: '$279 MXN',
+    licencia: 'parcial',
+    licenciaNota: 'Incluye derechos de autor; los de productor dependen del país',
+    fuente: 'https://www.kasimu.mx/precio-servicio-de-musica-ambiental-kasimu-mexico/',
+  },
+  {
+    nombre: 'VOXPOP',
+    precio: '$295 – $895 MXN',
+    precioNota: 'según plan',
+    licencia: 'parcial',
+    licenciaNota: 'Ofrece "blindaje legal", sin desglose público de qué cubre',
+    fuente: 'https://www.voxpop.com.mx/precios/',
+  },
+  {
+    nombre: 'Mood Media',
+    precio: 'Sin precio público',
+    precioNota: 'cotización por proyecto',
+    licencia: 'consultar',
+    licenciaNota: 'No publica el desglose por país',
+    fuente: 'https://moodmedia.com/',
+  },
+  {
+    nombre: 'Spotify, Apple Music o YouTube',
+    plan: 'Cuenta personal',
+    precio: 'Plan personal',
+    licencia: 'no',
+    licenciaNota: 'Sus términos sólo autorizan uso personal y doméstico',
+  },
+];
+
+const estados = {
+  incluida: { icon: 'check-circle-2', texto: 'Incluida', color: '#14B8A6' },
+  parcial: { icon: 'alert-circle', texto: 'Parcial', color: '#F59E0B' },
+  no: { icon: 'x-circle', texto: 'No incluida', color: '#F87171' },
+  consultar: { icon: 'help-circle', texto: 'A consultar', color: '#94A3B8' },
+};
+
+const fuentes = competidores.filter((c) => c.fuente);
+---
+
+<section id="comparativa" class="section bg-section-gradient">
+  <div class="max-w-[1440px] mx-auto">
+    <div class="section-header reveal">
+      <h2 class="section-title">Cómo se compara Muusica.com</h2>
+      <p class="section-subtitle max-w-3xl mx-auto">
+        La diferencia no está sólo en el precio: está en si la licencia de comunicación pública
+        viene incluida o la terminas pagando aparte a SACM y SOMEXFON.
+      </p>
+    </div>
+
+    <!-- Tabla (desde md) -->
+    <div class="hidden md:block max-w-4xl mx-auto reveal">
+      <table class="w-full text-left border-collapse">
+        <thead>
+          <tr class="border-b border-white/10">
+            <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Servicio</th>
+            <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Precio al mes por sucursal</th>
+            <th class="py-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Licencia de comunicación pública</th>
+          </tr>
+        </thead>
+        <tbody>
+          {competidores.map((c) => (
+            <tr class:list={['border-b border-white/5', c.destacado && 'bg-primary-teal/[0.07]']}>
+              <td class="py-5 pr-4 align-top">
+                <span class:list={['block font-semibold', c.destacado ? 'text-primary-teal' : 'text-white']}>
+                  {c.nombre}
+                </span>
+                {c.plan && <span class="block text-xs text-text-tertiary mt-0.5">{c.plan}</span>}
+              </td>
+              <td class="py-5 pr-4 align-top">
+                <span class="block text-white font-medium whitespace-nowrap">{c.precio}</span>
+                {c.precioNota && <span class="block text-xs text-text-tertiary mt-0.5">{c.precioNota}</span>}
+              </td>
+              <td class="py-5 align-top">
+                <span class="inline-flex items-center gap-1.5 font-medium text-sm whitespace-nowrap" style={`color: ${estados[c.licencia].color}`}>
+                  <i data-lucide={estados[c.licencia].icon} class="w-4 h-4"></i>
+                  {estados[c.licencia].texto}
+                </span>
+                <span class="block text-xs text-text-tertiary mt-1">{c.licenciaNota}</span>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tarjetas (móvil) -->
+    <div class="md:hidden space-y-3">
+      {competidores.map((c) => (
+        <div
+          class:list={['card reveal', c.destacado && 'border-primary-teal/40']}
+          style={c.destacado ? 'background: rgba(20, 184, 166, 0.07)' : undefined}
+        >
+          <div class="flex items-baseline justify-between gap-3 mb-3">
+            <span class:list={['font-semibold', c.destacado ? 'text-primary-teal' : 'text-white']}>
+              {c.nombre}
+            </span>
+            <span class="text-white font-medium text-sm whitespace-nowrap flex-shrink-0">{c.precio}</span>
+          </div>
+          {c.plan && <p class="text-xs text-text-tertiary -mt-2 mb-3">{c.plan}</p>}
+
+          <div class="pt-3 border-t border-white/5">
+            <span class="inline-flex items-center gap-1.5 font-medium text-sm" style={`color: ${estados[c.licencia].color}`}>
+              <i data-lucide={estados[c.licencia].icon} class="w-4 h-4"></i>
+              {estados[c.licencia].texto}
+            </span>
+            <p class="text-xs text-text-tertiary mt-1">{c.licenciaNota}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <!-- Lectura de la tabla + CTA -->
+    <div class="max-w-3xl mx-auto mt-12 text-center reveal">
+      <p class="text-text-secondary leading-relaxed mb-8">
+        Varios servicios licencian la grabación pero no la comunicación pública: pagas la suscripción
+        <em>y además</em> la cuota a las sociedades de gestión. Con Muusica.com el precio que ves es
+        el total: $175 MXN al mes por sucursal, certificado incluido.
+      </p>
+      <a href="https://play.muusica.com" class="btn-primary inline-flex">
+        <span>Probar gratis 7 días</span>
+        <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+      </a>
+    </div>
+
+    <!-- Fuentes -->
+    <p class="text-text-muted text-xs text-center mt-10 max-w-3xl mx-auto leading-relaxed">
+      Precios de lista publicados por cada proveedor, consultados el {consultado}. Las cifras en dólares
+      se convierten a razón de ${tipoCambio} MXN/USD y son aproximadas. Los planes, precios y condiciones
+      de terceros pueden cambiar sin aviso; verifica siempre en la fuente original:{' '}
+      {/* sin saltos de línea entre el enlace y la coma: JSX los convierte en espacio */}
+      {fuentes.map((c, i) => (
+        <><a href={c.fuente} target="_blank" rel="noopener noreferrer nofollow" class="text-text-tertiary hover:text-white underline">{c.nombre}</a>{i < fuentes.length - 1 ? ', ' : '.'}</>
+      ))}
+    </p>
+  </div>
+</section>
