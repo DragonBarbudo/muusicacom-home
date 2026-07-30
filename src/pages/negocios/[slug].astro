@@ -123,8 +123,10 @@ const indice = [
         </div>
 
         <div class="flex-1 w-full lg:w-auto">
+          <!-- aspect-video sólo desde lg: en móvil la proporción 16:9 no alcanza
+               para el título más los 4 beneficios y los recortaba -->
           <div
-            class="aspect-video rounded-3xl bg-gradient-to-br from-bg-surface to-bg-elevated border border-white/5 p-6 sm:p-8 flex flex-col justify-center shadow-2xl relative overflow-hidden"
+            class="lg:aspect-video rounded-3xl bg-gradient-to-br from-bg-surface to-bg-elevated border border-white/5 p-6 sm:p-8 flex flex-col justify-center shadow-2xl relative overflow-hidden"
           >
             <div class="absolute inset-0 opacity-10 pointer-events-none">
               <div class="absolute -top-1/4 -right-1/4 w-96 h-96 bg-white/20 rounded-full blur-[100px]"></div>

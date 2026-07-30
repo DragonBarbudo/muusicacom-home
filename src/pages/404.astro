@@ -1,0 +1,231 @@
+---
+// Página 404: Cloudflare Pages sirve /404.html automáticamente en las rutas que
+// no existen. Además de disculparse, hace de mapa del sitio para quien llegó
+// perdido, así que también recoge el tráfico de enlaces rotos.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { negocios } from '../data/negocios.js';
+import { getAllPosts } from '../data/blog.js';
+
+const posts = (await getAllPosts()).slice(0, 8);
+
+const secciones = [
+  { label: 'Inicio', href: '/', icon: 'home' },
+  { label: 'Cómo funciona', href: '/#beneficios', icon: 'sparkles' },
+  { label: 'Mood Mode', href: '/#mood-mode', icon: 'move' },
+  { label: 'Licencias y legal', href: '/#legal', icon: 'shield-check' },
+  { label: 'Precios', href: '/#precio', icon: 'tag' },
+  { label: 'Preguntas frecuentes', href: '/#faq', icon: 'help-circle' },
+  { label: 'Blog', href: '/blog', icon: 'newspaper' },
+];
+
+const legales = [
+  { label: 'Aviso de privacidad', href: '/aviso-de-privacidad' },
+  { label: 'Términos y condiciones', href: '/terminos' },
+];
+---
+
+<Layout
+  title="404 · Esta nota no existe | Muusica.com"
+  description="La página que buscas no existe. Aquí tienes el mapa completo de Muusica.com para encontrar lo que necesitas."
+>
+  <meta name="robots" content="noindex, follow" slot="head" />
+  <Header transparent={false} />
+
+  <main class="pt-32 pb-20">
+    <!-- Hero del error -->
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16 text-center">
+      <div class="max-w-3xl mx-auto">
+        <div class="flex items-center justify-center gap-3 mb-6">
+          <span class="text-6xl md:text-8xl font-bold gradient-text leading-none">404</span>
+          <i data-lucide="music-2" class="w-10 h-10 md:w-14 md:h-14 text-primary-teal -rotate-12"></i>
+        </div>
+
+        <h1 class="text-3xl md:text-5xl font-bold text-white leading-tight mb-6">
+          Una nota desafinada te trajo hasta aquí
+        </h1>
+
+        <p class="text-lg sm:text-xl text-text-secondary leading-relaxed mb-4">
+          Esta página no está en el setlist. Puede que el enlace esté roto, que la hayamos
+          movido, o que alguien haya tocado un si bemol donde iba un si.
+        </p>
+
+        <p class="text-text-tertiary mb-10">
+          Lo único que hay aquí es silencio. Y mira, el silencio es lo único que no paga regalías.
+        </p>
+
+        <!-- CTA principal -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://play.muusica.com" class="btn-primary w-full sm:w-auto justify-center">
+            <span>Empieza gratis 7 días</span>
+            <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+          </a>
+          <a href="https://play.muusica.com" class="btn-secondary w-full sm:w-auto justify-center">
+            <i data-lucide="log-in" class="w-5 h-5 mr-2"></i>
+            <span>Iniciar sesión</span>
+          </a>
+        </div>
+        <p class="text-text-tertiary text-sm mt-4">Sin tarjeta · Cancela cuando quieras</p>
+      </div>
+    </section>
+
+    <!-- Mapa del sitio -->
+    <section class="section bg-section-gradient">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header">
+          <h2 class="section-title">¿Qué buscabas?</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Todo lo que sí existe en Muusica.com, en un solo lugar
+          </p>
+        </div>
+
+        <!-- items-start: si no, las tarjetas cortas se estiran hasta la altura
+             de la de giros y dejan un hueco vacío -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+          <!-- Música por giro -->
+          <div class="card">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 rounded-xl bg-primary-purple/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="store" class="w-5 h-5 text-primary-purple"></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg">Música para tu giro</h3>
+            </div>
+            <ul class="space-y-1">
+              {negocios.map((n) => (
+                <li>
+                  <a
+                    href={`/negocios/${n.slug}`}
+                    class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/[0.06] transition-colors group"
+                  >
+                    <span
+                      class="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
+                      style={`background: ${n.color}20`}
+                    >
+                      <i data-lucide={n.icon} class="w-3.5 h-3.5" style={`color: ${n.color}`}></i>
+                    </span>
+                    <span class="min-w-0">
+                      <span class="block text-sm text-white group-hover:text-primary-teal transition-colors">
+                        {n.title}
+                      </span>
+                      <!-- line-clamp-1 y no truncate: `truncate` implica white-space:nowrap,
+                           que dispara el min-content del grid y ensancha la columna -->
+                      <span class="block text-xs text-text-tertiary line-clamp-1">{n.description}</span>
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Secciones del sitio -->
+          <div class="card">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 rounded-xl bg-primary-teal/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="compass" class="w-5 h-5 text-primary-teal"></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg">El sitio</h3>
+            </div>
+            <ul class="space-y-1">
+              {secciones.map((s) => (
+                <li>
+                  <a
+                    href={s.href}
+                    class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/[0.06] transition-colors text-sm text-text-secondary hover:text-white"
+                  >
+                    <i data-lucide={s.icon} class="w-4 h-4 text-text-tertiary flex-shrink-0"></i>
+                    <span>{s.label}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Legal -->
+          <div class="card">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 rounded-xl bg-primary-blue/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="file-text" class="w-5 h-5 text-primary-blue"></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg">Legal</h3>
+            </div>
+            <ul class="space-y-1">
+              {legales.map((l) => (
+                <li>
+                  <a
+                    href={l.href}
+                    class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/[0.06] transition-colors text-sm text-text-secondary hover:text-white"
+                  >
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-text-tertiary flex-shrink-0"></i>
+                    <span>{l.label}</span>
+                  </a>
+                </li>
+              ))}
+              <li>
+                <a
+                  href="mailto:hola@muusica.com"
+                  class="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-white/[0.06] transition-colors text-sm text-text-secondary hover:text-white"
+                >
+                  <i data-lucide="mail" class="w-4 h-4 text-text-tertiary flex-shrink-0"></i>
+                  <span>hola@muusica.com</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Blog -->
+          <div class="card md:col-span-2 lg:col-span-3">
+            <div class="flex items-center gap-3 mb-5">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="book-open" class="w-5 h-5 text-amber-500"></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg">Guías recientes</h3>
+            </div>
+            <ul class="grid sm:grid-cols-2 gap-x-4 gap-y-1">
+              {posts.map((p) => (
+                <li>
+                  <a
+                    href={`/blog/${p.slug}`}
+                    class="block px-2 py-2 rounded-lg hover:bg-white/[0.06] transition-colors group"
+                  >
+                    <span class="block text-sm text-white group-hover:text-primary-teal transition-colors line-clamp-2">
+                      {p.data.title}
+                    </span>
+                    <span class="block text-xs text-text-tertiary mt-0.5">{p.data.category}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <a href="/blog" class="inline-flex items-center gap-2 text-primary-teal text-sm mt-4 px-2 hover:underline">
+              Ver todas las guías
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cierre -->
+    <section class="section bg-bg-page">
+      <div class="max-w-3xl mx-auto text-center">
+        <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">
+          ¿Seguimos sin encontrarlo?
+        </h2>
+        <p class="text-text-secondary mb-8">
+          Escríbenos y te decimos exactamente dónde está. O mejor: entra al reproductor y
+          pon música legal en tu negocio en los próximos cinco minutos.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="https://play.muusica.com" class="btn-primary w-full sm:w-auto justify-center">
+            Probar gratis
+          </a>
+          <a href="mailto:hola@muusica.com" class="btn-ghost w-full sm:w-auto justify-center">
+            Escribirnos
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</Layout>

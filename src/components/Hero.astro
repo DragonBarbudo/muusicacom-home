@@ -79,7 +79,9 @@ const firstSong = songs[0];
           <canvas id="heroAudioViz" class="absolute inset-0 w-full h-full"></canvas>
           
           <!-- Main simulator card -->
-          <div id="musicPlayer" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-bg-surface/90 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-6 shadow-2xl w-[calc(100%-2rem)] sm:w-full max-w-sm mx-4 sm:mx-0">
+          <!-- Sin mx-4: la tarjeta ya está centrada con left-1/2 + -translate-x-1/2,
+               y el margen la corría 16px fuera del viewport en móvil -->
+          <div id="musicPlayer" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 bg-bg-surface/90 backdrop-blur-xl rounded-2xl border border-white/10 p-4 sm:p-6 shadow-2xl w-[calc(100%-2rem)] sm:w-full max-w-sm">
             <!-- Simulator header -->
             <div class="flex items-center justify-between mb-3 sm:mb-4">
               <div class="flex items-center gap-2">
