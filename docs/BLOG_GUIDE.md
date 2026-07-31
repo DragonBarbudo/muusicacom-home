@@ -26,12 +26,18 @@ readTime: "X min"
 date: YYYY-MM-DD
 dateFormatted: "DD Mon YYYY"
 author:
-  name: "Author Name"
-  role: "Author Title/Role"
+  name: "Equipo Muusica.com"
+  role: "Redacción"
 gradient: "from-color-1 to-color-2"
 featured: true/false
 ---
 ```
+
+> **Autoría:** todos los posts se firman como `Equipo Muusica.com` / `Redacción`.
+> No inventes personas (abogados, doctoras, analistas) ni las cites en `<Quote>`:
+> atribuir contenido legal o médico a un experto que no existe es un riesgo real
+> y Google lo penaliza vía E-E-A-T. Citar a un investigador **real** con su
+> institución sí es válido (Adrian North, Karageorghis, Milliman, Beckerman).
 
 ### Available Categories & Colors
 
