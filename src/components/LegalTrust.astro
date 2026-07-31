@@ -23,6 +23,37 @@ const cards = [
     showCertExample: true,
   },
 ];
+
+// Los dos permisos que hacen falta para poner música en un local. La distinción
+// es el argumento central del módulo: casi todos los servicios venden el primero.
+const permisos = [
+  {
+    icon: "disc-3",
+    titulo: "Usar la música",
+    texto: "Es el derecho a reproducir las canciones de un catálogo. Prácticamente todos los servicios lo incluyen: es lo que estás pagando en tu suscripción.",
+    estado: "Casi siempre incluida",
+    color: "#3B82F6",
+  },
+  {
+    icon: "megaphone",
+    titulo: "Que suenen en público",
+    texto: "Es el permiso para que esa música se escuche en un espacio abierto al público. En México lo administran SACM, por los autores y compositores, y SOMEXFON, por intérpretes y productores.",
+    estado: "Casi nunca incluida",
+    color: "#F59E0B",
+  },
+];
+
+const reciboOtros = [
+  { concepto: "Suscripción mensual", detalle: "el precio de la etiqueta" },
+  { concepto: "Licencia SACM", detalle: "según giro, aforo y ciudad" },
+  { concepto: "Licencia SOMEXFON", detalle: "según giro, aforo y ciudad" },
+];
+
+const reciboMuusica = [
+  { concepto: "Suscripción mensual", detalle: "$175 MXN por sucursal" },
+  { concepto: "Licencia de comunicación pública", detalle: "incluida" },
+  { concepto: "Certificado para inspecciones", detalle: "incluido" },
+];
 ---
 
 <section id="legal" class="section bg-section-gradient">
@@ -69,5 +100,275 @@ const cards = [
         </div>
       ))}
     </div>
+
+    <!-- Módulo: los dos permisos y el segundo cobro -->
+    <div class="mt-16 rounded-3xl border border-white/10 bg-bg-surface/60 backdrop-blur-sm p-6 sm:p-10 lg:p-14 reveal">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-5 uppercase tracking-wider bg-amber-500/10 text-amber-400 border border-amber-500/30">
+          Lo que casi nadie te explica
+        </span>
+        <h3 class="text-3xl md:text-4xl font-bold text-white leading-tight mb-4">
+          Poner música en tu negocio requiere dos permisos
+        </h3>
+        <p class="text-lg text-text-secondary leading-relaxed">
+          La mayoría de los servicios que reproducen música popular sólo te venden uno.
+          El segundo llega después, y no lo pones tú.
+        </p>
+      </div>
+
+      <!-- Ilustración: la música cruza dos puertas antes de llegar al público -->
+      <div class="max-w-3xl mx-auto mb-12 reveal">
+        <svg
+          viewBox="0 18 760 197"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          class="ilustracion w-full h-auto"
+          role="img"
+          aria-label="La música sale de tu equipo y debe cruzar dos permisos —el de las grabaciones y el de comunicación pública— antes de llegar al público."
+        >
+          <!-- Recorrido -->
+          <path d="M112 132 H688" stroke="rgba(255,255,255,0.10)" stroke-width="2" stroke-dasharray="3 9" stroke-linecap="round" />
+
+          <!-- Bocina del local -->
+          <rect x="34" y="98" width="58" height="68" rx="14" fill="rgba(20,184,166,0.10)" stroke="#14B8A6" stroke-width="2" />
+          <circle cx="63" cy="132" r="15" stroke="#14B8A6" stroke-width="2" />
+          <circle cx="63" cy="132" r="5" fill="#14B8A6" />
+
+          <!-- Ondas: viajan desde la bocina y se cortan en seco en la segunda puerta -->
+          <g class="ondas" stroke="#14B8A6" stroke-linecap="round" stroke-width="2.5" fill="none">
+            <path d="M108 116 a24 24 0 0 1 0 32" opacity="0.85" />
+            <path d="M126 104 a40 40 0 0 1 0 56" opacity="0.55" />
+            <path d="M144 92 a56 56 0 0 1 0 80" opacity="0.3" />
+          </g>
+
+          <!-- Puerta 1: usar la música (incluida) -->
+          <path d="M258 166 V116 a42 42 0 0 1 84 0 V166" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" />
+          <g class="sello sello-ok">
+            <circle cx="300" cy="48" r="19" fill="rgba(59,130,246,0.14)" stroke="#3B82F6" stroke-width="2" />
+            <path d="M292 48 l5.5 5.5 L309 42" stroke="#3B82F6" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+          <text class="etiqueta" x="300" y="192" text-anchor="middle" font-size="13" fill="#94A3B8">Usar la música</text>
+          <text class="etiqueta" x="300" y="208" text-anchor="middle" font-size="11" fill="#3B82F6">incluido</text>
+
+          <!-- Puerta 2: comunicación pública (casi nunca incluida) -->
+          <path d="M458 166 V116 a42 42 0 0 1 84 0 V166" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="7 7" />
+          <g class="sello sello-alto">
+            <circle cx="500" cy="48" r="19" fill="rgba(245,158,11,0.14)" stroke="#F59E0B" stroke-width="2" />
+            <path d="M493 41 l14 14 M507 41 l-14 14" stroke="#F59E0B" stroke-width="2.5" stroke-linecap="round" />
+          </g>
+          <text class="etiqueta" x="500" y="192" text-anchor="middle" font-size="13" fill="#94A3B8">Comunicación pública</text>
+          <text class="etiqueta" x="500" y="208" text-anchor="middle" font-size="11" fill="#F59E0B">casi nunca incluida</text>
+
+          <!-- Barrera en la segunda puerta: aquí se detiene el recorrido -->
+          <g class="barrera">
+            <rect x="466" y="127" width="68" height="10" rx="5" fill="rgba(245,158,11,0.16)" stroke="#F59E0B" stroke-width="2" />
+            <path d="M478 137 l7 -10 M494 137 l7 -10 M510 137 l7 -10" stroke="#F59E0B" stroke-width="2" stroke-linecap="round" opacity="0.75" />
+          </g>
+
+          <!-- Público -->
+          <g stroke="#64748B" stroke-width="2" fill="none">
+            <circle cx="646" cy="118" r="9" />
+            <path d="M632 152 a14 14 0 0 1 28 0" />
+            <circle cx="678" cy="112" r="10" />
+            <path d="M662 150 a16 16 0 0 1 32 0" />
+            <circle cx="710" cy="118" r="9" />
+            <path d="M696 152 a14 14 0 0 1 28 0" />
+          </g>
+          <text class="etiqueta" x="678" y="192" text-anchor="middle" font-size="13" fill="#94A3B8">Tus clientes</text>
+        </svg>
+
+        <!-- En móvil el SVG se escala tanto que sus etiquetas quedan en ~5px:
+             se ocultan y se rotulan aquí, en HTML, a un tamaño legible -->
+        <div class="sm:hidden grid grid-cols-3 gap-2 mt-3 text-center">
+          <div>
+            <p class="text-[11px] text-text-tertiary leading-tight">Usar la música</p>
+            <p class="text-[10px] leading-tight" style="color: #3B82F6">incluido</p>
+          </div>
+          <div>
+            <p class="text-[11px] text-text-tertiary leading-tight">Comunicación pública</p>
+            <p class="text-[10px] leading-tight" style="color: #F59E0B">casi nunca incluida</p>
+          </div>
+          <div>
+            <p class="text-[11px] text-text-tertiary leading-tight">Tus clientes</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Los dos permisos -->
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto mb-10">
+        {permisos.map((p) => (
+          <div class="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0"
+                style={`background: ${p.color}1f`}
+              >
+                <i data-lucide={p.icon} class="w-5 h-5" style={`color: ${p.color}`}></i>
+              </div>
+              <h4 class="text-white font-semibold text-lg">{p.titulo}</h4>
+            </div>
+            <p class="text-text-secondary leading-relaxed mb-4">{p.texto}</p>
+            <span
+              class="inline-block text-xs font-semibold px-3 py-1 rounded-full"
+              style={`background: ${p.color}1a; color: ${p.color}`}
+            >
+              {p.estado}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <!-- La consecuencia -->
+      <div class="max-w-4xl mx-auto mb-12 rounded-2xl border border-amber-500/20 bg-amber-500/[0.06] p-6 flex items-start gap-4">
+        <i data-lucide="alert-triangle" class="w-5 h-5 text-amber-400 flex-shrink-0 mt-1"></i>
+        <p class="text-text-secondary leading-relaxed">
+          Si el servicio reproduce <strong class="text-white">música popular</strong>, la misma que suena
+          en la radio, sus autores e intérpretes están representados por esas sociedades. Tu suscripción
+          cubre el catálogo; la comunicación pública sigue pendiente y aparece como un segundo cobro que
+          no controlas.
+        </p>
+      </div>
+
+      <!-- Los dos recibos -->
+      <div class="grid md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+        <!-- Otros servicios -->
+        <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-6 sm:p-7">
+          <p class="text-text-tertiary text-xs uppercase tracking-wider mb-5">Servicio con música popular</p>
+          <ul class="space-y-3 mb-6">
+            {reciboOtros.map((r) => (
+              <li class="flex items-baseline justify-between gap-4 pb-3 border-b border-dashed border-white/10">
+                <span class="text-text-secondary text-sm">{r.concepto}</span>
+                <span class="text-text-tertiary text-xs text-right flex-shrink-0 max-w-[45%]">{r.detalle}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="flex items-baseline justify-between gap-4">
+            <span class="text-white font-semibold">Total al mes</span>
+            <span class="text-amber-400 font-semibold text-sm text-right">Tres cobros de tres emisores</span>
+          </div>
+        </div>
+
+        <!-- Muusica.com -->
+        <div class="rounded-2xl border border-primary-teal/30 p-6 sm:p-7" style="background: rgba(20, 184, 166, 0.06)">
+          <p class="text-primary-teal text-xs uppercase tracking-wider mb-5 font-semibold">Con Muusica.com</p>
+          <ul class="space-y-3 mb-6">
+            {reciboMuusica.map((r) => (
+              <li class="flex items-baseline justify-between gap-4 pb-3 border-b border-dashed border-white/10">
+                <span class="text-text-secondary text-sm">{r.concepto}</span>
+                <span class="text-white text-xs text-right flex-shrink-0 max-w-[45%]">{r.detalle}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="flex items-baseline justify-between gap-4">
+            <span class="text-white font-semibold">Total al mes</span>
+            <span class="text-primary-teal font-bold text-xl">$175 MXN</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cierre -->
+      <div class="max-w-3xl mx-auto text-center mt-12">
+        <p class="text-text-secondary leading-relaxed mb-8">
+          Nuestro catálogo es original y libre de regalías: no forma parte del repertorio que administran
+          SACM y SOMEXFON, así que no hay una segunda cuota que pagar.
+          <strong class="text-white">El precio que ves es el que pagas.</strong>
+        </p>
+        <a href="https://play.muusica.com" class="btn-primary inline-flex">
+          <span>Empieza gratis 7 días</span>
+          <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </a>
+        <p class="text-text-muted text-xs mt-8 leading-relaxed">
+          Nota: si además pones radio, televisión abierta o música desde una cuenta personal en tu local,
+          esos usos se rigen por sus propias reglas y pueden generar cobros aparte.
+        </p>
+      </div>
+    </div>
   </div>
 </section>
+
+<style>
+  /* La ilustración hereda la tipografía del sitio en sus etiquetas */
+  .ilustracion text {
+    font-family: inherit;
+    letter-spacing: 0.01em;
+  }
+
+  /* Bajo 640px las etiquetas del SVG se renderizarían a ~5px: se rotula en HTML */
+  @media (max-width: 639px) {
+    .ilustracion .etiqueta {
+      display: none;
+    }
+  }
+
+  /* Todas las piezas comparten el mismo ciclo de 4.5s para ir sincronizadas:
+     la onda sale de la bocina, cruza "Usar la música" (aparece el check) y al
+     llegar a "Comunicación pública" se corta en seco (aparece el tache). */
+  .ilustracion .ondas,
+  .ilustracion .sello,
+  .ilustracion .barrera {
+    transform-box: fill-box;
+  }
+
+  .ilustracion .ondas {
+    transform-origin: right center;
+    animation: viaja 4.5s linear infinite;
+  }
+
+  @keyframes viaja {
+    0%       { transform: translateX(0) scaleX(1);      opacity: 0; }
+    4%       { transform: translateX(12px) scaleX(1);   opacity: 1; }
+    30%      { transform: translateX(150px) scaleX(1);  opacity: 1; }
+    56%      { transform: translateX(330px) scaleX(1);  opacity: 1; }
+    /* el corte: la onda se estrella contra la barrera y desaparece */
+    60%      { transform: translateX(352px) scaleX(0.35); opacity: 1; }
+    62%      { transform: translateX(352px) scaleX(0.15); opacity: 0; }
+    100%     { transform: translateX(352px) scaleX(0.15); opacity: 0; }
+  }
+
+  /* Los sellos aparecen justo cuando la onda llega a su puerta */
+  .ilustracion .sello {
+    transform-origin: center;
+  }
+  .ilustracion .sello-ok    { animation: sello-entra 4.5s linear infinite; }
+  .ilustracion .sello-alto  { animation: sello-alto 4.5s linear infinite; }
+
+  @keyframes sello-entra {
+    0%, 27%   { opacity: 0; transform: scale(0.4); }
+    33%       { opacity: 1; transform: scale(1.2); }
+    38%, 88%  { opacity: 1; transform: scale(1); }
+    95%, 100% { opacity: 0; transform: scale(0.4); }
+  }
+
+  @keyframes sello-alto {
+    0%, 58%   { opacity: 0; transform: scale(0.4); }
+    63%       { opacity: 1; transform: scale(1.25); }
+    68%, 88%  { opacity: 1; transform: scale(1); }
+    95%, 100% { opacity: 0; transform: scale(0.4); }
+  }
+
+  /* La barrera acusa el golpe */
+  .ilustracion .barrera {
+    transform-origin: center;
+    animation: golpe 4.5s linear infinite;
+  }
+
+  @keyframes golpe {
+    0%, 58%   { transform: translateX(0); opacity: 0.55; }
+    60%       { transform: translateX(-4px); opacity: 1; }
+    62%       { transform: translateX(3px); opacity: 1; }
+    64%       { transform: translateX(-2px); opacity: 1; }
+    66%, 88%  { transform: translateX(0); opacity: 1; }
+    100%      { transform: translateX(0); opacity: 0.55; }
+  }
+
+  /* Sin movimiento: se muestra el estado final, que es el que cuenta la historia */
+  @media (prefers-reduced-motion: reduce) {
+    .ilustracion .ondas,
+    .ilustracion .sello,
+    .ilustracion .barrera {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
