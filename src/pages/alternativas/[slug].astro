@@ -1,0 +1,553 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import LegalTrust from '../../components/LegalTrust.astro';
+import Pricing from '../../components/Pricing.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { alternativas, migrar, consultado } from '../../data/alternativas.js';
+import { getAllPosts } from '../../data/blog.js';
+
+export async function getStaticPaths() {
+  // Sólo enlazamos posts ya publicados (getAllPosts filtra los programados)
+  const posts = await getAllPosts();
+
+  return alternativas.map((alt) => ({
+    params: { slug: alt.slug },
+    props: {
+      alt,
+      relacionados: alt.posts
+        .map((slug) => posts.find((p) => p.slug === slug))
+        .filter(Boolean)
+        .slice(0, 3),
+    },
+  }));
+}
+
+const { alt, relacionados } = Astro.props;
+const canonicalURL = new URL(`/alternativas/${alt.slug}`, Astro.site);
+const h1 = `Alternativa a ${alt.servicio} para negocios`;
+
+// Estados de las celdas de comparación
+const estados = {
+  si: { icon: 'check-circle-2', color: '#14B8A6' },
+  no: { icon: 'x-circle', color: '#F87171' },
+  parcial: { icon: 'alert-circle', color: '#F59E0B' },
+  info: { icon: 'minus-circle', color: '#94A3B8' },
+};
+
+// JSON-LD (SEO/GEO): WebPage + FAQPage + BreadcrumbList
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: h1,
+    description: alt.seoDescription,
+    inLanguage: 'es-MX',
+    url: canonicalURL.href,
+    about: [
+      { '@type': 'Thing', name: alt.servicio },
+      { '@type': 'Organization', name: 'Muusica.com', url: 'https://muusica.com' },
+    ],
+    publisher: {
+      '@type': 'Organization',
+      name: 'Muusica.com',
+      url: 'https://muusica.com',
+      logo: 'https://muusica.com/logo.svg',
+    },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: alt.faq.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
+      { '@type': 'ListItem', position: 2, name: 'Alternativas', item: 'https://muusica.com/alternativas' },
+      { '@type': 'ListItem', position: 3, name: alt.servicio, item: canonicalURL.href },
+    ],
+  },
+];
+
+const otras = alternativas.filter((a) => a.slug !== alt.slug);
+const otrasPersonal = otras.filter((a) => a.categoria === 'personal');
+const otrasNegocio = otras.filter((a) => a.categoria === 'negocio');
+
+const esPersonal = alt.categoria === 'personal';
+
+const indice = [
+  { id: 'veredicto', label: 'Respuesta corta' },
+  { id: 'por-que', label: esPersonal ? `Por qué ${alt.servicio} no encaja` : 'Qué queda pendiente' },
+  { id: 'comparativa', label: 'Comparativa punto por punto' },
+  ...(alt.costo ? [{ id: 'costo', label: 'Costo real al mes' }] : []),
+  { id: 'cambiar', label: 'Qué ganas al cambiar' },
+  { id: 'como', label: 'Cómo hacer el cambio' },
+  { id: 'preguntas', label: 'Preguntas frecuentes' },
+];
+---
+
+<Layout title={`${alt.seoTitle} | Muusica.com`} description={alt.seoDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <Header transparent={false} />
+
+  <main class="pt-32 pb-20">
+    <!-- Hero -->
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-12 sm:mb-16">
+      <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2 flex-wrap">
+        <a href="/" class="hover:text-white transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="/alternativas" class="hover:text-white transition-colors">Alternativas</a>
+        <span>/</span>
+        <span class="text-text-secondary">{alt.servicio}</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <span
+          class="inline-flex items-center gap-2 text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider border"
+          style={`background: ${alt.color}1a; color: ${alt.color}; border-color: ${alt.color}40`}
+        >
+          <i data-lucide={esPersonal ? 'user-round' : 'building-2'} class="w-3.5 h-3.5"></i>
+          {esPersonal ? 'Streaming de uso personal' : 'Música para negocios'}
+        </span>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Alternativa a <span style={`color: ${alt.color}`}>{alt.servicio}</span> para negocios
+        </h1>
+
+        <p class="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8">
+          {alt.entradilla}
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="https://play.muusica.com" class="btn-primary w-full sm:w-auto">
+            Probar Muusica.com gratis 7 días
+          </a>
+          <a href="#comparativa" class="btn-ghost w-full sm:w-auto justify-center">
+            Ver la comparativa
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Índice -->
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16">
+      <div class="glass rounded-2xl p-6">
+        <p class="text-text-tertiary text-sm font-semibold uppercase tracking-wider mb-4">En esta página</p>
+        <ul class="flex flex-wrap gap-x-6 gap-y-2">
+          {indice.map((item) => (
+            <li>
+              <a href={`#${item.id}`} class="text-text-secondary hover:text-white transition-colors text-sm">
+                {item.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Veredicto -->
+    <section id="veredicto" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="max-w-3xl mx-auto rounded-3xl border border-primary-teal/25 bg-primary-teal/[0.06] p-6 sm:p-10 reveal">
+          <div class="flex items-center gap-3 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-primary-teal/15 flex items-center justify-center flex-shrink-0">
+              <i data-lucide="compass" class="w-5 h-5 text-primary-teal"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white">{alt.veredicto.titulo}</h2>
+          </div>
+
+          <p class="text-text-secondary text-lg leading-relaxed mb-6">{alt.veredicto.texto}</p>
+
+          <ul class="space-y-3">
+            {alt.veredicto.puntos.map((p) => (
+              <li class="flex items-start gap-3">
+                <i data-lucide="dot" class="w-5 h-5 text-primary-teal flex-shrink-0 mt-0.5"></i>
+                <span class="text-text-secondary">{p}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {alt.cita && (
+          <figure class="max-w-3xl mx-auto mt-8 glass rounded-2xl p-6 sm:p-8 reveal">
+            <div class="flex items-start gap-4">
+              <i data-lucide="quote" class="w-6 h-6 text-text-tertiary flex-shrink-0 mt-1"></i>
+              <div>
+                <blockquote class="text-white text-lg leading-relaxed">“{alt.cita.texto}”</blockquote>
+                <figcaption class="text-text-tertiary text-sm mt-4">
+                  — {alt.cita.autor}
+                  {alt.cita.url && (
+                    <>
+                      {' · '}
+                      <a
+                        href={alt.cita.url}
+                        rel="nofollow noopener"
+                        target="_blank"
+                        class="text-primary-teal hover:underline"
+                      >
+                        ver fuente
+                      </a>
+                    </>
+                  )}
+                </figcaption>
+                {alt.cita.nota && <p class="text-text-muted text-xs mt-3 leading-relaxed">{alt.cita.nota}</p>}
+              </div>
+            </div>
+          </figure>
+        )}
+      </div>
+    </section>
+
+    <!-- Por qué / qué queda pendiente -->
+    <section id="por-que" class="section bg-bg-page scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">
+            {esPersonal
+              ? `Por qué ${alt.servicio} no encaja en un negocio`
+              : `Qué cubre ${alt.servicio} y qué te queda pendiente`}
+          </h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            {esPersonal
+              ? 'Cuatro problemas concretos, empezando por el que tiene consecuencias legales'
+              : 'Lo que publica el propio proveedor, leído desde la operación de un negocio en México'}
+          </p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+          {alt.problemas.map((p) => (
+            <div class="card reveal">
+              <div
+                class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                style={`background: ${alt.color}1f`}
+              >
+                <i data-lucide={p.icon} class="w-5 h-5" style={`color: ${alt.color}`}></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg mb-2">{p.title}</h3>
+              <p class="text-text-secondary leading-relaxed">{p.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparativa -->
+    <section id="comparativa" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">{alt.servicio} frente a Muusica.com</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Punto por punto, con lo que cada servicio publica en su propio sitio
+          </p>
+        </div>
+
+        <!-- Tabla (desde md) -->
+        <div class="hidden md:block max-w-5xl mx-auto reveal overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-white/10">
+                <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider w-1/3">
+                  Criterio
+                </th>
+                <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">
+                  {alt.servicio}
+                </th>
+                <th class="py-4 text-primary-teal text-sm font-semibold uppercase tracking-wider">Muusica.com</th>
+              </tr>
+            </thead>
+            <tbody>
+              {alt.comparativa.map((fila) => (
+                <tr class="border-b border-white/5">
+                  <td class="py-5 pr-4 text-white font-medium align-top">{fila.criterio}</td>
+                  <td class="py-5 pr-4 align-top">
+                    <span class="flex items-start gap-2 text-text-secondary text-sm leading-relaxed">
+                      <i
+                        data-lucide={estados[fila.ellos.estado].icon}
+                        class="w-4 h-4 flex-shrink-0 mt-0.5"
+                        style={`color: ${estados[fila.ellos.estado].color}`}
+                      ></i>
+                      <span>{fila.ellos.texto}</span>
+                    </span>
+                  </td>
+                  <td class="py-5 pr-4 align-top bg-primary-teal/[0.05]">
+                    <span class="flex items-start gap-2 text-text-secondary text-sm leading-relaxed">
+                      <i
+                        data-lucide={estados[fila.nosotros.estado].icon}
+                        class="w-4 h-4 flex-shrink-0 mt-0.5"
+                        style={`color: ${estados[fila.nosotros.estado].color}`}
+                      ></i>
+                      <span>{fila.nosotros.texto}</span>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tarjetas (móvil) -->
+        <div class="md:hidden space-y-3">
+          {alt.comparativa.map((fila) => (
+            <div class="card reveal">
+              <p class="text-white font-semibold mb-4">{fila.criterio}</p>
+
+              <div class="space-y-3">
+                <div class="rounded-xl border border-white/5 bg-white/[0.02] p-3">
+                  <p class="text-text-tertiary text-xs uppercase tracking-wider mb-1.5">{alt.servicio}</p>
+                  <p class="flex items-start gap-2 text-text-secondary text-sm leading-relaxed">
+                    <i
+                      data-lucide={estados[fila.ellos.estado].icon}
+                      class="w-4 h-4 flex-shrink-0 mt-0.5"
+                      style={`color: ${estados[fila.ellos.estado].color}`}
+                    ></i>
+                    <span>{fila.ellos.texto}</span>
+                  </p>
+                </div>
+
+                <div class="rounded-xl border border-primary-teal/25 p-3" style="background: rgba(20, 184, 166, 0.06)">
+                  <p class="text-primary-teal text-xs uppercase tracking-wider mb-1.5 font-semibold">Muusica.com</p>
+                  <p class="flex items-start gap-2 text-text-secondary text-sm leading-relaxed">
+                    <i
+                      data-lucide={estados[fila.nosotros.estado].icon}
+                      class="w-4 h-4 flex-shrink-0 mt-0.5"
+                      style={`color: ${estados[fila.nosotros.estado].color}`}
+                    ></i>
+                    <span>{fila.nosotros.texto}</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Costo real -->
+    {alt.costo && (
+      <section id="costo" class="section bg-bg-page scroll-mt-24">
+        <div class="max-w-[1440px] mx-auto">
+          <div class="section-header reveal">
+            <h2 class="section-title">{alt.costo.titulo}</h2>
+            <p class="section-subtitle max-w-2xl mx-auto">
+              El precio de la etiqueta no siempre es el total de la cuenta
+            </p>
+          </div>
+
+          <div class="max-w-4xl mx-auto overflow-x-auto reveal">
+            <table class="w-full text-left border-collapse min-w-[560px]">
+              <thead>
+                <tr class="border-b border-white/10">
+                  <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">Concepto</th>
+                  <th class="py-4 pr-4 text-text-tertiary text-sm font-semibold uppercase tracking-wider">
+                    {alt.servicio}
+                  </th>
+                  <th class="py-4 text-primary-teal text-sm font-semibold uppercase tracking-wider">Muusica.com</th>
+                </tr>
+              </thead>
+              <tbody>
+                {alt.costo.filas.map((f) => (
+                  <tr class="border-b border-white/5">
+                    <td class="py-4 pr-4 text-white font-medium align-top">{f.concepto}</td>
+                    <td class="py-4 pr-4 text-text-secondary align-top">{f.ellos}</td>
+                    <td class="py-4 text-text-secondary align-top bg-primary-teal/[0.05]">{f.nosotros}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <p class="text-text-muted text-xs text-center mt-6 max-w-3xl mx-auto leading-relaxed">{alt.costo.nota}</p>
+        </div>
+      </section>
+    )}
+
+    <!-- Qué ganas al cambiar + honestidad -->
+    <section id="cambiar" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Qué ganas al cambiar a Muusica.com</h2>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto items-start">
+          <ul class="card reveal space-y-4">
+            {alt.ganancias.map((g) => (
+              <li class="flex items-start gap-3">
+                <div class="w-6 h-6 rounded-full bg-primary-teal/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-primary-teal"></i>
+                </div>
+                <span class="text-text-secondary leading-relaxed">{g}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div class="card reveal border-amber-500/20" style="background: rgba(245, 158, 11, 0.05)">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-10 h-10 rounded-xl bg-amber-500/15 flex items-center justify-center flex-shrink-0">
+                <i data-lucide="scale" class="w-5 h-5 text-amber-400"></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg">{alt.honesto.titulo}</h3>
+            </div>
+            <p class="text-text-secondary leading-relaxed">{alt.honesto.texto}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Legal (reutilizado) -->
+    <LegalTrust />
+
+    <!-- Cómo hacer el cambio -->
+    <section id="como" class="section bg-bg-page scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Cómo hacer el cambio hoy</h2>
+          <p class="section-subtitle max-w-2xl mx-auto">
+            Tres pasos, sin instalar software ni comprar equipo
+          </p>
+        </div>
+
+        <ol class="max-w-3xl mx-auto space-y-4">
+          {migrar.map((paso, i) => (
+            <li class="card reveal flex items-start gap-4">
+              <span
+                class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 font-bold text-sm bg-primary-teal/20 text-primary-teal"
+              >
+                {i + 1}
+              </span>
+              <div>
+                <h3 class="text-white font-semibold mb-1">{paso.titulo}</h3>
+                <p class="text-text-secondary leading-relaxed">{paso.texto}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="preguntas" class="section bg-section-gradient scroll-mt-24">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Preguntas frecuentes sobre {alt.servicio} en negocios</h2>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-3">
+          {alt.faq.map((f) => (
+            <div class="reveal faq-item">
+              <details class="group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer rounded-xl bg-white/[0.03] border border-white/5 hover:border-white/10 transition-colors">
+                  <h3 class="text-white font-medium pr-4 text-left">{f.q}</h3>
+                  <span class="flex-shrink-0 w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-open:rotate-180 transition-transform duration-300">
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-text-secondary"></i>
+                  </span>
+                </summary>
+                <div class="px-5 pb-5 pt-2">
+                  <p class="text-text-secondary leading-relaxed">{f.a}</p>
+                </div>
+              </details>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- Artículos relacionados -->
+    {relacionados.length > 0 && (
+      <section class="section bg-bg-page">
+        <div class="max-w-[1440px] mx-auto">
+          <div class="section-header reveal">
+            <h2 class="section-title">Sigue leyendo</h2>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-6">
+            {relacionados.map((post) => (
+              <a href={`/blog/${post.slug}`} class="card reveal group block">
+                <span
+                  class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider"
+                  style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}; border: 1px solid ${post.data.categoryColor}40`}
+                >
+                  {post.data.category}
+                </span>
+                <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                  {post.data.title}
+                </h3>
+                <p class="text-text-secondary text-sm leading-relaxed">{post.data.excerpt}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <!-- Otras comparativas -->
+    <section class="section bg-section-gradient">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="section-header reveal">
+          <h2 class="section-title">Compara con otros servicios</h2>
+        </div>
+
+        <div class="max-w-4xl mx-auto space-y-8">
+          <div>
+            <p class="text-text-tertiary text-sm font-semibold uppercase tracking-wider mb-4 text-center">
+              Streaming de uso personal
+            </p>
+            <div class="flex flex-wrap justify-center gap-3">
+              {otrasPersonal.map((a) => (
+                <a href={`/alternativas/${a.slug}`} class="chip chip-inactive hover:text-white">
+                  {a.servicio}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p class="text-text-tertiary text-sm font-semibold uppercase tracking-wider mb-4 text-center">
+              Música para negocios
+            </p>
+            <div class="flex flex-wrap justify-center gap-3">
+              {otrasNegocio.map((a) => (
+                <a href={`/alternativas/${a.slug}`} class="chip chip-inactive hover:text-white">
+                  {a.servicio}
+                </a>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Fuentes y aviso -->
+        <p class="text-text-muted text-xs text-center mt-12 max-w-3xl mx-auto leading-relaxed">
+          Datos y citas tomados de las páginas públicas de cada proveedor, consultadas el {consultado}:{' '}
+          {alt.fuentes.map((f, i) => (
+            <>
+              {i > 0 && ' · '}
+              <a href={f.url} rel="nofollow noopener" target="_blank" class="hover:text-text-secondary underline">
+                {f.nombre}
+              </a>
+            </>
+          ))}
+          . Las traducciones son nuestras. Los planes, precios y condiciones de terceros pueden cambiar sin aviso:
+          verifica siempre en el sitio de cada proveedor. Las marcas mencionadas pertenecen a sus respectivos
+          titulares y su uso aquí es únicamente descriptivo, con fines de comparación.
+        </p>
+      </div>
+    </section>
+
+    <Pricing />
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</Layout>
+
+<style>
+  details[open] summary {
+    @apply bg-white/[0.05] border-white/10;
+  }
+</style>

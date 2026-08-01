@@ -1,0 +1,136 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Pricing from '../../components/Pricing.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { alternativas, consultado } from '../../data/alternativas.js';
+
+const canonicalURL = new URL('/alternativas', Astro.site);
+
+const personales = alternativas.filter((a) => a.categoria === 'personal');
+const negocios = alternativas.filter((a) => a.categoria === 'negocio');
+
+const seoTitle = 'Alternativas de música para negocios: comparativas servicio por servicio';
+const seoDescription =
+  'Comparativas honestas de Muusica.com frente a Spotify, Apple Music, YouTube Music, Amazon Music, Deezer, Tidal, Soundtrack Your Brand, Kasimu, VOXPOP, Brandtrack y Mood Media, con lo que publica cada proveedor.';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: seoTitle,
+    description: seoDescription,
+    inLanguage: 'es-MX',
+    url: canonicalURL.href,
+    hasPart: alternativas.map((a) => ({
+      '@type': 'WebPage',
+      name: `Alternativa a ${a.servicio} para negocios`,
+      url: new URL(`/alternativas/${a.slug}`, Astro.site).href,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
+      { '@type': 'ListItem', position: 2, name: 'Alternativas', item: canonicalURL.href },
+    ],
+  },
+];
+
+const grupos = [
+  {
+    id: 'personal',
+    titulo: 'Streaming de uso personal',
+    intro:
+      'Spotify, Apple Music, YouTube Music, Amazon Music, Deezer y Tidal son servicios domésticos. Sus propios términos limitan el uso a fines personales y no comerciales, así que ninguno cubre a un local abierto al público.',
+    items: personales,
+  },
+  {
+    id: 'negocio',
+    titulo: 'Música para negocios',
+    intro:
+      'Estos sí están hechos para establecimientos y licencian su catálogo para uso comercial. La diferencia está en la comunicación pública: varios remiten al negocio a SACM y SOMEXFON, o la condicionan al país.',
+    items: negocios,
+  },
+];
+---
+
+<Layout title={`${seoTitle} | Muusica.com`} description={seoDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <Header transparent={false} />
+
+  <main class="pt-32 pb-20">
+    <!-- Hero -->
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16">
+      <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2">
+        <a href="/" class="hover:text-white transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-text-secondary">Alternativas</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Alternativas de música <span class="text-primary-teal">para negocios</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8">
+          Una comparativa por servicio, con lo que cada proveedor publica en su propio sitio. Sin adjetivos: la
+          pregunta que resuelve cada página es quién paga la licencia de comunicación pública de tu local.
+        </p>
+        <a href="https://play.muusica.com" class="btn-primary inline-flex">
+          <span>Probar Muusica.com gratis 7 días</span>
+          <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </a>
+      </div>
+    </section>
+
+    {grupos.map((grupo, gi) => (
+      <section class:list={['section scroll-mt-24', gi % 2 === 0 ? 'bg-section-gradient' : 'bg-bg-page']} id={grupo.id}>
+        <div class="max-w-[1440px] mx-auto">
+          <div class="section-header reveal">
+            <h2 class="section-title">{grupo.titulo}</h2>
+            <p class="section-subtitle max-w-3xl mx-auto">{grupo.intro}</p>
+          </div>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {grupo.items.map((a) => (
+              <a href={`/alternativas/${a.slug}`} class="card reveal group block">
+                <div
+                  class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                  style={`background: ${a.color}1f`}
+                >
+                  <i data-lucide={a.icon} class="w-5 h-5" style={`color: ${a.color}`}></i>
+                </div>
+                <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                  Alternativa a {a.servicio}
+                </h3>
+                <p class="text-text-secondary text-sm leading-relaxed mb-4">{a.veredicto.puntos[0]}</p>
+                <span class="text-primary-teal text-sm font-medium inline-flex items-center gap-1">
+                  Ver comparativa
+                  <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </span>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <section class="section bg-section-gradient">
+      <div class="max-w-[1440px] mx-auto">
+        <p class="text-text-muted text-xs text-center max-w-3xl mx-auto leading-relaxed">
+          Todas las comparativas se basan en información publicada por cada proveedor, consultada el {consultado}. Los
+          planes, precios y condiciones de terceros pueden cambiar sin aviso: verifica siempre en el sitio de cada uno.
+          Las marcas mencionadas pertenecen a sus respectivos titulares y su uso aquí es únicamente descriptivo, con
+          fines de comparación.
+        </p>
+      </div>
+    </section>
+
+    <Pricing />
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</Layout>

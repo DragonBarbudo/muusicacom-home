@@ -3,6 +3,7 @@
 // la colección de blog), así que no se desincroniza al agregar giros o posts.
 import type { APIRoute } from 'astro';
 import { negocios } from '../data/negocios.js';
+import { alternativas, consultado } from '../data/alternativas.js';
 import { getAllPosts } from '../data/blog.js';
 
 const SITE = 'https://muusica.com';
@@ -128,6 +129,47 @@ ${n.faq.map((f) => `- ${f.q}\n  ${f.a}`).join('\n')}`;
     })
     .join('\n\n');
 
+  const bloquesAlternativas = alternativas
+    .map((a) => {
+      const tabla = a.comparativa
+        .map((f) => `- ${f.criterio}. ${a.servicio}: ${f.ellos.texto}. Muusica.com: ${f.nosotros.texto}.`)
+        .join('\n');
+
+      const cita = a.cita
+        ? `\nCita textual de ${a.cita.autor}: "${a.cita.texto}" (${a.cita.url})\n`
+        : '';
+
+      const costo = a.costo
+        ? `\n${a.costo.titulo}:\n${a.costo.filas
+            .map((f) => `- ${f.concepto}. ${a.servicio}: ${f.ellos}. Muusica.com: ${f.nosotros}.`)
+            .join('\n')}\nNota: ${a.costo.nota}\n`
+        : '';
+
+      return `### Alternativa a ${a.servicio} para negocios — ${SITE}/alternativas/${a.slug}
+
+Categoría: ${a.categoria === 'personal' ? 'servicio de streaming de uso personal' : 'servicio de música para negocios'}
+
+${a.veredicto.titulo}: ${a.veredicto.texto}
+${a.veredicto.puntos.map((p) => `- ${p}`).join('\n')}
+${cita}
+${a.categoria === 'personal' ? `Por qué ${a.servicio} no encaja en un negocio:` : `Qué cubre ${a.servicio} y qué queda pendiente:`}
+${a.problemas.map((p) => `- ${p.title}: ${p.text}`).join('\n')}
+
+Comparativa punto por punto:
+${tabla}
+${costo}
+Qué se gana al cambiar a Muusica.com:
+${a.ganancias.map((g) => `- ${g}`).join('\n')}
+
+${a.honesto.titulo}: ${a.honesto.texto}
+
+Preguntas frecuentes:
+${a.faq.map((f) => `- ${f.q}\n  ${f.a}`).join('\n')}
+
+Fuentes consultadas el ${consultado}: ${a.fuentes.map((f) => `${f.nombre} (${f.url})`).join('; ')}`;
+    })
+    .join('\n\n');
+
   const bloquesBlog = posts
     .map((p) => {
       const ideas = ideasClave(p.body);
@@ -176,6 +218,18 @@ Cada giro tiene su página con guía de ambiente hora por hora (mezcla de moods,
 
 ${bloquesGiros}
 
+## Comparativas frente a otros servicios
+
+Cada página compara Muusica.com con un servicio concreto usando únicamente lo que ese proveedor publica en su
+propio sitio, con la fuente enlazada. Se agrupan en dos familias: servicios de streaming de uso personal
+(Spotify, Apple Music, YouTube Music, Amazon Music, Deezer, Tidal), cuyos términos limitan el uso a fines
+personales y no comerciales; y servicios de música para negocios (Soundtrack Your Brand, Kasimu, VOXPOP,
+Brandtrack, Mood Media), que sí licencian su catálogo para uso comercial pero donde la licencia de
+comunicación pública en México no siempre viene incluida. Los planes, precios y condiciones de terceros
+pueden cambiar sin aviso.
+
+${bloquesAlternativas}
+
 ## Guías del blog
 
 ${bloquesBlog}
@@ -189,6 +243,7 @@ ${bloquesBlog}
 - [Precios](${SITE}/#precio): $175 MXN/mes por locación, todo incluido.
 - [Preguntas frecuentes](${SITE}/#faq): licencias, multas, equipo necesario y cancelación.
 - [Blog](${SITE}/blog): guías sobre música, ambiente y legalidad para negocios.
+- [Alternativas](${SITE}/alternativas): comparativas servicio por servicio frente a Spotify, Apple Music, YouTube Music, Amazon Music, Deezer, Tidal, Soundtrack Your Brand, Kasimu, VOXPOP, Brandtrack y Mood Media.
 
 ## Legal
 
