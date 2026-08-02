@@ -41,7 +41,7 @@ export const alternativas = [
     veredicto: {
       titulo: 'La respuesta corta',
       texto:
-        'Spotify no es una opción para tu negocio porque su licencia es de uso personal y doméstico, y así lo dice Spotify. La alternativa directa es un servicio de música para negocios; Muusica.com lo resuelve con licencia de comunicación pública incluida por $175 MXN al mes por sucursal, sin cuotas aparte a SACM ni SOMEXFON.',
+        'Spotify no es una opción para tu negocio porque su licencia es de uso personal y doméstico, y así lo dice Spotify. La alternativa directa es un servicio de música para negocios; Muusica.com lo resuelve con licencia de comunicación pública incluida por $175 MXN al mes por sucursal, sin que se requiera pagar a SACM ni SOMEXFON.',
       puntos: [
         'Spotify prohíbe la reproducción en bares, restaurantes, tiendas, escuelas y salones.',
         'Un plan Premium no convierte el uso en comercial: elimina anuncios, no añade permisos.',
@@ -86,7 +86,7 @@ export const alternativas = [
       {
         criterio: 'Licencia de comunicación pública en México',
         ellos: { estado: 'no', texto: 'No incluida en ningún plan' },
-        nosotros: { estado: 'si', texto: 'Incluida en la suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluida en la suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -116,16 +116,16 @@ export const alternativas = [
     ],
     costo: {
       titulo: 'Lo que realmente pagas al mes',
-      nota: 'Las cuotas de SACM y SOMEXFON se calculan por giro, aforo y ciudad, así que no hay una tarifa única publicada. Lo relevante es que son dos cobros adicionales que no controlas.',
+      nota: 'Muusica.com no incluye ni revende licencias de SACM o SOMEXFON: simplemente no se requieren, porque el catálogo es original y no forma parte del repertorio que administran esas sociedades. Sus cuotas se calculan por giro, aforo y ciudad, así que no hay una tarifa única publicada.',
       filas: [
         { concepto: 'Suscripción', ellos: 'Plan personal de Spotify', nosotros: '$175 MXN por sucursal' },
-        { concepto: 'Licencia SACM', ellos: 'Aparte, según giro y aforo', nosotros: 'Incluida' },
-        { concepto: 'Licencia SOMEXFON', ellos: 'Aparte, según giro y aforo', nosotros: 'Incluida' },
+        { concepto: 'Licencia SACM', ellos: 'Aparte, según giro y aforo', nosotros: 'No se requiere: el catálogo no es de su repertorio' },
+        { concepto: 'Licencia SOMEXFON', ellos: 'Aparte, según giro y aforo', nosotros: 'No se requiere: el catálogo no es de su repertorio' },
         { concepto: 'Certificado para inspecciones', ellos: 'No disponible', nosotros: 'Incluido' },
       ],
     },
     ganancias: [
-      'Licencia de comunicación pública incluida, sin pagos aparte a SACM ni SOMEXFON',
+      'Licencia de comunicación pública incluida, sin que se requiera pagar a SACM ni SOMEXFON',
       'Certificado digital descargable para mostrar en una inspección',
       'Cero anuncios: nunca suena publicidad de otra marca en tu local',
       'Mood Mode: cambias el ambiente arrastrando un punto, sin armar listas',
@@ -147,7 +147,7 @@ export const alternativas = [
       },
       {
         q: '¿Qué alternativa a Spotify sirve para un negocio en México?',
-        a: 'Un servicio de música pensado para locales comerciales. Muusica.com incluye la licencia de comunicación pública en la suscripción de $175 MXN al mes por sucursal, con certificado descargable y sin cuotas adicionales a SACM ni SOMEXFON.',
+        a: 'Un servicio de música pensado para locales comerciales. Muusica.com incluye la licencia de comunicación pública en la suscripción de $175 MXN al mes por sucursal, con certificado descargable y sin que se requiera pagar a SACM ni SOMEXFON.',
       },
       {
         q: '¿Puedo pasar mis playlists de Spotify a Muusica.com?',
@@ -229,7 +229,7 @@ export const alternativas = [
       {
         criterio: 'Licencia de comunicación pública en México',
         ellos: { estado: 'no', texto: 'No incluida' },
-        nosotros: { estado: 'si', texto: 'Incluida en la suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluida en la suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -253,7 +253,7 @@ export const alternativas = [
       },
     ],
     ganancias: [
-      'Licencia comercial incluida, sin cuotas aparte a SACM ni SOMEXFON',
+      'Licencia comercial incluida, sin que se requiera pagar a SACM ni SOMEXFON',
       'Certificado digital para inspecciones',
       'Cuenta del negocio, no el Apple ID de un empleado',
       'Reproducción continua sin anuncios ni silencios entre canciones',
@@ -352,7 +352,7 @@ export const alternativas = [
       {
         criterio: 'Licencia de comunicación pública en México',
         ellos: { estado: 'no', texto: 'No incluida' },
-        nosotros: { estado: 'si', texto: 'Incluida en la suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluida en la suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Anuncios durante la reproducción',
@@ -474,7 +474,7 @@ export const alternativas = [
       {
         criterio: 'Licencia de comunicación pública en México',
         ellos: { estado: 'no', texto: 'No incluida' },
-        nosotros: { estado: 'si', texto: 'Incluida en la suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluida en la suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -592,7 +592,7 @@ export const alternativas = [
       {
         criterio: 'Licencia de comunicación pública en México',
         ellos: { estado: 'no', texto: 'No incluida en los planes de consumo' },
-        nosotros: { estado: 'si', texto: 'Incluida en la suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluida en la suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -633,7 +633,7 @@ export const alternativas = [
       },
       {
         q: '¿Qué incluye Muusica.com por $175 MXN al mes?',
-        a: 'Catálogo con licencia comercial, licencia de comunicación pública sin cuotas a SACM ni SOMEXFON, certificado descargable, reproducción sin anuncios y Mood Mode, por sucursal.',
+        a: 'Catálogo con licencia comercial, licencia de comunicación pública incluida, sin que se requiera pagar a SACM ni SOMEXFON, certificado descargable, reproducción sin anuncios y Mood Mode, por sucursal.',
       },
     ],
     fuentes: [
@@ -705,7 +705,7 @@ export const alternativas = [
       {
         criterio: 'Licencia de comunicación pública en México',
         ellos: { estado: 'no', texto: 'No incluida' },
-        nosotros: { estado: 'si', texto: 'Incluida en la suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluida en la suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -746,7 +746,7 @@ export const alternativas = [
       },
       {
         q: '¿Qué incluye la suscripción de Muusica.com?',
-        a: 'Catálogo original con licencia comercial, comunicación pública incluida sin cuotas a SACM ni SOMEXFON, certificado descargable, sin anuncios, por $175 MXN al mes por sucursal.',
+        a: 'Catálogo original con licencia comercial, comunicación pública incluida sin que se requiera pagar a SACM ni SOMEXFON, certificado descargable, sin anuncios, por $175 MXN al mes por sucursal.',
       },
     ],
     fuentes: [
@@ -844,11 +844,11 @@ export const alternativas = [
     ],
     costo: {
       titulo: 'Lo que pagas al mes en México',
-      nota: 'Las cuotas de SACM y SOMEXFON se calculan por giro, aforo y ciudad, así que no hay una tarifa única publicada. Verifica siempre las condiciones vigentes con cada proveedor.',
+      nota: 'Muusica.com no incluye ni revende licencias de SACM o SOMEXFON: no se requieren, porque el catálogo es original y queda fuera del repertorio que administran esas sociedades. Sus cuotas se calculan por giro, aforo y ciudad. Verifica siempre las condiciones vigentes con cada proveedor.',
       filas: [
         { concepto: 'Suscripción', ellos: `≈ $${Math.round(24 * tipoCambio)} MXN por zona (plan Essential, pago anual)`, nosotros: '$175 MXN por sucursal' },
-        { concepto: 'Licencia SACM', ellos: 'A cargo del negocio', nosotros: 'No aplica' },
-        { concepto: 'Licencia SOMEXFON', ellos: 'A cargo del negocio', nosotros: 'No aplica' },
+        { concepto: 'Licencia SACM', ellos: 'A cargo del negocio', nosotros: 'No se requiere: el catálogo no es de su repertorio' },
+        { concepto: 'Licencia SOMEXFON', ellos: 'A cargo del negocio', nosotros: 'No se requiere: el catálogo no es de su repertorio' },
         { concepto: 'Emisores de la factura', ellos: 'Hasta tres distintos', nosotros: 'Uno' },
       ],
     },
@@ -948,17 +948,17 @@ export const alternativas = [
       {
         criterio: 'Derechos de comunicación pública en el plan de entrada',
         ellos: { estado: 'no', texto: 'Kasimu Global no los incluye, según su tabla' },
-        nosotros: { estado: 'si', texto: 'Incluidos en la única suscripción' },
+        nosotros: { estado: 'si', texto: 'Incluidos en la única suscripción, sobre nuestro propio catálogo' },
       },
       {
         criterio: 'Derechos de autor (SACM)',
         ellos: { estado: 'parcial', texto: 'Incluidos solo en el plan Freedom' },
-        nosotros: { estado: 'si', texto: 'No aplica: catálogo fuera de ese repertorio' },
+        nosotros: { estado: 'si', texto: 'No se requiere: el catálogo no es de su repertorio' },
       },
       {
         criterio: 'Derechos de productor (SOMEXFON)',
         ellos: { estado: 'parcial', texto: 'Su página indica que dependen de la legislación de cada país' },
-        nosotros: { estado: 'si', texto: 'No aplica: catálogo fuera de ese repertorio' },
+        nosotros: { estado: 'si', texto: 'No se requiere: el catálogo no es de su repertorio' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -977,7 +977,7 @@ export const alternativas = [
       filas: [
         { concepto: 'Plan mensual de entrada', ellos: 'Kasimu Global · $239 MXN', nosotros: '$175 MXN' },
         { concepto: 'Plan con derechos de autor', ellos: 'Kasimu Freedom · $279 MXN', nosotros: 'Mismo plan de $175 MXN' },
-        { concepto: 'Derechos de productor (SOMEXFON)', ellos: 'Según legislación del país', nosotros: 'No aplica' },
+        { concepto: 'Derechos de productor (SOMEXFON)', ellos: 'Según legislación del país', nosotros: 'No se requiere: el catálogo no es de su repertorio' },
         { concepto: 'Pago anual', ellos: 'Global $1,999 · Freedom $2,399', nosotros: '$1,890 MXN' },
       ],
     },
@@ -1069,7 +1069,7 @@ export const alternativas = [
       {
         criterio: 'Desglose público de qué derechos cubre',
         ellos: { estado: 'parcial', texto: 'Menciona certidumbre legal, sin desglose en su página de precios' },
-        nosotros: { estado: 'si', texto: 'Comunicación pública incluida, sin SACM ni SOMEXFON' },
+        nosotros: { estado: 'si', texto: 'Licencia propia incluida; no se requiere SACM ni SOMEXFON' },
       },
       {
         criterio: 'Certificado para una inspección',
@@ -1119,7 +1119,7 @@ export const alternativas = [
       },
       {
         q: '¿Qué cubre exactamente Muusica.com?',
-        a: 'La suscripción de $175 MXN al mes por sucursal incluye el uso comercial del catálogo y la licencia de comunicación pública, sin pagos aparte a SACM ni SOMEXFON, con certificado digital descargable y validable por QR.',
+        a: 'La suscripción de $175 MXN al mes por sucursal incluye el uso comercial del catálogo y la licencia de comunicación pública, sin que se requiera pagar a SACM ni SOMEXFON, con certificado digital descargable y validable por QR.',
       },
     ],
     fuentes: [
@@ -1289,7 +1289,7 @@ export const alternativas = [
       {
         criterio: 'Desglose público de licencias por país',
         ellos: { estado: 'no', texto: 'No publicado' },
-        nosotros: { estado: 'si', texto: 'Comunicación pública incluida, sin SACM ni SOMEXFON' },
+        nosotros: { estado: 'si', texto: 'Licencia propia incluida; no se requiere SACM ni SOMEXFON' },
       },
       {
         criterio: 'Tiempo hasta tener música sonando',

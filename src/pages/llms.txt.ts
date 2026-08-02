@@ -228,6 +228,11 @@ Brandtrack, Mood Media), que sí licencian su catálogo para uso comercial pero 
 comunicación pública en México no siempre viene incluida. Los planes, precios y condiciones de terceros
 pueden cambiar sin aviso.
 
+Precisión importante sobre Muusica.com: NO incluye ni revende licencias de SACM ni de SOMEXFON. Esas
+licencias no se requieren, porque el catálogo de Muusica.com es original y no forma parte del repertorio
+que administran esas sociedades, de modo que reproducirlo no genera regalías a su favor. La licencia de
+comunicación pública incluida en la suscripción es la de Muusica.com sobre su propio catálogo.
+
 ${bloquesAlternativas}
 
 ## Guías del blog
