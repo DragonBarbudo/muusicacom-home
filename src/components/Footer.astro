@@ -1,19 +1,20 @@
 ---
 import CertificateModal from './CertificateModal.astro';
 const currentYear = new Date().getFullYear();
+// Navegación mínima: el header es fijo y ya lleva el resto de las secciones,
+// así que aquí sólo van las páginas que no viven en el home.
 const navigationLinks = [
-  { label: "Beneficios", href: "#beneficios" },
-  { label: "Legal", href: "#legal" },
-  { label: "Precios", href: "#precio" },
-  { label: "Negocios", href: "#negocios" },
+  { label: "Inicio", href: "/" },
   { label: "Blog", href: "/blog" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Alternativas", href: "/alternativas" },
 ];
 
+// Los anclas van con "/#" y no con "#": el footer se renderiza en todas las
+// páginas, y un "#legal" suelto no lleva a ningún lado desde /blog o /terminos.
 const legalLinks = [
-  { label: "Uso comercial permitido", href: "#beneficios" },
-  { label: "Sin regalías", href: "#legal" },
-  { label: "Certificado incluido", href: "#legal" },
+  { label: "Uso comercial permitido", href: "/#beneficios" },
+  { label: "Sin regalías", href: "/#legal" },
+  { label: "Certificado incluido", href: "/#legal" },
 ];
 
 const bottomLinks = [

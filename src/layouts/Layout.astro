@@ -101,23 +101,65 @@ const siteJsonLd = [
         revealElements.forEach(el => observer.observe(el));
       });
       
-      // Smooth scroll for anchor links
-      document.addEventListener('DOMContentLoaded', () => {
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-          anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            if (targetId && targetId !== '#') {
-              const target = document.querySelector(targetId);
-              if (target) {
-                target.scrollIntoView({
-                  behavior: 'smooth',
-                  block: 'start'
-                });
-              }
-            }
-          });
-        });
+      // Al llegar con "/#ancla" desde otra página, el navegador salta al destino
+      // antes de que terminen de cargar fuentes e imágenes del home. Como eso
+      // mueve el layout, el salto se pierde y la página queda arriba. Volvemos a
+      // colocarla cuando ya está estable, salvo que el usuario haya scrolleado.
+      (() => {
+        if (!window.location.hash) return;
+
+        let usuarioScrolleo = false;
+        const marcar = () => { usuarioScrolleo = true; };
+        ['wheel', 'touchstart', 'keydown'].forEach((ev) =>
+          window.addEventListener(ev, marcar, { once: true, passive: true })
+        );
+
+        const colocar = () => {
+          if (usuarioScrolleo) return;
+          let target = null;
+          try { target = document.querySelector(window.location.hash); } catch { return; }
+          if (target) target.scrollIntoView({ block: 'start' });
+        };
+
+        // Reintentamos durante el arranque en vez de confiar en un solo evento:
+        // las fuentes y las imágenes del hero cambian la altura de la página
+        // varias veces y cada una desplaza el destino.
+        const inicio = Date.now();
+        const reintento = setInterval(() => {
+          colocar();
+          if (usuarioScrolleo || Date.now() - inicio > 2000) clearInterval(reintento);
+        }, 100);
+
+        colocar();
+        window.addEventListener('load', colocar);
+        window.addEventListener('pageshow', colocar); // volver atrás desde bfcache
+        if (document.fonts?.ready) document.fonts.ready.then(colocar);
+      })();
+
+      // Scroll suave sólo para anclas que existen EN ESTA página.
+      //
+      // Los enlaces a secciones del home se escriben "/#legal" (no "#legal"),
+      // porque el header y el footer salen en todas las páginas y un "#legal"
+      // suelto no lleva a ningún lado desde /blog o /alternativas. Este handler
+      // resuelve el href completo: si apunta a la página actual y el destino
+      // existe, hace scroll suave; si no, no intercepta y el navegador navega
+      // normalmente. Antes se hacía preventDefault siempre, así que un ancla
+      // inexistente dejaba el enlace muerto.
+      document.addEventListener('click', (e) => {
+        const el = e.target instanceof Element ? e.target.closest('a[href*="#"]') : null;
+        if (!el || e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+
+        const url = new URL(el.getAttribute('href'), window.location.href);
+        if (url.origin !== window.location.origin) return;
+        if (url.pathname !== window.location.pathname) return; // otra página: que navegue
+        if (!url.hash || url.hash === '#') return;
+
+        const target = document.querySelector(url.hash);
+        if (!target) return; // sin destino en esta página: no lo interceptamos
+
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', url.hash);
       });
     </script>
   </body>
