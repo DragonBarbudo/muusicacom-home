@@ -1,5 +1,6 @@
 ---
 import CertificateModal from './CertificateModal.astro';
+import WaveMark from './WaveMark.astro';
 const currentYear = new Date().getFullYear();
 // Navegación mínima: el header es fijo y ya lleva el resto de las secciones,
 // así que aquí sólo van las páginas que no viven en el home.
@@ -88,8 +89,8 @@ const bottomLinks = [
       </div>
     </div>
     
-    <!-- Divider -->
-    <div class="h-px bg-white/10 mb-8"></div>
+    <!-- Divisor: en vez de una línea, las "uu" del logo hechas onda -->
+    <WaveMark height="22px" opacity={0.14} animate class="mb-8" />
     
     <!-- Bottom section -->
     <div class="flex flex-col md:flex-row items-center justify-between gap-4">

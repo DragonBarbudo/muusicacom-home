@@ -1,0 +1,85 @@
+---
+// Marca de agua sonora: las "uu" del logotipo repetidas en X hasta formar una onda.
+//
+// Es el mismo recurso que usa el reproductor (play.muusica.com) como barra de
+// progreso — ver WaveSeek.vue —, con el path del logo idéntico para que la forma
+// sea exactamente la misma en los dos productos. La idea es que la onda que ves
+// en la web sea literalmente la que se mueve mientras suena la música.
+//
+// El tile es casi cuadrado (6524×6471), así que con background-size: auto 100%
+// cada "u" conserva su proporción y sólo cambia cuántas caben a lo ancho.
+
+interface Props {
+  /** Alto de la banda. Manda sobre cuántas "u" entran. */
+  height?: string;
+  /** Color del trazo, hex sin "#". Por defecto el teal de marca. */
+  color?: string;
+  opacity?: number;
+  /** "band": banda que cruza el ancho. "accent": trozo corto para rematar un título. */
+  variant?: 'band' | 'accent';
+  /** Desplaza la onda lentamente, como si estuviera sonando. */
+  animate?: boolean;
+  /** Desvanece los extremos para que no corte en seco contra el fondo. */
+  fade?: boolean;
+  class?: string;
+  'aria-hidden'?: string;
+}
+
+const {
+  height,
+  color = '11B7A7',
+  opacity = 0.18,
+  variant = 'band',
+  animate = false,
+  fade = true,
+  class: className = '',
+} = Astro.props;
+
+// Unidad "uu" del logo (misma que WaveSeek.vue en el reproductor)
+const WAVE =
+  'M6524 0L6524 1377.58C6323.22 1377.58 6170.53 1437.51 6065.96 1557.43C5957.21 1681.61 5902.82 1857.17 5902.82 2084.14L5901.57 3742.84C5901.57 4285.77 5787.9 4764.14 5560.63 5177.82C5341.69 5582.88 5034.37 5901.77 4638.67 6134.5C4242.96 6358.53 3784.14 6470.58 3262.16 6470.58C2748.58 6470.58 2289.7 6354.25 1885.58 6121.52C1489.88 5888.85 1178.35 5569.96 951.078 5164.91C732.145 4751.16 622.679 4277.2 622.679 3742.84L621.216 2084.14C621.216 1934.24 598.214 1805.78 552.18 1698.72C502 1595.96 430.869 1516.75 338.832 1461.07C242.65 1405.4 129.693 1377.58 0.00292969 1377.58L0 0C391.154 0.000308634 740.645 88.6036 1048.43 265.851C1349.81 443.053 1587.07 685.936 1760.17 994.434C1926.91 1309.55 2010.29 1670.53 2010.29 2077.51L2011.86 3678.15C2011.86 3979.85 2058.16 4238.4 2150.81 4453.88C2251.81 4660.72 2394.96 4820.13 2580.21 4932.18C2773.79 5044.23 3001.13 5100.22 3262.16 5100.22C3666.27 5100.22 3973.59 4979.61 4184.05 4738.25C4402.92 4488.33 4512.39 4134.98 4512.39 3678.15L4513.76 2077.51C4513.76 1664.01 4600.33 1299.67 4773.42 984.595C4940.17 676.096 5174.23 433.223 5475.61 255.97C5777 85.3381 6126.44 4.49154e-05 6524 0Z';
+
+const uri = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6524' height='6471' viewBox='0 0 6524 6471'%3E%3Cpath d='${WAVE}' fill='%23${color}'/%3E%3C/svg%3E")`;
+
+const alto = height ?? (variant === 'accent' ? '18px' : '26px');
+const anchoAccent = variant === 'accent' ? '104px' : undefined;
+---
+
+<div
+  class:list={['wavemark', animate && 'wavemark-anima', fade && 'wavemark-fade', className]}
+  style={`--wm-img: ${uri}; --wm-h: ${alto}; --wm-op: ${opacity};${anchoAccent ? ` width: ${anchoAccent};` : ''}`}
+  aria-hidden="true"
+>
+</div>
+
+<style>
+  .wavemark {
+    height: var(--wm-h);
+    opacity: var(--wm-op);
+    background-image: var(--wm-img);
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    background-position: left center;
+    pointer-events: none;
+  }
+
+  /* Sin el degradado a los lados, el tile se corta a media "u" contra el borde */
+  .wavemark-fade {
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  }
+
+  /* Un tile completo por ciclo: el recorrido se ve continuo, sin salto */
+  .wavemark-anima {
+    animation: wavemark-corre 14s linear infinite;
+  }
+
+  @keyframes wavemark-corre {
+    from { background-position-x: 0; }
+    to   { background-position-x: calc(var(--wm-h) * 1.0082); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wavemark-anima { animation: none; }
+  }
+</style>

@@ -1,4 +1,6 @@
 ---
+import WaveMark from './WaveMark.astro';
+
 // ─── Reproductor del hero: fuente única de datos ───────────────────────────
 // Para cambiar las canciones edita SOLO este arreglo.
 //   src    → ruta del archivo en public/ (p.ej. public/audio/restaurante.mp3 → "/audio/restaurante.mp3")
@@ -31,6 +33,16 @@ const firstSong = songs[0];
         <h1 class="reveal text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-[1.15] sm:leading-tight tracking-tight">
           La música perfecta para tu negocio.
         </h1>
+
+        <!-- Las "uu" del logo como onda: el mismo recurso que el reproductor usa
+             de barra de progreso. Firma de marca, no adorno. -->
+        <WaveMark
+          variant="accent"
+          opacity={0.6}
+          fade={false}
+          animate
+          class="reveal mx-auto lg:mx-0 -mt-2"
+        />
         
         <!-- Subheadline -->
         <p class="reveal animation-delay-100 text-base sm:text-lg md:text-xl text-text-secondary leading-relaxed px-2 sm:px-0">
