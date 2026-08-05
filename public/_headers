@@ -10,5 +10,8 @@
   Cache-Control: public, max-age=31536000, immutable
 
 # Cache fonts
-*.woff2
+# OJO: _headers de Cloudflare Pages sólo acepta patrones de RUTA, que empiezan
+# por "/". El patrón "*.woff2" nunca casaba, así que las fuentes se estaban
+# sirviendo con el max-age por defecto de 4 h en vez de un año.
+/fonts/*
   Cache-Control: public, max-age=31536000, immutable
