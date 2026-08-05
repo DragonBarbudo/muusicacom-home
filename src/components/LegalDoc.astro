@@ -18,6 +18,9 @@ const { title, updated, intro, sections } = Astro.props;
 ---
 
 <main class="pt-32 pb-20">
+  <!-- email_off cubre TODO el documento: estas páginas citan el correo dentro
+       del texto de las cláusulas, y Cloudflare también ofusca esas menciones. -->
+  <!--email_off-->
   <div class="max-w-[1100px] mx-auto px-6 md:px-10">
     <header class="mb-4">
       <h1 class="text-3xl md:text-4xl font-bold text-white mb-3">{title}</h1>
@@ -57,4 +60,5 @@ const { title, updated, intro, sections } = Astro.props;
       </p>
     </footer>
   </div>
+  <!--email_on-->
 </main>
