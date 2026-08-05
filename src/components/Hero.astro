@@ -209,9 +209,9 @@ const firstSong = songs[0];
     let analyser = null;
     let freqData = null;
 
-    // lucide.createIcons() sustituye cada <i data-lucide> por un <svg>, así que
-    // reescribir data-lucide sobre un <i> ya sustituido no cambia nada: en su
-    // lugar alternamos dos contenedores con `hidden`.
+    // Los iconos se incrustan como <svg> en el build (integrations/inline-lucide.mjs),
+    // así que no se puede cambiar de icono reescribiendo data-lucide: alternamos
+    // dos contenedores con `hidden`.
     function setPlayIcon(playing) {
       const btn = document.getElementById('playPauseBtn');
       const disc = document.querySelector('#albumArt [data-lucide], #albumArt svg');

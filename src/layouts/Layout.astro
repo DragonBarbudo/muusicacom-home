@@ -87,9 +87,8 @@ const siteJsonLd = [
       }
     </style>
 
-    <!-- Lucide Icons: con defer deja de bloquear el render. Sigue ejecutándose
-         antes de DOMContentLoaded, que es donde se llama a createIcons(). -->
-    <script defer src="https://unpkg.com/lucide@1.28.0/dist/umd/lucide.min.js"></script>
+    <!-- Los iconos ya no se cargan en el navegador: se incrustan como <svg> en
+         el build. Ver integrations/inline-lucide.mjs. -->
     
     <title>{title}</title>
   </head>
@@ -98,13 +97,6 @@ const siteJsonLd = [
     <CookieBanner />
 
     <script>
-      // Initialize Lucide icons
-      document.addEventListener('DOMContentLoaded', () => {
-        if (window.lucide) {
-          window.lucide.createIcons();
-        }
-      });
-      
       // Intersection Observer for reveal animations
       const observerOptions = {
         root: null,

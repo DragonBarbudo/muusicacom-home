@@ -295,7 +295,7 @@ export const alternativas = [
     slug: 'youtube-music',
     servicio: 'YouTube Music',
     categoria: 'personal',
-    icon: 'youtube',
+    icon: 'monitor-play',
     color: '#FF0000',
     seoTitle: "Alternativa a YouTube Music para negocios",
     seoDescription: "YouTube autoriza su contenido solo para uso personal. Compáralo con Muusica.com: sin anuncios y con licencia comercial por $175 MXN al mes.",

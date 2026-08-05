@@ -3,9 +3,9 @@
 // La playlist es el arco del día: una canción por franja horaria, en orden.
 // Los clips viven en public/audio/negocios/<slug>-<n>.mp3 (20 s, 96 kbps).
 //
-// Los iconos de play/pause son dos <span> que se alternan con `hidden`:
-// lucide.createIcons() sustituye cada <i data-lucide> por un <svg>, así que
-// cambiar el atributo data-lucide de un <i> ya sustituido no hace nada.
+// Los iconos de play/pause son dos <span> que se alternan con `hidden`: los
+// iconos se incrustan como <svg> en el build (integrations/inline-lucide.mjs),
+// así que cambiar el atributo data-lucide no haría nada.
 // `jornada` es el arreglo de franjas de src/data/negocios.js. La canción de cada
 // muestra es la primera de su franja (`tracks[0]`), que es la que se recortó a
 // public/audio/negocios/<slug>-<n>.mp3.
