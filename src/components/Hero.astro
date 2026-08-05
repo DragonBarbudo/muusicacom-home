@@ -132,19 +132,19 @@ const firstSong = songs[0];
                 <div class="flex-1 min-w-0">
                   <p id="ambienteLabel" class="text-text-tertiary text-xs mb-1">Ambiente Restaurante</p>
                   <p id="songTitle" class="text-white font-medium text-sm sm:text-base truncate">Jazz Suave · Muusica.com</p>
-                  <div id="progressTrack" class="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer" role="slider" aria-label="Progreso de la canción" tabindex="0">
+                  <div id="progressTrack" class="mt-2 h-1.5 bg-white/10 rounded-full overflow-hidden cursor-pointer" role="slider" aria-label="Progreso de la canción" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0">
                     <div id="progressBar" class="h-full w-0 bg-gradient-to-r from-primary-blue to-primary-teal rounded-full transition-[width] duration-150 ease-linear"></div>
                   </div>
                 </div>
                 <div class="flex items-center gap-1 sm:gap-2">
-                  <button id="prevBtn" class="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                  <button id="prevBtn" aria-label="Ambiente anterior" class="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
                     <i data-lucide="skip-back" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-secondary"></i>
                   </button>
-                  <button id="playPauseBtn" class="p-2.5 sm:p-3 rounded-xl bg-gradient-to-r from-primary-blue to-primary-teal hover:opacity-90 transition-opacity" aria-label="Reproducir">
+                  <button id="playPauseBtn" class="min-w-[48px] min-h-[48px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primary-blue to-primary-teal hover:opacity-90 transition-opacity" aria-label="Reproducir">
                     <span data-icon="play"><i data-lucide="play" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i></span>
                     <span data-icon="pause" class="hidden"><i data-lucide="pause" class="w-4 h-4 sm:w-5 sm:h-5 text-white"></i></span>
                   </button>
-                  <button id="nextBtn" class="p-1.5 sm:p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
+                  <button id="nextBtn" aria-label="Siguiente ambiente" class="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
                     <i data-lucide="skip-forward" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-text-secondary"></i>
                   </button>
                 </div>
@@ -255,6 +255,7 @@ const firstSong = songs[0];
 
       if (audio.getAttribute('src') !== song.src) audio.src = song.src;
       document.getElementById('progressBar').style.width = '0%';
+      document.getElementById('progressTrack')?.setAttribute('aria-valuenow', '0');
 
       if (autoplay) play();
     }
@@ -311,7 +312,12 @@ const firstSong = songs[0];
     const progressBarEl = document.getElementById('progressBar');
     const progressTrackEl = document.getElementById('progressTrack');
     audio.addEventListener('timeupdate', () => {
-      if (audio.duration) progressBarEl.style.width = (audio.currentTime / audio.duration * 100) + '%';
+      if (audio.duration) {
+        const pct = audio.currentTime / audio.duration * 100;
+        progressBarEl.style.width = pct + '%';
+        // role="slider" obliga a mantener aria-valuenow al día
+        progressTrackEl?.setAttribute('aria-valuenow', String(Math.round(pct)));
+      }
     });
     if (progressTrackEl) {
       progressTrackEl.addEventListener('click', (e) => {
