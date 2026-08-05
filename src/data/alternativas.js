@@ -33,9 +33,8 @@ export const alternativas = [
     categoria: 'personal',
     icon: 'disc-3',
     color: '#1DB954',
-    seoTitle: 'Alternativa a Spotify para negocios: por qué cambiar y a qué',
-    seoDescription:
-      'Spotify prohíbe expresamente reproducirlo en bares, restaurantes y tiendas. Comparativa punto por punto con Muusica.com: licencia comercial incluida, sin anuncios y $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a Spotify para negocios",
+    seoDescription: "Spotify prohíbe reproducirlo en bares, tiendas y restaurantes. Compáralo con Muusica.com: licencia comercial incluida por $175 MXN al mes.",
     entradilla:
       'Spotify es el servicio de música más usado en México y también el que más negocios ponen en sus bocinas sin saber que su propio centro de ayuda lo prohíbe. No es una zona gris ni una interpretación nuestra: está escrito en su sitio.',
     veredicto: {
@@ -176,9 +175,8 @@ export const alternativas = [
     categoria: 'personal',
     icon: 'music-2',
     color: '#FA243C',
-    seoTitle: 'Alternativa a Apple Music para negocios: comparativa y licencia',
-    seoDescription:
-      'Los términos de Apple limitan el servicio a uso personal y no comercial. Compara Apple Music con Muusica.com: licencia de comunicación pública incluida por $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a Apple Music para negocios",
+    seoDescription: "Apple limita Apple Music a uso personal y no comercial. Compáralo con Muusica.com: licencia comercial incluida por $175 MXN al mes por sucursal.",
     entradilla:
       'Apple Music suena impecable y está en el iPad que ya tienes en la barra. El problema no es técnico: los términos de los servicios de medios de Apple limitan el uso a fines personales y no comerciales, y un local abierto al público no lo es.',
     veredicto: {
@@ -299,9 +297,8 @@ export const alternativas = [
     categoria: 'personal',
     icon: 'youtube',
     color: '#FF0000',
-    seoTitle: 'Alternativa a YouTube Music para negocios: comparativa y licencia',
-    seoDescription:
-      'Los términos de YouTube permiten ver o escuchar contenido solo para uso personal y no comercial. Compara con Muusica.com: licencia comercial incluida, sin anuncios, $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a YouTube Music para negocios",
+    seoDescription: "YouTube autoriza su contenido solo para uso personal. Compáralo con Muusica.com: sin anuncios y con licencia comercial por $175 MXN al mes.",
     entradilla:
       'YouTube es la opción por defecto de miles de locales en México: es gratis, está en cualquier pantalla y tiene todo. También es la que más interrupciones mete en tu ambiente y la que sus propios términos describen como de uso personal y no comercial.',
     veredicto: {
@@ -422,9 +419,8 @@ export const alternativas = [
     categoria: 'personal',
     icon: 'audio-lines',
     color: '#25D1DA',
-    seoTitle: 'Alternativa a Amazon Music para negocios: comparativa y licencia',
-    seoDescription:
-      'Los términos de Amazon Music limitan el servicio a fines personales y no comerciales. Comparativa con Muusica.com: licencia de comunicación pública incluida por $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a Amazon Music para negocios",
+    seoDescription: "Amazon Music es solo para fines personales, aun dentro de Prime. Compáralo con Muusica.com: licencia comercial incluida por $175 MXN al mes.",
     entradilla:
       'Amazon Music llega gratis con Prime y se controla por voz desde un Echo, así que aparece en muchas recepciones y cafeterías casi por accidente. Sus condiciones de uso, sin embargo, autorizan el servicio solo para fines personales y no comerciales.',
     veredicto: {
@@ -539,9 +535,8 @@ export const alternativas = [
     categoria: 'personal',
     icon: 'radio',
     color: '#A238FF',
-    seoTitle: 'Alternativa a Deezer para negocios: comparativa y licencia',
-    seoDescription:
-      'Las condiciones de Deezer prohíben expresamente el uso en locales públicos y para negocios. Compara con Muusica.com: licencia de comunicación pública incluida por $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a Deezer para negocios",
+    seoDescription: "Deezer prohíbe expresamente el uso en locales públicos y negocios. Compáralo con Muusica.com: licencia comercial incluida por $175 MXN al mes.",
     entradilla:
       'De todos los servicios de streaming personal, Deezer es el más explícito: sus condiciones no se limitan a decir que el uso es personal, sino que prohíben expresamente el uso en locales públicos y para negocios.',
     veredicto: {
@@ -653,9 +648,8 @@ export const alternativas = [
     categoria: 'personal',
     icon: 'waves',
     color: '#00FFFF',
-    seoTitle: 'Alternativa a Tidal para negocios: comparativa y licencia',
-    seoDescription:
-      'Tidal es un servicio de uso personal y no comercial según sus propias condiciones. Compara con Muusica.com: licencia comercial incluida, sin anuncios, $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a Tidal para negocios",
+    seoDescription: "Tidal es un servicio de uso personal y no comercial. Compáralo con Muusica.com: licencia comercial incluida, sin anuncios, $175 MXN al mes.",
     entradilla:
       'Tidal se eligió en muchos negocios por su calidad de audio, que en un local con buen equipo sí se nota. Lo que no cambia con la calidad es la licencia: sus condiciones limitan el servicio a uso personal y no comercial.',
     veredicto: {
@@ -766,9 +760,8 @@ export const alternativas = [
     categoria: 'negocio',
     icon: 'building-2',
     color: '#FF5B44',
-    seoTitle: 'Alternativa a Soundtrack Your Brand en México: comparativa',
-    seoDescription:
-      'Soundtrack es un servicio serio para negocios, pero su propia página de licencias en México remite a SACM y SOMEXFON. Comparativa con Muusica.com: comunicación pública incluida por $175 MXN al mes.',
+    seoTitle: "Alternativa a Soundtrack Your Brand",
+    seoDescription: "Su página de licencias para México remite a SACM y SOMEXFON. Compáralo con Muusica.com: sin esa segunda cuota, $175 MXN al mes por sucursal.",
     entradilla:
       'Soundtrack Your Brand es de los servicios de música para negocios mejor construidos del mercado, con catálogo comercial licenciado y acuerdos directos con las disqueras. La pregunta para un negocio en México no es si es bueno, sino qué queda pendiente después de pagarlo.',
     veredicto: {
@@ -900,9 +893,8 @@ export const alternativas = [
     categoria: 'negocio',
     icon: 'building-2',
     color: '#0EA5E9',
-    seoTitle: 'Alternativa a Kasimu en México: comparativa de precio y licencia',
-    seoDescription:
-      'Kasimu publica dos planes: Global sin derechos de comunicación pública y Freedom con cobertura que depende del país. Comparativa con Muusica.com: $175 MXN al mes con licencia incluida.',
+    seoTitle: "Alternativa a Kasimu para negocios",
+    seoDescription: "Kasimu Global no incluye comunicación pública y en Freedom depende del país. Compáralo con Muusica.com: todo incluido por $175 MXN al mes.",
     entradilla:
       'Kasimu tiene la virtud poco común de decir con claridad qué cubre cada uno de sus planes. Justamente por eso su propia tabla de precios es el mejor punto de partida para entender por qué un negocio en México puede terminar pagando dos veces.',
     veredicto: {
@@ -1028,9 +1020,8 @@ export const alternativas = [
     categoria: 'negocio',
     icon: 'building-2',
     color: '#F59E0B',
-    seoTitle: 'Alternativa a VOXPOP en México: comparativa de precio y licencia',
-    seoDescription:
-      'VOXPOP publica planes desde $295 hasta $895 MXN al mes y habla de blindaje legal sin desglose público. Comparativa con Muusica.com: $175 MXN con licencia de comunicación pública incluida.',
+    seoTitle: "Alternativa a VOXPOP para negocios",
+    seoDescription: "VOXPOP va de $295 a $895 MXN al mes sin desglosar qué licencias cubre. Compáralo con Muusica.com: $175 MXN con comunicación pública incluida.",
     entradilla:
       'VOXPOP es un proveedor mexicano con una oferta amplia: música, señalización, anuncios y aroma. Para un negocio que solo necesita música legal, la comparación se reduce a dos preguntas: cuánto cuesta y qué cubre exactamente su “blindaje legal”.',
     veredicto: {
@@ -1139,9 +1130,8 @@ export const alternativas = [
     categoria: 'negocio',
     icon: 'building-2',
     color: '#8B5CF6',
-    seoTitle: 'Alternativa a Brandtrack en México: comparativa y licencia',
-    seoDescription:
-      'Brandtrack reconoce que las licencias de comunicación pública dependen del país y pueden requerir un pago adicional. Comparativa con Muusica.com: incluida por $175 MXN al mes por sucursal.',
+    seoTitle: "Alternativa a Brandtrack para negocios",
+    seoDescription: "Brandtrack admite que la comunicación pública depende del país y puede costar aparte. Compáralo con Muusica.com: incluida por $175 MXN al mes.",
     entradilla:
       'Brandtrack opera en buena parte de Latinoamérica y en México, con playlists por marca, anuncios de audio y control multiubicación. Su sección de preguntas frecuentes explica con una honestidad que se agradece dónde termina lo que incluye su plan.',
     veredicto: {
@@ -1248,9 +1238,8 @@ export const alternativas = [
     categoria: 'negocio',
     icon: 'building-2',
     color: '#64748B',
-    seoTitle: 'Alternativa a Mood Media en México: comparativa y precio',
-    seoDescription:
-      'Mood Media no publica precios ni el desglose de licencias por país. Comparativa con Muusica.com: $175 MXN al mes por sucursal, licencia de comunicación pública incluida y alta en minutos.',
+    seoTitle: "Alternativa a Mood Media para negocios",
+    seoDescription: "Mood Media no publica precios ni desglose de licencias. Compáralo con Muusica.com: $175 MXN al mes, publicado, y alta en minutos.",
     entradilla:
       'Mood Media —heredera de Muzak— es el nombre grande del sector: audio, video, señalización, aroma y sistemas de sonido para cadenas de todo el mundo. Ese tamaño explica sus fortalezas y también por qué no siempre encaja con un negocio de una o cinco sucursales.',
     veredicto: {

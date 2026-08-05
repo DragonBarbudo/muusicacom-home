@@ -12,7 +12,7 @@ const { title, steps } = Astro.props;
 ---
 
 <div class="my-8">
-  {title && <h4 class="text-white font-semibold mb-6">{title}</h4>}
+  {title && <h3 class="text-white font-semibold mb-6">{title}</h3>}
   <div class="space-y-4">
     {steps.map((step, i) => (
       <div class="flex gap-4">
@@ -25,7 +25,7 @@ const { title, steps } = Astro.props;
           )}
         </div>
         <div class="pt-2 pb-6">
-          <h5 class="text-white font-medium mb-1">{step.title}</h5>
+          <h3 class="text-white font-medium mb-1">{step.title}</h3>
           {step.description && (
             <p class="text-text-secondary text-sm">{step.description}</p>
           )}

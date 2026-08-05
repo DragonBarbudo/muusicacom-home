@@ -63,9 +63,11 @@ const datos = [
 
               <!-- Título -->
               <!-- whitespace-nowrap desde sm: en el PDF real el título va en una sola línea -->
-              <h1 class="text-xl sm:text-[30px] sm:whitespace-nowrap font-normal leading-tight text-[#1F2937] mb-3">
+              <!-- No es un encabezado de la página: es el título dentro del facsímil del
+                   certificado. Como h1 duplicaba el H1 real en todas las páginas. -->
+              <p class="text-xl sm:text-[30px] sm:whitespace-nowrap font-normal leading-tight text-[#1F2937] mb-3">
                 Comprobante de Licencia Comercial
-              </h1>
+              </p>
               <p class="text-[11px] sm:text-xs text-[#6B7280]">
                 Música legal para tu negocio · muusica.com
               </p>

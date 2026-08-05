@@ -18,9 +18,9 @@ export const negocios = [
     description: "Crea el ambiente perfecto para cada momento del día",
     longDescription:
       "La música es el ingrediente secreto de un gran restaurante. Desde un brunch relajado hasta una cena sofisticada, Muusica.com te ayuda a crear la atmósfera ideal para que tus clientes disfruten cada bocado.",
-    seoTitle: "Música para restaurantes: guía de ambiente, volumen y licencia legal",
+    seoTitle: "Música para restaurantes",
     seoDescription:
-      "Cómo elegir la música de tu restaurante hora por hora: tempo, volumen en dB, errores comunes y ejemplos reales del catálogo. Licencia comercial incluida, sin SACM ni SOMEXFON.",
+      "Qué poner hora por hora en tu restaurante: tempo, volumen en dB y errores comunes. Licencia comercial incluida, sin SACM ni SOMEXFON.",
     benefits: [
       "Control de ambiente por horarios",
       "Música que invita a la sobremesa",
@@ -179,9 +179,9 @@ export const negocios = [
     description: "Ambiente acogedor que invita a quedarse",
     longDescription:
       "Convierte tu cafetería en el refugio perfecto. Nuestras playlists acústicas y chill están diseñadas para acompañar conversaciones y sesiones de trabajo, creando un espacio donde todos quieran volver.",
-    seoTitle: "Música para cafeterías: ambiente, volumen y licencia comercial",
+    seoTitle: "Música para cafeterías",
     seoDescription:
-      "Guía práctica de música para cafeterías: qué poner hora por hora, volumen ideal, cómo tratar a los clientes con laptop y ejemplos reales del catálogo. 100% legal en México.",
+      "Qué poner en tu cafetería hora por hora, volumen ideal y cómo tratar al cliente con laptop. Ejemplos del catálogo y licencia incluida.",
     benefits: [
       "Ritmos acústicos relajantes",
       "Ideal para coworking y estudio",
@@ -339,9 +339,9 @@ export const negocios = [
     description: "Energía y motivación para entrenar",
     longDescription:
       "La música es el motor del entrenamiento. Con Muusica.com, mantén a tus usuarios motivados con ritmos de alta energía, BPMs constantes y las últimas tendencias en música fitness.",
-    seoTitle: "Música para gimnasios: BPM por zona, volumen y licencia legal",
+    seoTitle: "Música para gimnasios",
     seoDescription:
-      "Qué BPM usar en cardio, pesas y clases, a qué volumen, y cómo la música reduce el esfuerzo percibido. Ejemplos reales del catálogo y licencia comercial incluida.",
+      "Qué BPM usar en cardio, pesas y clases, a qué volumen y cómo la música baja el esfuerzo percibido. Licencia comercial incluida.",
     benefits: [
       "Alta energía constante (BPM)",
       "Mixes sin pausas para entrenar",
@@ -499,9 +499,9 @@ export const negocios = [
     description: "Música que acompaña la experiencia de compra",
     longDescription:
       "El audio branding es clave en el retail. Crea una experiencia de compra memorable que refleje la identidad de tu marca y anime a tus clientes a explorar tu tienda por más tiempo.",
-    seoTitle: "Música para tiendas: cómo el sonido influye en la compra",
+    seoTitle: "Música para tiendas",
     seoDescription:
-      "Tempo, volumen y repertorio para retail: cómo la música cambia el ritmo de recorrido, la percepción de precio y el tiempo en tienda. Ejemplos del catálogo y licencia comercial.",
+      "Tempo, volumen y repertorio para retail: cómo el sonido cambia el recorrido y la percepción de precio. Licencia comercial incluida.",
     benefits: [
       "Identidad de marca sonora",
       "Ritmo que guía el flujo de clientes",
@@ -659,9 +659,9 @@ export const negocios = [
     description: "Relajación y bienestar para tus clientes",
     longDescription:
       "El bienestar comienza por el oído. Nuestras playlists para spas y centros de bienestar están cuidadosamente seleccionadas para reducir el estrés y facilitar la relajación profunda.",
-    seoTitle: "Música para spas: relajación, volumen y licencia comercial",
+    seoTitle: "Música para spas",
     seoDescription:
-      "Cómo diseñar el ambiente sonoro de un spa por zona: recepción, cabinas, vestidores. Volumen recomendado, errores frecuentes y ejemplos reales del catálogo.",
+      "Cómo diseñar el ambiente sonoro de un spa por zona: recepción, cabinas y vestidores. Volumen recomendado y licencia incluida.",
     benefits: [
       "Sonidos zen y relajantes",
       "Frecuencias que reducen el estrés",
@@ -819,9 +819,9 @@ export const negocios = [
     description: "Ritmo y energía para la noche",
     longDescription:
       "La música hace la noche. Crea el ambiente justo para cada momento de tu bar, desde el after-office relajado hasta la pista llena, siempre con licencia comercial incluida.",
-    seoTitle: "Música para bares: cómo construir la energía de la noche",
+    seoTitle: "Música para bares",
     seoDescription:
-      "Curva de energía hora por hora para bares: qué poner en after-office, pico y cierre, a qué volumen, y cómo el tempo afecta el consumo. Ejemplos del catálogo y licencia legal.",
+      "Curva de energía hora por hora para bares: qué poner en after-office, pico y cierre, y a qué volumen. Licencia comercial incluida.",
     benefits: [
       "Ambiente que evoluciona con la noche",
       "Ritmos para mantener la energía",
@@ -979,9 +979,9 @@ export const negocios = [
     description: "Concentración y buen ambiente de trabajo",
     longDescription:
       "Un buen ambiente sonoro mejora el día a día del equipo. Música de fondo que favorece la concentración sin distraer, ideal para espacios de trabajo y áreas comunes.",
-    seoTitle: "Música para oficinas: concentración, ruido y licencia comercial",
+    seoTitle: "Música para oficinas",
     seoDescription:
-      "Qué dice la evidencia sobre música y productividad, cómo usar sonido para tapar conversaciones en oficina abierta, volumen por zona y ejemplos reales del catálogo.",
+      "Qué dice la evidencia sobre música y concentración, cómo tapar conversaciones en oficina abierta y volumen por zona.",
     benefits: [
       "Música que favorece la concentración",
       "Volumen de fondo equilibrado",
@@ -1139,9 +1139,9 @@ export const negocios = [
     description: "Una experiencia cuidada en cada espacio",
     longDescription:
       "Cada espacio del hotel merece su propia atmósfera. Desde el lobby hasta el restaurante y la alberca, ambienta la estancia de tus huéspedes con música seleccionada y 100% legal.",
-    seoTitle: "Música para hoteles: ambiente por zona y licencia comercial",
+    seoTitle: "Música para hoteles",
     seoDescription:
-      "Cómo musicalizar lobby, restaurante, alberca, spa y elevadores de un hotel: volumen por zona, curva del día, errores comunes y ejemplos reales del catálogo.",
+      "Ambiente por zona en un hotel: lobby, restaurante, alberca y spa. Volumen recomendado y licencia comercial incluida.",
     benefits: [
       "Ambientes distintos por espacio",
       "Experiencia premium para huéspedes",

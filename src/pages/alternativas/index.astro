@@ -13,9 +13,9 @@ const canonicalURL = new URL('/alternativas', Astro.site);
 const personales = alternativas.filter((a) => a.categoria === 'personal');
 const negocios = alternativas.filter((a) => a.categoria === 'negocio');
 
-const seoTitle = 'Alternativas de música para negocios: comparativas servicio por servicio';
+const seoTitle = 'Alternativas de música para negocios';
 const seoDescription =
-  'Comparativas honestas de Muusica.com frente a Spotify, Apple Music, YouTube Music, Amazon Music, Deezer, Tidal, Soundtrack Your Brand, Kasimu, VOXPOP, Brandtrack y Mood Media, con lo que publica cada proveedor.';
+  'Comparativas de Muusica.com frente a Spotify, Apple Music, YouTube, Deezer, Soundtrack, Kasimu, VOXPOP y más, con lo que publica cada proveedor.';
 
 const jsonLd = [
   {
@@ -89,7 +89,7 @@ const grupos = [
       </div>
     </section>
 
-    <WaveDivider direction="left" />
+    <WaveDivider tipo="linea" height="64px" color="14B8A6" opacity={0.16} space="py-12" seed={31} />
 
     {grupos.map((grupo, gi) => (
       <section class:list={['section scroll-mt-24', gi % 2 === 0 ? 'bg-section-gradient' : 'bg-bg-page']} id={grupo.id}>
@@ -123,7 +123,7 @@ const grupos = [
       </section>
     ))}
 
-    <WaveDivider direction="right" />
+    <WaveDivider tipo="particulas" height="36px" color="3B82F6" opacity={0.18} space="py-16" seed={32} />
 
     <section class="section bg-section-gradient">
       <div class="max-w-[1440px] mx-auto">

@@ -4,6 +4,11 @@ const blogCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
+    // Título y descripción para <title>/<meta> cuando los del post pasan de
+    // los ~60 y ~160 caracteres que muestran los buscadores. Si faltan, se usan
+    // `title` y `excerpt`.
+    seoTitle: z.string().optional(),
+    seoDescription: z.string().optional(),
     excerpt: z.string(),
     category: z.string(),
     categoryColor: z.string(),

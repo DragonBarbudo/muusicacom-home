@@ -41,7 +41,7 @@ const bottomLinks = [
       
       <!-- Navigation column -->
       <div>
-        <h4 class="text-white font-semibold mb-4">Navegación</h4>
+        <h3 class="text-white font-semibold mb-4">Navegación</h3>
         <ul class="space-y-3">
           {navigationLinks.map((link) => (
             <li>
@@ -55,7 +55,7 @@ const bottomLinks = [
       
       <!-- Legal column -->
       <div>
-        <h4 class="text-white font-semibold mb-4">Legal</h4>
+        <h3 class="text-white font-semibold mb-4">Legal</h3>
         <ul class="space-y-3">
           {legalLinks.map((link) => (
             <li>
@@ -76,15 +76,15 @@ const bottomLinks = [
       
       <!-- CTA column -->
       <div>
-        <h4 class="text-white font-semibold mb-4">¿Listo para empezar?</h4>
+        <h3 class="text-white font-semibold mb-4">¿Listo para empezar?</h3>
         <a href="https://play.muusica.com" class="btn-primary text-sm inline-flex mb-4">
           Probar gratis
         </a>
         <div class="space-y-2 text-sm">
-          <a href="mailto:hola@muusica.com" class="text-text-secondary hover:text-white transition-colors flex items-center gap-2">
+          <!--email_off--><a href="mailto:hola@muusica.com" class="text-text-secondary hover:text-white transition-colors flex items-center gap-2">
             <i data-lucide="mail" class="w-4 h-4"></i>
             hola@muusica.com
-          </a>
+          </a><!--email_on-->
         </div>
       </div>
     </div>
@@ -98,11 +98,11 @@ const bottomLinks = [
         © {currentYear} Muusica.com
       </p>
       <div class="flex items-center gap-6">
-        {bottomLinks.map((link) => (
+        <!--email_off-->{bottomLinks.map((link) => (
           <a href={link.href} class="text-text-tertiary text-sm hover:text-white transition-colors">
             {link.label}
           </a>
-        ))}
+        ))}<!--email_on-->
       </div>
     </div>
   </div>

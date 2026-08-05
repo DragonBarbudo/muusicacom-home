@@ -51,7 +51,11 @@ const jsonLd = [
 ];
 ---
 
-<Layout title={`${post.data.title} | Blog Muusica.com`} description={post.data.excerpt} type="article">
+<Layout
+  title={`${post.data.seoTitle ?? post.data.title} | Muusica.com`}
+  description={post.data.seoDescription ?? post.data.excerpt}
+  type="article"
+>
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
   <Header transparent={false} />
   
