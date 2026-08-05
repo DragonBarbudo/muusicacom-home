@@ -4,6 +4,7 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import LegalTrust from '../../components/LegalTrust.astro';
 import WaveMark from '../../components/WaveMark.astro';
+import WaveDivider from '../../components/WaveDivider.astro';
 import Pricing from '../../components/Pricing.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 import { alternativas, migrar, consultado } from '../../data/alternativas.js';
@@ -122,7 +123,7 @@ const indice = [
           Alternativa a <span style={`color: ${alt.color}`}>{alt.servicio}</span> para negocios
         </h1>
 
-        <WaveMark variant="accent" opacity={0.55} fade={false} animate class="-mt-3 mb-6" />
+        <WaveMark variant="accent" height="42px" opacity={0.7} fade={false} animate speed={11} class="-mt-3 mb-6" />
 
         <p class="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8">
           {alt.entradilla}
@@ -208,6 +209,8 @@ const indice = [
       </div>
     </section>
 
+    <WaveDivider direction="left" />
+
     <!-- Por qué / qué queda pendiente -->
     <section id="por-que" class="section bg-bg-page scroll-mt-24">
       <div class="max-w-[1440px] mx-auto">
@@ -240,6 +243,8 @@ const indice = [
         </div>
       </div>
     </section>
+
+    <WaveDivider direction="right" />
 
     <!-- Comparativa -->
     <section id="comparativa" class="section bg-section-gradient scroll-mt-24">
@@ -383,6 +388,8 @@ const indice = [
       </section>
     )}
 
+    <WaveDivider direction="left" />
+
     <!-- Qué ganas al cambiar + honestidad -->
     <section id="cambiar" class="section bg-section-gradient scroll-mt-24">
       <div class="max-w-[1440px] mx-auto">
@@ -418,6 +425,8 @@ const indice = [
     <!-- Legal (reutilizado) -->
     <LegalTrust />
 
+    <WaveDivider direction="right" />
+
     <!-- Cómo hacer el cambio -->
     <section id="como" class="section bg-bg-page scroll-mt-24">
       <div class="max-w-[1440px] mx-auto">
@@ -445,6 +454,8 @@ const indice = [
         </ol>
       </div>
     </section>
+
+    <WaveDivider direction="left" />
 
     <!-- FAQ -->
     <section id="preguntas" class="section bg-section-gradient scroll-mt-24">

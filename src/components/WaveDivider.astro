@@ -1,0 +1,25 @@
+---
+// Separador entre secciones hecho con las "uu" del logo.
+//
+// Va a sangre completa y sin desvanecido lateral: la onda entra por un borde de
+// la pantalla y sale por el otro, como una forma de onda que sigue corriendo
+// fuera del encuadre. Se alterna la dirección entre separadores para que la
+// página no parezca una cinta transportadora en un solo sentido.
+
+interface Props {
+  height?: string;
+  opacity?: number;
+  direction?: 'left' | 'right';
+  speed?: number;
+  /** Fondo de la banda. Por defecto transparente, para que herede el de la sección. */
+  class?: string;
+}
+
+import WaveMark from './WaveMark.astro';
+
+const { height = '54px', opacity = 0.12, direction = 'left', speed = 26, class: className = '' } = Astro.props;
+---
+
+<div class:list={['w-full overflow-hidden py-2', className]}>
+  <WaveMark height={height} opacity={opacity} animate direction={direction} speed={speed} fade={false} />
+</div>

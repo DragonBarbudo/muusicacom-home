@@ -38,10 +38,12 @@ const firstSong = songs[0];
              de barra de progreso. Firma de marca, no adorno. -->
         <WaveMark
           variant="accent"
-          opacity={0.6}
+          height="42px"
+          opacity={0.75}
           fade={false}
           animate
-          class="reveal mx-auto lg:mx-0 -mt-2"
+          speed={11}
+          class="reveal mx-auto lg:mx-0 -mt-1"
         />
         
         <!-- Subheadline -->
@@ -87,9 +89,25 @@ const firstSong = songs[0];
       <!-- Right - Audio Visualization with Player -->
       <div class="flex-1 reveal-right animation-delay-200 w-full max-w-xl lg:max-w-none mt-4 sm:mt-0">
         <div class="relative h-[400px] sm:h-[500px] md:h-[600px]">
+          <!-- Las "uu" del logo a tamaño grande, corriendo detrás del reproductor.
+               Se sale del contenedor a los lados (-inset-x) para que no se vea
+               dónde empieza ni dónde acaba la onda. -->
+          <div class="absolute -inset-x-32 top-1/2 -translate-y-1/2 overflow-hidden pointer-events-none">
+            <WaveMark
+              height="250px"
+              opacity={0.11}
+              animate
+              direction="left"
+              speed={30}
+              fade={false}
+              class="hidden sm:block"
+            />
+            <WaveMark height="120px" opacity={0.1} animate direction="left" speed={26} fade={false} class="sm:hidden" />
+          </div>
+
           <!-- Audio Visualization Canvas -->
           <canvas id="heroAudioViz" class="absolute inset-0 w-full h-full"></canvas>
-          
+
           <!-- Main simulator card -->
           <!-- Sin mx-4: la tarjeta ya está centrada con left-1/2 + -translate-x-1/2,
                y el margen la corría 16px fuera del viewport en móvil -->
