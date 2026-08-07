@@ -1,0 +1,7 @@
+{
+  "tool_name": "mcp__Claude_Browser__javascript_tool",
+  "tool_input_preview": "{\"action\":\"javascript_exec\",\"text\":\"JSON.stringify({before: (window.dataLayer||[]).map(a=>Array.from(a)), banner: !!document.getElementById('cookieBanner')})\"}",
+  "error": "Policy check in progress for this tab; retry.",
+  "timestamp": "2026-08-07T18:00:00.009Z",
+  "retry_count": 1
+}

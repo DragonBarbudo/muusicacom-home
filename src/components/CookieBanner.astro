@@ -22,8 +22,14 @@
 <script is:inline>
   (function () {
     var KEY = 'muusica-cookies-ok';
+    // Concede la medición a GA (Consent Mode arranca denegado en Layout.astro).
+    function conceder() {
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'update', { analytics_storage: 'granted' });
+    }
     try {
-      if (localStorage.getItem(KEY)) return;
+      if (localStorage.getItem(KEY)) { conceder(); return; }
     } catch (e) { return; } // sin localStorage (modo privado estricto): no insistimos
     var banner = document.getElementById('cookieBanner');
     var btn = document.getElementById('cookieAcceptBtn');
@@ -31,6 +37,7 @@
     banner.classList.remove('hidden');
     btn.addEventListener('click', function () {
       try { localStorage.setItem(KEY, '1'); } catch (e) {}
+      conceder();
       banner.remove();
     });
   })();
