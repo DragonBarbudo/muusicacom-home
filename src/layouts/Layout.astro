@@ -90,6 +90,23 @@ const siteJsonLd = [
     <!-- Los iconos ya no se cargan en el navegador: se incrustan como <svg> en
          el build. Ver integrations/inline-lucide.mjs. -->
     
+    <!-- Google Analytics con Consent Mode v2: arranca denegado, el aviso de
+         cookies lo concede (ver CookieBanner.astro). Sin consentimiento GA no
+         escribe cookies ni identifica al visitante. -->
+    <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-H6NX3EXTXF"></script>
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+      });
+      gtag('js', new Date());
+      gtag('config', 'G-H6NX3EXTXF');
+    </script>
+
     <title>{title}</title>
   </head>
   <body class="min-h-screen bg-bg-page overflow-x-hidden">
