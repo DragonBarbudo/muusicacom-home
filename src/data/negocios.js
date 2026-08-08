@@ -1290,3 +1290,10 @@ export const negocios = [
     ],
   },
 ];
+
+// El mapa negocio → posts de arriba, leído al revés: dado un post, qué giros lo
+// citan. Sirve para que cada artículo enlace de vuelta a su página de servicio
+// en vez de ser un callejón sin salida para el rastreador.
+export function negociosDelPost(slug) {
+  return negocios.filter((n) => n.posts.includes(slug));
+}

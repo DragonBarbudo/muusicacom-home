@@ -1,0 +1,108 @@
+---
+// Hub de /negocios/[slug]. Antes los ocho giros colgaban sólo del home (y del
+// 404), sin un nivel intermedio real: el breadcrumb apuntaba a "/#negocios",
+// un ancla que Google colapsa contra la portada.
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Pricing from '../../components/Pricing.astro';
+import WaveMark from '../../components/WaveMark.astro';
+import WaveDivider from '../../components/WaveDivider.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { negocios } from '../../data/negocios.js';
+
+const canonicalURL = new URL('/negocios', Astro.site);
+
+const seoTitle = 'Música para negocios por giro';
+const seoDescription =
+  'Guías de música ambiental por tipo de negocio: restaurantes, cafeterías, gimnasios, tiendas, spas, bares, oficinas y hoteles. Con licencia comercial incluida.';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: seoTitle,
+    description: seoDescription,
+    inLanguage: 'es-MX',
+    url: canonicalURL.href,
+    hasPart: negocios.map((n) => ({
+      '@type': 'WebPage',
+      name: `Música para ${n.title.toLowerCase()}`,
+      url: new URL(`/negocios/${n.slug}`, Astro.site).href,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
+      { '@type': 'ListItem', position: 2, name: 'Negocios', item: canonicalURL.href },
+    ],
+  },
+];
+---
+
+<Layout title={`${seoTitle} | Muusica.com`} description={seoDescription}>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <Header transparent={false} />
+
+  <main class="pt-32 pb-20">
+    <section class="max-w-[1440px] mx-auto px-8 md:px-16 mb-16">
+      <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2">
+        <a href="/" class="hover:text-white transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-text-secondary">Negocios</span>
+      </nav>
+
+      <div class="max-w-3xl">
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+          Música para negocios <span class="text-primary-teal">por giro</span>
+        </h1>
+
+        <WaveMark variant="accent" height="42px" opacity={0.7} fade={false} animate speed={9} class="-mt-3 mb-6" />
+        <p class="text-lg sm:text-xl text-text-secondary leading-relaxed mb-8">
+          Una cafetería a las ocho de la mañana y un bar a medianoche no piden lo mismo. Cada guía trae la jornada hora
+          por hora, el volumen recomendado por zona, muestras del catálogo y los errores que más se repiten en ese giro.
+        </p>
+        <a href="https://play.muusica.com" class="btn-primary inline-flex">
+          <span>Probar Muusica.com gratis 7 días</span>
+          <i data-lucide="arrow-right" class="w-5 h-5 ml-2"></i>
+        </a>
+      </div>
+    </section>
+
+    <WaveDivider tipo="linea" height="64px" color="14B8A6" opacity={0.16} space="py-12" seed={41} />
+
+    <section class="section bg-section-gradient">
+      <div class="max-w-[1440px] mx-auto">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {negocios.map((n) => (
+            <a href={`/negocios/${n.slug}`} class="card reveal group block">
+              <div
+                class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                style={`background: ${n.color}1f`}
+              >
+                <i data-lucide={n.icon} class="w-5 h-5" style={`color: ${n.color}`}></i>
+              </div>
+              <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                Música para {n.title.toLowerCase()}
+              </h3>
+              <p class="text-text-secondary text-sm leading-relaxed mb-4">{n.description}</p>
+              <span class="text-primary-teal text-sm font-medium inline-flex items-center gap-1">
+                Ver la guía
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <WaveDivider tipo="particulas" height="36px" color="3B82F6" opacity={0.18} space="py-16" seed={42} />
+
+    <Pricing />
+    <FinalCTA />
+  </main>
+
+  <Footer />
+</Layout>

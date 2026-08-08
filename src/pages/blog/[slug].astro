@@ -4,17 +4,30 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import AudioVisualizer from '../../components/AudioVisualizer.astro';
 import { getAllPosts } from '../../data/blog.js';
+import { negociosDelPost } from '../../data/negocios.js';
 
 export async function getStaticPaths() {
   // getAllPosts filtra posts con fecha futura (publicación programada)
   const posts = await getAllPosts();
-  return posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
-  }));
+  return posts.map(post => {
+    // Los giros que ya citaban este post en data/negocios.js, y los demás
+    // artículos de esos mismos giros: el clúster temático sale del dato que ya
+    // existía, sin listas nuevas que mantener.
+    const giros = negociosDelPost(post.slug);
+    const hermanos = [...new Set(giros.flatMap(n => n.posts))]
+      .filter(slug => slug !== post.slug)
+      .map(slug => posts.find(p => p.slug === slug))
+      .filter(Boolean)
+      .slice(0, 3);
+
+    return {
+      params: { slug: post.slug },
+      props: { post, giros, hermanos },
+    };
+  });
 }
 
-const { post } = Astro.props;
+const { post, giros, hermanos } = Astro.props;
 const { Content } = await post.render();
 
 const canonicalURL = new URL(`/blog/${post.slug}`, Astro.site);
@@ -48,6 +61,15 @@ const jsonLd = [
         })),
       }]
     : []),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://muusica.com/blog' },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: canonicalURL.href },
+    ],
+  },
 ];
 ---
 
@@ -61,6 +83,12 @@ const jsonLd = [
   
   <article class="pt-32 pb-20">
     <div class="max-w-[1440px] mx-auto px-8 md:px-16">
+      <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2">
+        <a href="/" class="hover:text-white transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="/blog" class="hover:text-white transition-colors">Blog</a>
+      </nav>
+
       <!-- Header -->
       <header class="mb-12 max-w-4xl mx-auto text-center">
         <!-- Category -->
@@ -104,6 +132,65 @@ const jsonLd = [
       </div>
     </div>
   </article>
+
+  {(giros.length > 0 || hermanos.length > 0) && (
+    <section class="section bg-section-gradient">
+      <div class="max-w-[1440px] mx-auto">
+        {giros.length > 0 && (
+          <div class="mb-16">
+            <div class="section-header reveal">
+              <h2 class="section-title">Música para tu giro</h2>
+              <p class="section-subtitle max-w-3xl mx-auto">
+                La guía completa, hora por hora, para los negocios donde más aplica lo que acabas de leer.
+              </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {giros.map((n) => (
+                <a href={`/negocios/${n.slug}`} class="card reveal group block">
+                  <div
+                    class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                    style={`background: ${n.color}1f`}
+                  >
+                    <i data-lucide={n.icon} class="w-5 h-5" style={`color: ${n.color}`}></i>
+                  </div>
+                  <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                    Música para {n.title.toLowerCase()}
+                  </h3>
+                  <p class="text-text-secondary text-sm leading-relaxed">{n.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {hermanos.length > 0 && (
+          <div>
+            <div class="section-header reveal">
+              <h2 class="section-title">Seguir leyendo</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hermanos.map((p) => (
+                <a href={`/blog/${p.slug}`} class="card reveal group block">
+                  <span
+                    class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider"
+                    style={`background: ${p.data.categoryColor}20; color: ${p.data.categoryColor}; border: 1px solid ${p.data.categoryColor}40`}
+                  >
+                    {p.data.category}
+                  </span>
+                  <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                    {p.data.title}
+                  </h3>
+                  <p class="text-text-secondary text-sm leading-relaxed">{p.data.excerpt}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
 
   <Footer />
 </Layout>
