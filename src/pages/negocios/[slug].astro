@@ -60,7 +60,7 @@ const jsonLd = [
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
-      { '@type': 'ListItem', position: 2, name: 'Negocios', item: 'https://muusica.com/#negocios' },
+      { '@type': 'ListItem', position: 2, name: 'Negocios', item: 'https://muusica.com/negocios' },
       { '@type': 'ListItem', position: 3, name: biz.title, item: canonicalURL.href },
     ],
   },
@@ -90,7 +90,7 @@ const indice = [
       <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2 justify-center lg:justify-start">
         <a href="/" class="hover:text-white transition-colors">Inicio</a>
         <span>/</span>
-        <a href="/#negocios" class="hover:text-white transition-colors">Negocios</a>
+        <a href="/negocios" class="hover:text-white transition-colors">Negocios</a>
         <span>/</span>
         <span class="text-text-secondary">{biz.title}</span>
       </nav>
