@@ -1,0 +1,215 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import AudioVisualizer from '../../components/AudioVisualizer.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = (await getCollection('novedades')).filter(p => p.data.date.valueOf() <= Date.now());
+  return posts.map(post => ({
+    params: { slug: post.slug },
+    // Seguir leyendo: otras guías/novedades, las más recientes primero
+    props: {
+      post,
+      giros: [],
+      hermanos: posts.filter(p => p.slug !== post.slug)
+        .sort((x, y) => y.data.date.valueOf() - x.data.date.valueOf()).slice(0, 3),
+    },
+  }));
+}
+
+const { post, giros, hermanos } = Astro.props;
+const { Content } = await post.render();
+
+const canonicalURL = new URL(`/novedades/${post.slug}`, Astro.site);
+
+// JSON-LD para SEO/GEO: Article + FAQPage (si el post trae faq)
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.data.title,
+    description: post.data.excerpt,
+    datePublished: post.data.date.toISOString().split('T')[0],
+    inLanguage: 'es-MX',
+    author: { '@type': 'Person', name: post.data.author.name, jobTitle: post.data.author.role },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Muusica.com',
+      url: 'https://muusica.com',
+      logo: { '@type': 'ImageObject', url: 'https://muusica.com/logo.svg' },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalURL.href },
+  },
+  ...(post.data.faq?.length
+    ? [{
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        mainEntity: post.data.faq.map(({ q, a }) => ({
+          '@type': 'Question',
+          name: q,
+          acceptedAnswer: { '@type': 'Answer', text: a },
+        })),
+      }]
+    : []),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: 'https://muusica.com' },
+      { '@type': 'ListItem', position: 2, name: 'Novedades y guías', item: 'https://muusica.com/novedades' },
+      { '@type': 'ListItem', position: 3, name: post.data.title, item: canonicalURL.href },
+    ],
+  },
+];
+---
+
+<Layout
+  title={`${post.data.seoTitle ?? post.data.title} | Muusica.com`}
+  description={post.data.seoDescription ?? post.data.excerpt}
+  type="article"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} slot="head" />
+  <Header transparent={false} />
+  
+  <article class="pt-32 pb-20">
+    <div class="max-w-[1440px] mx-auto px-8 md:px-16">
+      <nav aria-label="Ruta de navegación" class="mb-8 text-sm text-text-tertiary flex items-center gap-2">
+        <a href="/" class="hover:text-white transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="/novedades" class="hover:text-white transition-colors">Novedades y guías</a>
+      </nav>
+
+      <!-- Header -->
+      <header class="mb-12 max-w-4xl mx-auto text-center">
+        <!-- Category -->
+        <span 
+          class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-6 uppercase tracking-wider"
+          style={`background: ${post.data.categoryColor}20; color: ${post.data.categoryColor}; border: 1px solid ${post.data.categoryColor}40`}
+        >
+          {post.data.category}
+        </span>
+        
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+          {post.data.title}
+        </h1>
+        
+        <!-- Meta -->
+        <div class="flex items-center justify-center gap-8 text-text-secondary font-medium">
+          <div class="flex items-center gap-2">
+            <i data-lucide="calendar" class="w-4 h-4 text-primary-teal"></i>
+            <span>{post.data.dateFormatted}</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="clock" class="w-4 h-4 text-primary-teal"></i>
+            <span>{post.data.readTime} de lectura</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <i data-lucide="user" class="w-4 h-4 text-primary-teal"></i>
+            <span>{post.data.author.name}</span>
+          </div>
+        </div>
+      </header>
+      
+      <!-- Featured Gradient -->
+      <div class={`max-w-5xl mx-auto h-[400px] md:h-[500px] rounded-3xl bg-gradient-to-br ${post.data.gradient} relative overflow-hidden mb-16 shadow-2xl`}>
+        <AudioVisualizer type={post.data.vizType ?? 0} size="large" />
+        <div class="absolute inset-0 bg-black/10"></div>
+      </div>
+      
+      <!-- Content Wrapper -->
+      <div class="max-w-3xl mx-auto prose prose-invert prose-lg prose-headings:text-white prose-a:text-primary-teal prose-strong:text-white prose-img:rounded-2xl pb-16">
+        <Content />
+      </div>
+    </div>
+  </article>
+
+  {(giros.length > 0 || hermanos.length > 0) && (
+    <section class="section bg-section-gradient">
+      <div class="max-w-[1440px] mx-auto">
+        {giros.length > 0 && (
+          <div class="mb-16">
+            <div class="section-header reveal">
+              <h2 class="section-title">Música para tu giro</h2>
+              <p class="section-subtitle max-w-3xl mx-auto">
+                La guía completa, hora por hora, para los negocios donde más aplica lo que acabas de leer.
+              </p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {giros.map((n) => (
+                <a href={`/negocios/${n.slug}`} class="card reveal group block">
+                  <div
+                    class="w-11 h-11 rounded-xl flex items-center justify-center mb-4"
+                    style={`background: ${n.color}1f`}
+                  >
+                    <i data-lucide={n.icon} class="w-5 h-5" style={`color: ${n.color}`}></i>
+                  </div>
+                  <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                    Música para {n.title.toLowerCase()}
+                  </h3>
+                  <p class="text-text-secondary text-sm leading-relaxed">{n.description}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {hermanos.length > 0 && (
+          <div>
+            <div class="section-header reveal">
+              <h2 class="section-title">Seguir leyendo</h2>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {hermanos.map((p) => (
+                <a href={`/novedades/${p.slug}`} class="card reveal group block">
+                  <span
+                    class="inline-block text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wider"
+                    style={`background: ${p.data.categoryColor}20; color: ${p.data.categoryColor}; border: 1px solid ${p.data.categoryColor}40`}
+                  >
+                    {p.data.category}
+                  </span>
+                  <h3 class="text-white font-semibold text-lg mb-2 group-hover:text-primary-teal transition-colors">
+                    {p.data.title}
+                  </h3>
+                  <p class="text-text-secondary text-sm leading-relaxed">{p.data.excerpt}</p>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  )}
+
+  <Footer />
+</Layout>
+
+<style is:global>
+  /* Markdown Content Styling */
+  .prose h2 {
+    @apply text-3xl font-bold mt-12 mb-6 text-white leading-tight;
+  }
+  
+  .prose h3 {
+    @apply text-2xl font-semibold mt-10 mb-4 text-white leading-snug;
+  }
+  
+  .prose p {
+    @apply text-text-secondary leading-relaxed mb-6;
+  }
+  
+  .prose ul, .prose ol {
+    @apply mb-8 ml-6;
+  }
+  
+  .prose li {
+    @apply mb-2 text-text-secondary;
+  }
+  
+  .prose blockquote {
+    @apply border-l-4 border-primary-teal pl-6 italic text-white my-10 py-2;
+  }
+</style>

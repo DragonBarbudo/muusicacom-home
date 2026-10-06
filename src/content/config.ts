@@ -28,6 +28,9 @@ const blogCollection = defineCollection({
   }),
 });
 
+// Novedades y guías de uso de la plataforma (/novedades). Mismo esquema que
+// el blog; category es "Novedades" o "Guías".
 export const collections = {
   blog: blogCollection,
+  novedades: blogCollection,
 };

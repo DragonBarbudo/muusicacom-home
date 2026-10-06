@@ -1,0 +1,62 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import AudioVisualizer from '../../components/AudioVisualizer.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('novedades'))
+  .filter(p => p.data.date.valueOf() <= Date.now())
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const secciones = [
+  { titulo: 'Novedades', sub: 'Lo último que llegó a la plataforma.', items: posts.filter(p => p.data.category === 'Novedades') },
+  { titulo: 'Guías de uso', sub: 'Paso a paso, en pocos minutos, para sacarle todo a Muusica.com.', items: posts.filter(p => p.data.category !== 'Novedades') },
+];
+---
+
+<Layout
+  title="Novedades y guías de uso | Muusica.com"
+  description="Qué hay de nuevo en Muusica.com y guías paso a paso: reproductor, Mood Mode, pantallas y TVs, anuncios con voz, licencia y más."
+>
+  <Header transparent={false} />
+
+  <main class="pt-32 pb-20">
+    <div class="max-w-[1440px] mx-auto px-8 md:px-16">
+      <div class="mb-16 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-6">Novedades y guías</h1>
+        <p class="text-text-secondary max-w-2xl mx-auto text-lg">
+          Todo lo nuevo de Muusica.com y cómo usarlo en tu negocio, explicado en pasos cortos.
+        </p>
+      </div>
+
+      {secciones.filter(s => s.items.length).map((s) => (
+        <section class="mb-20">
+          <h2 class="text-3xl font-bold text-white mb-2">{s.titulo}</h2>
+          <p class="text-text-secondary mb-8">{s.sub}</p>
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {s.items.map((post, i) => (
+              <a href={`/novedades/${post.slug}`} class="group">
+                <article class="card p-0 overflow-hidden h-full flex flex-col">
+                  <div class={`h-40 bg-gradient-to-br ${post.data.gradient} relative overflow-hidden flex-shrink-0`}>
+                    <AudioVisualizer type={post.data.vizType ?? i % 8} size="large" />
+                    <div class="absolute inset-0 bg-black/10 group-hover:bg-black/30 transition-colors"></div>
+                  </div>
+                  <div class="p-6 flex-1 flex flex-col">
+                    <h3 class="text-white font-bold text-xl mb-3 group-hover:text-primary-teal transition-colors">{post.data.title}</h3>
+                    <p class="text-text-secondary text-sm line-clamp-3 mb-6">{post.data.excerpt}</p>
+                    <div class="mt-auto flex items-center justify-between text-text-tertiary text-xs">
+                      <span>{post.data.dateFormatted}</span>
+                      <span>{post.data.readTime} de lectura</span>
+                    </div>
+                  </div>
+                </article>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
