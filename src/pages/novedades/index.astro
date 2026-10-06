@@ -10,13 +10,14 @@ const posts = (await getCollection('novedades'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const secciones = [
   { titulo: 'Novedades', sub: 'Lo último que llegó a la plataforma.', items: posts.filter(p => p.data.category === 'Novedades') },
-  { titulo: 'Guías de uso', sub: 'Paso a paso, en pocos minutos, para sacarle todo a Muusica.com.', items: posts.filter(p => p.data.category !== 'Novedades') },
+  { titulo: 'Playlists por tema', sub: 'Escucha muestras y encuentra la música para tu tipo de negocio.', items: posts.filter(p => p.data.category === 'Playlists') },
+  { titulo: 'Guías de uso', sub: 'Paso a paso, en pocos minutos, para sacarle todo a Muusica.com.', items: posts.filter(p => p.data.category === 'Guías') },
 ];
 ---
 
 <Layout
   title="Novedades y guías de uso | Muusica.com"
-  description="Qué hay de nuevo en Muusica.com y guías paso a paso: reproductor, Mood Mode, pantallas y TVs, anuncios con voz, licencia y más."
+  description="Qué hay de nuevo en Muusica.com, playlists por tipo de negocio con muestras para escuchar y guías paso a paso del reproductor, pantallas, avisos y licencia."
 >
   <Header transparent={false} />
 
