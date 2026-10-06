@@ -121,6 +121,17 @@ const jsonLd = [
       <!-- Content Wrapper -->
       <div class="max-w-3xl mx-auto prose prose-invert prose-lg prose-headings:text-white prose-a:text-primary-teal prose-strong:text-white prose-img:rounded-2xl pb-16">
         <Content />
+        {post.data.faq?.length > 0 && (
+          <section>
+            <h2>Preguntas frecuentes</h2>
+            {post.data.faq.map(({ q, a }) => (
+              <>
+                <h3>{q}</h3>
+                <p>{a}</p>
+              </>
+            ))}
+          </section>
+        )}
       </div>
     </div>
   </article>
