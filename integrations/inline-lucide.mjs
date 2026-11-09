@@ -69,7 +69,7 @@ export default function inlineLucide() {
 
         for (const fichero of ficheros) {
           const original = await fs.readFile(fichero, 'utf8');
-          const nuevo = original.replace(re, (completo, antes, nombre, despues) => {
+          let nuevo = original.replace(re, (completo, antes, nombre, despues) => {
             const nodos = icons[aPascal(nombre)];
             if (!nodos) {
               faltantes.add(nombre);
@@ -84,6 +84,15 @@ export default function inlineLucide() {
             sustituidos++;
             return `<svg ${ATRIBUTOS_BASE} ${conClase.trim()}>${nodosASvg(nodos)}</svg>`;
           });
+
+          // ponytail: de paso, links internos (y URLs del JSON-LD) con "/" final. Sin ella Cloudflare
+          // responde 308 → /x/ y Search Console las marca "Page with redirect".
+          // Se salta rutas con extensión (/logo.svg, /llms.txt).
+          nuevo = nuevo.replace(
+            /(href="|"https:\/\/muusica\.com)(\/[^"#?]*[^/"#?])([#?][^"]*)?"/g,
+            (completo, pre, ruta, resto = '') =>
+              /\.[a-z0-9]+$/i.test(ruta) ? completo : `${pre}${ruta}/${resto}"`,
+          );
 
           if (nuevo !== original) await fs.writeFile(fichero, nuevo, 'utf8');
         }
