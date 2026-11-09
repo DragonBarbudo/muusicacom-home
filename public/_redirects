@@ -4,3 +4,6 @@ https://www.muusica.com/* https://muusica.com/:splat 301
 
 # Artículo re-fechado 2024 → 2026 (slug renombrado)
 /blog/tendencias-musica-comercial-2024 /blog/tendencias-musica-comercial-2026 301
+
+# Alias común → sitemap real generado por @astrojs/sitemap
+/sitemap.xml /sitemap-index.xml 301
