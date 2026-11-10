@@ -26,7 +26,7 @@ Para que ChatGPT, Gemini y Perplexity citen a MUUSICA:
 ### Cadencia
 1 artículo cada 5 días (6 por mes). Google indexa mejor la publicación constante que los lotes. El cron diario publica cada post en su fecha sin intervención manual.
 
-## Calendario editorial (18 artículos)
+## Calendario editorial (30 artículos)
 
 | # | Fecha | Slug | Categoría | Clúster |
 |---|-------|------|-----------|---------|
@@ -48,6 +48,18 @@ Para que ChatGPT, Gemini y Perplexity citen a MUUSICA:
 | 16 | 2026-09-24 | musica-para-consultorios-clinicas | Tips de Negocio | Giro |
 | 17 | 2026-09-29 | gimnasio-fuerza-norte-caso-exito | Casos de Éxito | Prueba social |
 | 18 | 2026-10-04 | tendencias-musica-comercial-2027 | Industria Musical | Autoridad |
+| 19 | 2026-11-10 | musica-navidena-para-negocios | Tips de Negocio | Giro / Temporada |
+| 20 | 2026-11-15 | musica-para-barberias | Tips de Negocio | Giro |
+| 21 | 2026-11-20 | musica-para-estudios-de-yoga-pilates | Tips de Negocio | Giro |
+| 22 | 2026-11-25 | cuando-poner-musica-navidena-en-tu-negocio | Tips de Negocio | Temporada |
+| 23 | 2026-11-30 | musica-para-salas-de-espera | Tips de Negocio | Giro |
+| 24 | 2026-12-05 | musica-para-tiendas-en-temporada-alta | Tips de Negocio | Giro / Temporada |
+| 25 | 2026-12-10 | musica-para-guarderias-y-espacios-infantiles | Tips de Negocio | Giro |
+| 26 | 2026-12-15 | musica-para-terrazas-y-restaurantes-de-playa | Tips de Negocio | Giro |
+| 27 | 2026-12-20 | musica-para-pubs-y-cervecerias | Tips de Negocio | Giro |
+| 28 | 2026-12-25 | musica-para-estudios-de-tatuaje | Tips de Negocio | Giro |
+| 29 | 2026-12-30 | musica-para-dia-de-reyes-y-cuesta-de-enero | Tips de Negocio | Temporada |
+| 30 | 2027-01-04 | como-renovar-la-musica-de-tu-negocio-en-ano-nuevo | Tips de Negocio | Autoridad |
 
 ## Mecánica de publicación programada
 
