@@ -18,9 +18,9 @@ export const negocios = [
     description: "Crea el ambiente perfecto para cada momento del día",
     longDescription:
       "La música es el ingrediente secreto de un gran restaurante. Desde un brunch relajado hasta una cena sofisticada, Muusica.com te ayuda a crear la atmósfera ideal para que tus clientes disfruten cada bocado.",
-    seoTitle: "Música para restaurantes",
+    seoTitle: "Música para restaurantes: qué poner en tu restaurante",
     seoDescription:
-      "Qué poner hora por hora en tu restaurante: tempo, volumen en dB y errores comunes. Licencia comercial incluida, sin SACM ni SOMEXFON.",
+      "Música para un restaurante, hora por hora: tempo, volumen en dB y errores comunes. Licencia comercial incluida, sin SACM ni SOMEXFON.",
     benefits: [
       "Control de ambiente por horarios",
       "Música que invita a la sobremesa",
@@ -179,7 +179,7 @@ export const negocios = [
     description: "Ambiente acogedor que invita a quedarse",
     longDescription:
       "Convierte tu cafetería en el refugio perfecto. Nuestras playlists acústicas y chill están diseñadas para acompañar conversaciones y sesiones de trabajo, creando un espacio donde todos quieran volver.",
-    seoTitle: "Música para cafeterías",
+    seoTitle: "Música para cafetería: ambiente hora por hora",
     seoDescription:
       "Qué poner en tu cafetería hora por hora, volumen ideal y cómo tratar al cliente con laptop. Ejemplos del catálogo y licencia incluida.",
     benefits: [
@@ -339,9 +339,9 @@ export const negocios = [
     description: "Energía y motivación para entrenar",
     longDescription:
       "La música es el motor del entrenamiento. Con Muusica.com, mantén a tus usuarios motivados con ritmos de alta energía, BPMs constantes y las últimas tendencias en música fitness.",
-    seoTitle: "Música para gimnasios",
+    seoTitle: "Música para gimnasio y gym: BPM por zona",
     seoDescription:
-      "Qué BPM usar en cardio, pesas y clases, a qué volumen y cómo la música baja el esfuerzo percibido. Licencia comercial incluida.",
+      "Música para gym con licencia: qué BPM usar en cardio, pesas y clases, a qué volumen y cómo la música baja el esfuerzo percibido. Licencia comercial incluida.",
     benefits: [
       "Alta energía constante (BPM)",
       "Mixes sin pausas para entrenar",
@@ -499,9 +499,9 @@ export const negocios = [
     description: "Música que acompaña la experiencia de compra",
     longDescription:
       "El audio branding es clave en el retail. Crea una experiencia de compra memorable que refleje la identidad de tu marca y anime a tus clientes a explorar tu tienda por más tiempo.",
-    seoTitle: "Música para tiendas",
+    seoTitle: "Música para tiendas: música ambiental comercial",
     seoDescription:
-      "Tempo, volumen y repertorio para retail: cómo el sonido cambia el recorrido y la percepción de precio. Licencia comercial incluida.",
+      "Música ambiental para tiendas y locales comerciales: tempo, volumen y repertorio, cómo el sonido cambia el recorrido y la percepción de precio. Licencia comercial incluida.",
     benefits: [
       "Identidad de marca sonora",
       "Ritmo que guía el flujo de clientes",
@@ -632,6 +632,10 @@ export const negocios = [
         a: "Lenta cuando quieres que el cliente recorra y explore (horas valle); rápida cuando necesitas mover el flujo y evitar cuellos de botella en caja (hora pico).",
       },
       {
+        q: "¿Qué música ambiental poner en una tienda o local comercial?",
+        a: "Repertorio sin letra protagonista o con voces suaves, a 90–110 BPM en horas normales y más lento en horas de poca afluencia. Lo importante es que suene a tu marca y rote sin repetirse: en Muusica.com eliges la mezcla por estado de ánimo y el reproductor la mantiene sola.",
+      },
+      {
         q: "¿Puedo poner la radio en mi tienda?",
         a: "La radio comercial trae anuncios de otras marcas dentro de tu local y su uso en establecimientos puede requerir licencias adicionales. Un servicio con licencia comercial evita ambos problemas.",
       },
@@ -659,9 +663,9 @@ export const negocios = [
     description: "Relajación y bienestar para tus clientes",
     longDescription:
       "El bienestar comienza por el oído. Nuestras playlists para spas y centros de bienestar están cuidadosamente seleccionadas para reducir el estrés y facilitar la relajación profunda.",
-    seoTitle: "Música para spas",
+    seoTitle: "Música para spa relajante con licencia",
     seoDescription:
-      "Cómo diseñar el ambiente sonoro de un spa por zona: recepción, cabinas y vestidores. Volumen recomendado y licencia incluida.",
+      "Música relajante para spa por zona: recepción, cabinas y vestidores. Volumen recomendado y licencia incluida.",
     benefits: [
       "Sonidos zen y relajantes",
       "Frecuencias que reducen el estrés",

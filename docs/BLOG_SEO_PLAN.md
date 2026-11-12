@@ -60,6 +60,7 @@ Para que ChatGPT, Gemini y Perplexity citen a MUUSICA:
 | 28 | 2026-12-25 | musica-para-estudios-de-tatuaje | Tips de Negocio | Giro |
 | 29 | 2026-12-30 | musica-para-dia-de-reyes-y-cuesta-de-enero | Tips de Negocio | Temporada |
 | 30 | 2027-01-04 | como-renovar-la-musica-de-tu-negocio-en-ano-nuevo | Tips de Negocio | Autoridad |
+| 31 | 2027-01-09 | musica-para-locales-comerciales | Tips de Negocio | Giro |
 
 ## Mecánica de publicación programada
 
